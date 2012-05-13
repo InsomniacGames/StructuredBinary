@@ -1,0 +1,208 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
+		BE57CC3E15605DEC00FFCB91 /* StructuredBinary.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BE57CC3515605DEC00FFCB91 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				BE57CC3E15605DEC00FFCB91 /* StructuredBinary.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BE57CC3715605DEC00FFCB91 /* StructuredBinary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StructuredBinary; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE57CC3B15605DEC00FFCB91 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = StructuredBinary.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE57CC3415605DEC00FFCB91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE57CC2C15605DEC00FFCB91 = {
+			isa = PBXGroup;
+			children = (
+				BE57CC3A15605DEC00FFCB91 /* StructuredBinary */,
+				BE57CC3815605DEC00FFCB91 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE57CC3815605DEC00FFCB91 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE57CC3715605DEC00FFCB91 /* StructuredBinary */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE57CC3A15605DEC00FFCB91 /* StructuredBinary */ = {
+			isa = PBXGroup;
+			children = (
+				BE57CC3B15605DEC00FFCB91 /* main.cpp */,
+				BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */,
+			);
+			path = StructuredBinary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE57CC3615605DEC00FFCB91 /* StructuredBinary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE57CC4115605DEC00FFCB91 /* Build configuration list for PBXNativeTarget "StructuredBinary" */;
+			buildPhases = (
+				BE57CC3315605DEC00FFCB91 /* Sources */,
+				BE57CC3415605DEC00FFCB91 /* Frameworks */,
+				BE57CC3515605DEC00FFCB91 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StructuredBinary;
+			productName = StructuredBinary;
+			productReference = BE57CC3715605DEC00FFCB91 /* StructuredBinary */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE57CC2E15605DEC00FFCB91 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "It Should Just Work!™";
+			};
+			buildConfigurationList = BE57CC3115605DEC00FFCB91 /* Build configuration list for PBXProject "StructuredBinary" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BE57CC2C15605DEC00FFCB91;
+			productRefGroup = BE57CC3815605DEC00FFCB91 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE57CC3615605DEC00FFCB91 /* StructuredBinary */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE57CC3315605DEC00FFCB91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BE57CC3F15605DEC00FFCB91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BE57CC4015605DEC00FFCB91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BE57CC4215605DEC00FFCB91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BE57CC4315605DEC00FFCB91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE57CC3115605DEC00FFCB91 /* Build configuration list for PBXProject "StructuredBinary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE57CC3F15605DEC00FFCB91 /* Debug */,
+				BE57CC4015605DEC00FFCB91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE57CC4115605DEC00FFCB91 /* Build configuration list for PBXNativeTarget "StructuredBinary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE57CC4215605DEC00FFCB91 /* Debug */,
+				BE57CC4315605DEC00FFCB91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE57CC2E15605DEC00FFCB91 /* Project object */;
+}
