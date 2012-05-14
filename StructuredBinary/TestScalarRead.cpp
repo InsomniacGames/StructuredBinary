@@ -34,33 +34,22 @@ struct ScalarReadStruct
   uint8_t   u8;
 };
 
-FieldFloat32  g_Float32;
-FieldFloat64  g_Float64;
-FieldInt64    g_Int64;
-FieldInt32    g_Int32;
-FieldInt16    g_Int16;
-FieldInt8     g_Int8;
-FieldUInt64   g_UInt64;
-FieldUInt32   g_UInt32;
-FieldUInt16   g_UInt16;
-FieldUInt8    g_UInt8;
-
 //--------------------------------------------------------------------------------------------------
 
 const char* TestScalarRead::RunTest() const
 {
   Aggregate agg( 10 );
-  agg.SetField( 0,  0, "f64", &g_Float64 );
-  agg.SetField( 1,  8, "i64", &g_Int64 );
-  agg.SetField( 2, 16, "u64", &g_UInt64 );
-  agg.SetField( 3, 24, "f32", &g_Float32 );
-  agg.SetField( 4, 28, "i32", &g_Int32 );
-  agg.SetField( 5, 32, "u32", &g_UInt32 );
-  agg.SetField( 6, 36, "i16", &g_Int16 );
-  agg.SetField( 7, 38, "u16", &g_UInt16 );
-  agg.SetField( 8, 40, "i8",  &g_Int8 );
-  agg.SetField( 9, 41, "u8",  &g_UInt8 );
-  
+  agg.SetFloat64( 0,  0, "f64" );
+  agg.SetInt64  ( 1,  8, "i64" );
+  agg.SetUInt64 ( 2, 16, "u64" );
+  agg.SetFloat32( 3, 24, "f32" );
+  agg.SetInt32  ( 4, 28, "i32" );
+  agg.SetUInt32 ( 5, 32, "u32" );
+  agg.SetInt16  ( 6, 36, "i16" );
+  agg.SetUInt16 ( 7, 38, "u16" );
+  agg.SetInt8   ( 8, 40, "i8"  );
+  agg.SetUInt8  ( 9, 41, "u8"  );
+
   ScalarReadStruct s;
   s.f64 = 3.14159265358979;
   s.i64 = 0x69b0aee3db807b41ULL;

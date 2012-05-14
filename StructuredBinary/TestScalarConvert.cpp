@@ -48,44 +48,33 @@ struct ScalarConvertDestStruct
   int16_t   i16;
 };
 
-extern FieldFloat32  g_Float32;
-extern FieldFloat64  g_Float64;
-extern FieldInt64    g_Int64;
-extern FieldInt32    g_Int32;
-extern FieldInt16    g_Int16;
-extern FieldInt8     g_Int8;
-extern FieldUInt64   g_UInt64;
-extern FieldUInt32   g_UInt32;
-extern FieldUInt16   g_UInt16;
-extern FieldUInt8    g_UInt8;
-
 //--------------------------------------------------------------------------------------------------
 
 const char* TestScalarConvert::RunTest() const
 {
   Aggregate src_agg( 10 );
-  src_agg.SetField( 0,  0, "f64", &g_Float64 );
-  src_agg.SetField( 1,  8, "i64", &g_Int64 );
-  src_agg.SetField( 2, 16, "u64", &g_UInt64 );
-  src_agg.SetField( 3, 24, "f32", &g_Float32 );
-  src_agg.SetField( 4, 28, "i32", &g_Int32 );
-  src_agg.SetField( 5, 32, "u32", &g_UInt32 );
-  src_agg.SetField( 6, 36, "i16", &g_Int16 );
-  src_agg.SetField( 7, 38, "u16", &g_UInt16 );
-  src_agg.SetField( 8, 40, "i8",  &g_Int8 );
-  src_agg.SetField( 9, 41, "u8",  &g_UInt8 );
+  src_agg.SetFloat64( 0,  0, "f64" );
+  src_agg.SetInt64  ( 1,  8, "i64" );
+  src_agg.SetUInt64 ( 2, 16, "u64" );
+  src_agg.SetFloat32( 3, 24, "f32" );
+  src_agg.SetInt32  ( 4, 28, "i32" );
+  src_agg.SetUInt32 ( 5, 32, "u32" );
+  src_agg.SetInt16  ( 6, 36, "i16" );
+  src_agg.SetUInt16 ( 7, 38, "u16" );
+  src_agg.SetInt8   ( 8, 40, "i8"  );
+  src_agg.SetUInt8  ( 9, 41, "u8"  );
   
   Aggregate dest_agg( 10 );
-  dest_agg.SetField( 0,  0, "u64", &g_UInt64 );
-  dest_agg.SetField( 1,  8, "i64", &g_Int64 );
-  dest_agg.SetField( 2, 16, "f64", &g_Float64 );
-  dest_agg.SetField( 3, 24, "u32", &g_UInt32 );
-  dest_agg.SetField( 4, 28, "i32", &g_Int32 );
-  dest_agg.SetField( 5, 32, "f32", &g_Float32 );
-  dest_agg.SetField( 6, 36, "u8",  &g_UInt8 );
-  dest_agg.SetField( 7, 37, "i8",  &g_Int8 );
-  dest_agg.SetField( 8, 38, "u16", &g_UInt16 );
-  dest_agg.SetField( 9, 40, "i16", &g_Int16 );
+  dest_agg.SetUInt64 ( 0,  0, "u64" );
+  dest_agg.SetInt64  ( 1,  8, "i64" );
+  dest_agg.SetFloat64( 2, 16, "f64" );
+  dest_agg.SetUInt32 ( 3, 24, "u32" );
+  dest_agg.SetInt32  ( 4, 28, "i32" );
+  dest_agg.SetFloat32( 5, 32, "f32" );
+  dest_agg.SetUInt8  ( 6, 36, "u8"  );
+  dest_agg.SetInt8   ( 7, 37, "i8"  );
+  dest_agg.SetUInt16 ( 8, 38, "u16" );
+  dest_agg.SetInt16  ( 9, 40, "i16" );
   
   ScalarConvertSourceStruct src;
   src.f64 = 3.14159265358979;

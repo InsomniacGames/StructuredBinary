@@ -31,17 +31,16 @@ public:
     delete[] m_Entry;
   }
 
-  void SetField( int index, int offset, const char* name, const Field* field )
-  {
-    SetField( index, offset, Fnv32( name ), field );
-  }
-
-  void SetField( int index, int offset, uint32_t name, const Field* field )
-  {
-    m_Entry[ index ].m_Offset = offset;
-    m_Entry[ index ].m_Name = name;
-    m_Entry[ index ].m_Field = field;
-  }
+  void SetFloat64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Float64 ); }
+  void SetFloat32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Float32 ); }
+  void SetInt64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int64 ); }
+  void SetUInt64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt64 ); }
+  void SetInt32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int32 ); }
+  void SetUInt32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt32 ); }
+  void SetInt16( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int16 ); }
+  void SetUInt16( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt16 ); }
+  void SetInt8( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int8 ); }
+  void SetUInt8( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt8 ); }
   
   int GetFieldCount() const { return m_EntryCount; }
 
@@ -63,6 +62,19 @@ public:
   void Convert( char* data, const char* source_data, const Aggregate* source_agg ) const;
 
 private:
+
+  void SetField( int index, int offset, const char* name, const Field* field )
+  {
+    SetField( index, offset, Fnv32( name ), field );
+  }
+
+  void SetField( int index, int offset, uint32_t name, const Field* field )
+  {
+    m_Entry[ index ].m_Offset = offset;
+    m_Entry[ index ].m_Name = name;
+    m_Entry[ index ].m_Field = field;
+  }
+
   struct Entry
   {
     Entry()
@@ -75,6 +87,17 @@ private:
 
   int     m_EntryCount;
   Entry*  m_Entry;
+  
+  static FieldFloat32  s_Float32;
+  static FieldFloat64  s_Float64;
+  static FieldInt64    s_Int64;
+  static FieldInt32    s_Int32;
+  static FieldInt16    s_Int16;
+  static FieldInt8     s_Int8;
+  static FieldUInt64   s_UInt64;
+  static FieldUInt32   s_UInt32;
+  static FieldUInt16   s_UInt16;
+  static FieldUInt8    s_UInt8;
 };
 
 #endif
