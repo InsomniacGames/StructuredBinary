@@ -22,7 +22,8 @@ class Aggregate
 {
 public:
   Aggregate( int field_count )
-  : m_Entry( new Entry[ field_count ] )
+  : m_EntryCount( field_count )
+  , m_Entry( new Entry[ field_count ] )
   {}
 
   ~Aggregate()
@@ -44,11 +45,12 @@ public:
   
   int GetFieldCount() const { return m_EntryCount; }
 
-  Number Read( const char* data, const char* name )
+  Number Read( const char* data, const char* name ) const
   {
     return Read( data, Fnv32( name ) );
   }
-  Number Read( const char* data, uint32_t name )
+
+  Number Read( const char* data, uint32_t name ) const
   {
     for( int i = 0; i < m_EntryCount; ++i )
     {
@@ -57,6 +59,8 @@ public:
     }
     return Number::Null();
   }
+  
+  void Convert( char* data, const char* source_data, const Aggregate* source_agg ) const;
 
 private:
   struct Entry

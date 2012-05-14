@@ -45,7 +45,6 @@ FieldUInt32   g_UInt32;
 FieldUInt16   g_UInt16;
 FieldUInt8    g_UInt8;
 
-
 //--------------------------------------------------------------------------------------------------
 
 const char* TestScalarRead::RunTest() const

@@ -16,12 +16,14 @@
 #include "TestAlwaysSucceed.h"
 #include "TestScalarRead.h"
 #include "TestNumberConvert.h"
+#include "TestScalarConvert.h"
 
 const Test* AllTests[] =
 {
   new TestAlwaysSucceed(),
   new TestScalarRead(),
   new TestNumberConvert(),
+  new TestScalarConvert(),
 };
 
 int main (int argc, const char * argv[])
