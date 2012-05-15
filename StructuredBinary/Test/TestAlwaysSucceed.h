@@ -11,6 +11,9 @@
 
 #include "Test.h"
 
+/*
+ This is a control test
+ */
 class TestAlwaysSucceed : public Test
 {
 public:
