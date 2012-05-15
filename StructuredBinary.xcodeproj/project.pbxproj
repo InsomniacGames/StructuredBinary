@@ -49,14 +49,13 @@
 		BE57CC52156074B000FFCB91 /* Fnv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fnv.cpp; sourceTree = "<group>"; };
 		BE57CC54156074BF00FFCB91 /* Fnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fnv.h; sourceTree = "<group>"; };
 		BE57CC551560799000FFCB91 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Field.h; sourceTree = "<group>"; };
-		BE57CC561560799D00FFCB91 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Field.cpp; path = ../Field.cpp; sourceTree = "<group>"; };
+		BE57CC561560799D00FFCB91 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
 		BE57CC5815607B3500FFCB91 /* Aggregate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Aggregate.cpp; sourceTree = "<group>"; };
 		BE57CC5A15607B4200FFCB91 /* Aggregate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aggregate.h; sourceTree = "<group>"; };
 		BE57CC5B1560AF5500FFCB91 /* TestNumberConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNumberConvert.h; sourceTree = "<group>"; };
 		BE57CC5C1560AF6000FFCB91 /* TestNumberConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNumberConvert.cpp; sourceTree = "<group>"; };
 		BE57CC5E1560B79400FFCB91 /* TestScalarConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScalarConvert.cpp; sourceTree = "<group>"; };
 		BE57CC601560B7A000FFCB91 /* TestScalarConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScalarConvert.h; sourceTree = "<group>"; };
-		BEC33DCD15628D2B00230FF5 /* TestHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,23 +88,12 @@
 		BE57CC3A15605DEC00FFCB91 /* StructuredBinary */ = {
 			isa = PBXGroup;
 			children = (
-				BEACFA07156217D8002FD102 /* Util */,
 				BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */,
-				BE57CC4515605EFA00FFCB91 /* Test */,
-				BE57CC3B15605DEC00FFCB91 /* main.cpp */,
-				BE57CC4F1560713D00FFCB91 /* Number.h */,
-				BE57CC501560717400FFCB91 /* Number.cpp */,
-				BE57CC551560799000FFCB91 /* Field.h */,
-				BE57CC561560799D00FFCB91 /* Field.cpp */,
-				BE57CC5A15607B4200FFCB91 /* Aggregate.h */,
-				BE57CC5815607B3500FFCB91 /* Aggregate.cpp */,
-			);
-			path = StructuredBinary;
-			sourceTree = "<group>";
-		};
-		BE57CC4515605EFA00FFCB91 /* Test */ = {
-			isa = PBXGroup;
-			children = (
+				BE57CC4415605E7900FFCB91 /* Util.h */,
+				BE57CC54156074BF00FFCB91 /* Fnv.h */,
+				BE57CC52156074B000FFCB91 /* Fnv.cpp */,
+				BE57CC4615605F1600FFCB91 /* Test.h */,
+				BE57CC4715605F2300FFCB91 /* Test.cpp */,
 				BE57CC4915605FBD00FFCB91 /* TestAlwaysSucceed.h */,
 				BE57CC4A15605FCA00FFCB91 /* TestAlwaysSucceed.cpp */,
 				BE57CC4E156061E900FFCB91 /* TestScalarRead.h */,
@@ -114,21 +102,15 @@
 				BE57CC5C1560AF6000FFCB91 /* TestNumberConvert.cpp */,
 				BE57CC601560B7A000FFCB91 /* TestScalarConvert.h */,
 				BE57CC5E1560B79400FFCB91 /* TestScalarConvert.cpp */,
-				BEC33DCD15628D2B00230FF5 /* TestHeader.h */,
+				BE57CC4F1560713D00FFCB91 /* Number.h */,
+				BE57CC501560717400FFCB91 /* Number.cpp */,
+				BE57CC551560799000FFCB91 /* Field.h */,
+				BE57CC561560799D00FFCB91 /* Field.cpp */,
+				BE57CC5A15607B4200FFCB91 /* Aggregate.h */,
+				BE57CC5815607B3500FFCB91 /* Aggregate.cpp */,
+				BE57CC3B15605DEC00FFCB91 /* main.cpp */,
 			);
-			path = Test;
-			sourceTree = "<group>";
-		};
-		BEACFA07156217D8002FD102 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				BE57CC4615605F1600FFCB91 /* Test.h */,
-				BE57CC4715605F2300FFCB91 /* Test.cpp */,
-				BE57CC52156074B000FFCB91 /* Fnv.cpp */,
-				BE57CC54156074BF00FFCB91 /* Fnv.h */,
-				BE57CC4415605E7900FFCB91 /* Util.h */,
-			);
-			path = Util;
+			path = StructuredBinary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
