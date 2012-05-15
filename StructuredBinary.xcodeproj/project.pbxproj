@@ -9,15 +9,15 @@
 /* Begin PBXBuildFile section */
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
 		BE57CC3E15605DEC00FFCB91 /* StructuredBinary.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */; };
+		BE57CC4815605F2300FFCB91 /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* Test.cpp */; };
+		BE57CC4B15605FCA00FFCB91 /* TestAlwaysSucceed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4A15605FCA00FFCB91 /* TestAlwaysSucceed.cpp */; };
+		BE57CC4D156061DC00FFCB91 /* TestScalarRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4C156061DC00FFCB91 /* TestScalarRead.cpp */; };
 		BE57CC511560717400FFCB91 /* Number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* Number.cpp */; };
 		BE57CC53156074B000FFCB91 /* Fnv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC52156074B000FFCB91 /* Fnv.cpp */; };
+		BE57CC571560799D00FFCB91 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* Field.cpp */; };
 		BE57CC5915607B3500FFCB91 /* Aggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5815607B3500FFCB91 /* Aggregate.cpp */; };
-		BE57CC701561FE6600FFCB91 /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC661561FE6600FFCB91 /* Test.cpp */; };
-		BE57CC711561FE6600FFCB91 /* TestAlwaysSucceed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC681561FE6600FFCB91 /* TestAlwaysSucceed.cpp */; };
-		BE57CC721561FE6600FFCB91 /* TestNumberConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC6A1561FE6600FFCB91 /* TestNumberConvert.cpp */; };
-		BE57CC731561FE6600FFCB91 /* TestScalarConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC6C1561FE6600FFCB91 /* TestScalarConvert.cpp */; };
-		BE57CC741561FE6600FFCB91 /* TestScalarRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC6E1561FE6600FFCB91 /* TestScalarRead.cpp */; };
-		BE57CC761561FE8100FFCB91 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC751561FE8100FFCB91 /* Field.cpp */; };
+		BE57CC5D1560AF6000FFCB91 /* TestNumberConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5C1560AF6000FFCB91 /* TestNumberConvert.cpp */; };
+		BE57CC5F1560B79400FFCB91 /* TestScalarConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5E1560B79400FFCB91 /* TestScalarConvert.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,24 +38,25 @@
 		BE57CC3B15605DEC00FFCB91 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = StructuredBinary.1; sourceTree = "<group>"; };
 		BE57CC4415605E7900FFCB91 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		BE57CC4615605F1600FFCB91 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		BE57CC4715605F2300FFCB91 /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
+		BE57CC4915605FBD00FFCB91 /* TestAlwaysSucceed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAlwaysSucceed.h; sourceTree = "<group>"; };
+		BE57CC4A15605FCA00FFCB91 /* TestAlwaysSucceed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestAlwaysSucceed.cpp; sourceTree = "<group>"; };
+		BE57CC4C156061DC00FFCB91 /* TestScalarRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScalarRead.cpp; sourceTree = "<group>"; };
+		BE57CC4E156061E900FFCB91 /* TestScalarRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScalarRead.h; sourceTree = "<group>"; };
 		BE57CC4F1560713D00FFCB91 /* Number.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Number.h; sourceTree = "<group>"; };
 		BE57CC501560717400FFCB91 /* Number.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Number.cpp; sourceTree = "<group>"; };
 		BE57CC52156074B000FFCB91 /* Fnv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fnv.cpp; sourceTree = "<group>"; };
 		BE57CC54156074BF00FFCB91 /* Fnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fnv.h; sourceTree = "<group>"; };
 		BE57CC551560799000FFCB91 /* Field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Field.h; sourceTree = "<group>"; };
+		BE57CC561560799D00FFCB91 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Field.cpp; path = ../Field.cpp; sourceTree = "<group>"; };
 		BE57CC5815607B3500FFCB91 /* Aggregate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Aggregate.cpp; sourceTree = "<group>"; };
 		BE57CC5A15607B4200FFCB91 /* Aggregate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aggregate.h; sourceTree = "<group>"; };
-		BE57CC661561FE6600FFCB91 /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Test.cpp; path = Test/Test.cpp; sourceTree = "<group>"; };
-		BE57CC671561FE6600FFCB91 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = Test/Test.h; sourceTree = "<group>"; };
-		BE57CC681561FE6600FFCB91 /* TestAlwaysSucceed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestAlwaysSucceed.cpp; path = Test/TestAlwaysSucceed.cpp; sourceTree = "<group>"; };
-		BE57CC691561FE6600FFCB91 /* TestAlwaysSucceed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestAlwaysSucceed.h; path = Test/TestAlwaysSucceed.h; sourceTree = "<group>"; };
-		BE57CC6A1561FE6600FFCB91 /* TestNumberConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestNumberConvert.cpp; path = Test/TestNumberConvert.cpp; sourceTree = "<group>"; };
-		BE57CC6B1561FE6600FFCB91 /* TestNumberConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestNumberConvert.h; path = Test/TestNumberConvert.h; sourceTree = "<group>"; };
-		BE57CC6C1561FE6600FFCB91 /* TestScalarConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestScalarConvert.cpp; path = Test/TestScalarConvert.cpp; sourceTree = "<group>"; };
-		BE57CC6D1561FE6600FFCB91 /* TestScalarConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestScalarConvert.h; path = Test/TestScalarConvert.h; sourceTree = "<group>"; };
-		BE57CC6E1561FE6600FFCB91 /* TestScalarRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestScalarRead.cpp; path = Test/TestScalarRead.cpp; sourceTree = "<group>"; };
-		BE57CC6F1561FE6600FFCB91 /* TestScalarRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestScalarRead.h; path = Test/TestScalarRead.h; sourceTree = "<group>"; };
-		BE57CC751561FE8100FFCB91 /* Field.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
+		BE57CC5B1560AF5500FFCB91 /* TestNumberConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNumberConvert.h; sourceTree = "<group>"; };
+		BE57CC5C1560AF6000FFCB91 /* TestNumberConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNumberConvert.cpp; sourceTree = "<group>"; };
+		BE57CC5E1560B79400FFCB91 /* TestScalarConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScalarConvert.cpp; sourceTree = "<group>"; };
+		BE57CC601560B7A000FFCB91 /* TestScalarConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScalarConvert.h; sourceTree = "<group>"; };
+		BEC33DCD15628D2B00230FF5 /* TestHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHeader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,16 +89,14 @@
 		BE57CC3A15605DEC00FFCB91 /* StructuredBinary */ = {
 			isa = PBXGroup;
 			children = (
+				BEACFA07156217D8002FD102 /* Util */,
 				BE57CC3D15605DEC00FFCB91 /* StructuredBinary.1 */,
 				BE57CC4515605EFA00FFCB91 /* Test */,
 				BE57CC3B15605DEC00FFCB91 /* main.cpp */,
-				BE57CC4415605E7900FFCB91 /* Util.h */,
 				BE57CC4F1560713D00FFCB91 /* Number.h */,
 				BE57CC501560717400FFCB91 /* Number.cpp */,
-				BE57CC52156074B000FFCB91 /* Fnv.cpp */,
-				BE57CC54156074BF00FFCB91 /* Fnv.h */,
 				BE57CC551560799000FFCB91 /* Field.h */,
-				BE57CC751561FE8100FFCB91 /* Field.cpp */,
+				BE57CC561560799D00FFCB91 /* Field.cpp */,
 				BE57CC5A15607B4200FFCB91 /* Aggregate.h */,
 				BE57CC5815607B3500FFCB91 /* Aggregate.cpp */,
 			);
@@ -107,18 +106,29 @@
 		BE57CC4515605EFA00FFCB91 /* Test */ = {
 			isa = PBXGroup;
 			children = (
-				BE57CC661561FE6600FFCB91 /* Test.cpp */,
-				BE57CC671561FE6600FFCB91 /* Test.h */,
-				BE57CC681561FE6600FFCB91 /* TestAlwaysSucceed.cpp */,
-				BE57CC691561FE6600FFCB91 /* TestAlwaysSucceed.h */,
-				BE57CC6A1561FE6600FFCB91 /* TestNumberConvert.cpp */,
-				BE57CC6B1561FE6600FFCB91 /* TestNumberConvert.h */,
-				BE57CC6C1561FE6600FFCB91 /* TestScalarConvert.cpp */,
-				BE57CC6D1561FE6600FFCB91 /* TestScalarConvert.h */,
-				BE57CC6E1561FE6600FFCB91 /* TestScalarRead.cpp */,
-				BE57CC6F1561FE6600FFCB91 /* TestScalarRead.h */,
+				BE57CC4915605FBD00FFCB91 /* TestAlwaysSucceed.h */,
+				BE57CC4A15605FCA00FFCB91 /* TestAlwaysSucceed.cpp */,
+				BE57CC4E156061E900FFCB91 /* TestScalarRead.h */,
+				BE57CC4C156061DC00FFCB91 /* TestScalarRead.cpp */,
+				BE57CC5B1560AF5500FFCB91 /* TestNumberConvert.h */,
+				BE57CC5C1560AF6000FFCB91 /* TestNumberConvert.cpp */,
+				BE57CC601560B7A000FFCB91 /* TestScalarConvert.h */,
+				BE57CC5E1560B79400FFCB91 /* TestScalarConvert.cpp */,
+				BEC33DCD15628D2B00230FF5 /* TestHeader.h */,
 			);
-			name = Test;
+			path = Test;
+			sourceTree = "<group>";
+		};
+		BEACFA07156217D8002FD102 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BE57CC4615605F1600FFCB91 /* Test.h */,
+				BE57CC4715605F2300FFCB91 /* Test.cpp */,
+				BE57CC52156074B000FFCB91 /* Fnv.cpp */,
+				BE57CC54156074BF00FFCB91 /* Fnv.h */,
+				BE57CC4415605E7900FFCB91 /* Util.h */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,15 +182,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */,
+				BE57CC4815605F2300FFCB91 /* Test.cpp in Sources */,
+				BE57CC4B15605FCA00FFCB91 /* TestAlwaysSucceed.cpp in Sources */,
+				BE57CC4D156061DC00FFCB91 /* TestScalarRead.cpp in Sources */,
 				BE57CC511560717400FFCB91 /* Number.cpp in Sources */,
 				BE57CC53156074B000FFCB91 /* Fnv.cpp in Sources */,
+				BE57CC571560799D00FFCB91 /* Field.cpp in Sources */,
 				BE57CC5915607B3500FFCB91 /* Aggregate.cpp in Sources */,
-				BE57CC701561FE6600FFCB91 /* Test.cpp in Sources */,
-				BE57CC711561FE6600FFCB91 /* TestAlwaysSucceed.cpp in Sources */,
-				BE57CC721561FE6600FFCB91 /* TestNumberConvert.cpp in Sources */,
-				BE57CC731561FE6600FFCB91 /* TestScalarConvert.cpp in Sources */,
-				BE57CC741561FE6600FFCB91 /* TestScalarRead.cpp in Sources */,
-				BE57CC761561FE8100FFCB91 /* Field.cpp in Sources */,
+				BE57CC5D1560AF6000FFCB91 /* TestNumberConvert.cpp in Sources */,
+				BE57CC5F1560B79400FFCB91 /* TestScalarConvert.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
