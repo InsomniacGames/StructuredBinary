@@ -27,11 +27,17 @@ FieldUInt32   Aggregate::s_UInt32;
 FieldUInt16   Aggregate::s_UInt16;
 FieldUInt8    Aggregate::s_UInt8;
 
-void Aggregate::Convert( char* data, const char* source_data, const Aggregate* source_agg ) const
+void Aggregate::Convert( char* dst_data, const char* src_data, const Field* src_desc ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    Number n = source_agg->Read( source_data, m_Entry[ i ].m_Name );
-    m_Entry[ i ].m_Field->WriteNumber( data + m_Entry[ i ].m_Offset, n );
+    const char* name = m_Entry[ i ].m_Name;
+    ReadCursor rc = src_desc->Find( src_data, name );
+    m_Entry[ i ].m_Field->Convert( dst_data + m_Entry[ i ].m_Offset, rc.m_Data, rc.m_Field );
   }
+}
+
+void Aggregate::SetSubStruct( int index, int offset, const char* name, const Aggregate* agg )
+{
+  SetField( index, offset, name, agg );
 }

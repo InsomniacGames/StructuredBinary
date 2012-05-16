@@ -17,13 +17,54 @@
 #include "Number.h"
 #include "Fnv.h"
 
-class Aggregate;
+class Field;
+
+struct WriteCursor
+{
+  WriteCursor( char* data, const char* name, const Field* field )
+  : m_Name( name )
+  , m_Data( data )
+  , m_Field( field )
+  {}
+  const char*   m_Name; // Remove me
+  char*         m_Data;
+  const Field*  m_Field;
+};
+
+struct ReadCursor
+{
+  ReadCursor( const char* data, const char* name, const Field* field )
+  : m_Name( name )
+  , m_Data( data )
+  , m_Field( field )
+  {}
+  const char*   m_Name; // Remove me
+  const char*   m_Data;
+  const Field*  m_Field;
+};
 
 class Field
 {
 public:
-  virtual Number ReadNumber( const char* data ) const = 0;
-  virtual void WriteNumber( char* data, const Number& number ) const = 0;
+  virtual Number ReadNumber( const char* data ) const { return Number::Null(); }
+  virtual void WriteNumber( char* data, const Number& number ) const {}
+
+  virtual void Convert( char* dst_data, const char* src_data, const Field* src_desc ) const
+  {
+    Number n = src_desc->ReadNumber( src_data );
+    WriteNumber( dst_data, n );
+  }
+
+  virtual ReadCursor Find( const char* data, const char* name ) const
+  {
+    return ReadCursor( NULL, "null", NULL );
+  }
+
+  virtual WriteCursor Find( char* data, const char* name ) const
+  {
+    return WriteCursor( NULL, "null", NULL );
+  }
+
 private:
 };
 

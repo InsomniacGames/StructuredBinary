@@ -17,6 +17,7 @@
 #include "TestScalarRead.h"
 #include "TestNumberConvert.h"
 #include "TestScalarConvert.h"
+#include "TestSubStructConvert.h"
 
 const Test* AllTests[] =
 {
@@ -24,6 +25,7 @@ const Test* AllTests[] =
   new TestScalarRead(),
   new TestNumberConvert(),
   new TestScalarConvert(),
+  new TestSubStructConvert(),
 };
 
 int main (int argc, const char * argv[])
