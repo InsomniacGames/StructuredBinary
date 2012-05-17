@@ -13,16 +13,15 @@
 // Project
 #include "Test.h"
 #include "Util.h"
-#include "TestAlwaysSucceed.h"
-#include "TestScalarRead.h"
 #include "TestNumberConvert.h"
 #include "TestScalarConvert.h"
 #include "TestSubStructConvert.h"
 
+#include "UnitTest/ScalarReadUnitTest.h"
+
 const Test* AllTests[] =
 {
-  new TestAlwaysSucceed(),
-  new TestScalarRead(),
+  new ScalarReadUnitTest(),
   new TestNumberConvert(),
   new TestScalarConvert(),
   new TestSubStructConvert(),

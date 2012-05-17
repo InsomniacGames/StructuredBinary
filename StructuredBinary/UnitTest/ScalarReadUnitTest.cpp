@@ -1,13 +1,14 @@
 //
-//  TestScalarRead.cpp
+//  ScalarReadUnitTest.cpp
 //  StructuredBinary
 //
-//  Created by Ronald Pieket-Weeserik on 5/13/12.
+//  Created by Ronald Pieket-Weeserik on 5/16/12.
 //  Copyright 2012 It Should Just Work!™. All rights reserved.
 //
 
+
 // Self
-#include "TestScalarRead.h"
+#include "ScalarReadUnitTest.h"
 
 // Libraries
 #include <cstring>
@@ -20,7 +21,7 @@
 
 //--------------------------------------------------------------------------------------------------
 
-struct ScalarReadStruct
+struct ReadStruct
 {
   double    f64;
   int64_t   i64;
@@ -36,7 +37,7 @@ struct ScalarReadStruct
 
 //--------------------------------------------------------------------------------------------------
 
-const char* TestScalarRead::RunTest() const
+const char* ScalarReadUnitTest::RunTest() const
 {
   Aggregate agg( 10 );
   agg.SetFloat64( 0,  0, "f64" );
@@ -49,8 +50,8 @@ const char* TestScalarRead::RunTest() const
   agg.SetUInt16 ( 7, 38, "u16" );
   agg.SetInt8   ( 8, 40, "i8"  );
   agg.SetUInt8  ( 9, 41, "u8"  );
-
-  ScalarReadStruct s;
+  
+  ReadStruct s;
   s.f64 = 3.14159265358979;
   s.i64 = 0x69b0aee3db807b41ULL;
   s.u64 = 0x0dbf9bf837f5adb0ULL;
@@ -62,7 +63,7 @@ const char* TestScalarRead::RunTest() const
   s.i8  = 0xc3;
   s.u8  = 0x40;
   const char* data = ( const char* )&s;
-
+  
   Number n;
   n = agg.Read( data, "f64" );
   if( !n.IsFloat() )          return "f64 returned wrong type";
