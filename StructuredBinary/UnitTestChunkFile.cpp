@@ -10,7 +10,7 @@
 #include "UnitTestChunkFile.h"
 
 // Libraries
-#include <cstring>
+#include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -18,8 +18,20 @@
 #include "Chunk.h"
 #include "ChunkFile.h"
 
+static char FileBuffer[ 1000 ];
+static const char* s_FileName = "RonsTestFile.chunk";
+
 const char* UnitTestChunkFile::RunTest() const
 {
+  remove( s_FileName );
+  FILE* file = fopen( s_FileName, "rb" );
+  bool exist = file != NULL;
+  if( exist )
+  {
+    fclose( file );
+    return "File already exists";
+  }
+  
   const uint32_t top_id    = CHUNK_ID( 'S', 'T', 'R', 'B' );
   const uint32_t child_id  = CHUNK_ID( 'C', 'H', 'L', 'D' );
   const uint32_t sweet_id  = CHUNK_ID( 's', 'w', 'e', 'e' );
@@ -49,8 +61,43 @@ const char* UnitTestChunkFile::RunTest() const
   child->AddLeafChunk( bitter_id, bitter_data, bitter_size );
   child->AddLeafChunk( umami_id, umami_data, umami_size );
 
-  bool success = ChunkWrite( "RonsTestFile.chunk", &chunk );
-  if( !success ) return "Could not write file";
+  int file_size = ChunkWrite( s_FileName, &chunk );
+  if( file_size == 0 ) return "Could not write file";
+
+  const Chunk* c = ChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
   
+  if( !c ) return "Failed to read file";
+  c = c->GetChild();      // FIX ME - why do I need this outer chunk hack?
+
+  if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
+  if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
+  c = c->GetChild();
+  if( c->GetChildCount() != 0 )         return "First child wrong child count";
+  if( c->GetDataSize() != sweet_size )  return "First child wrong data size";
+  if( 0 != strcmp( ( const char* )c->GetData(), sweet_data ) )  return "First child wrong data";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Second child wrong child count";
+  if( c->GetDataSize() != salt_size )   return "Second child wrong data size";
+  if( 0 != strcmp( ( const char* )c->GetData(), salt_data ) )  return "Second child wrong data";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 3 )         return "Third child wrong child count";
+  if( c->GetDataSize() != 0 )           return "Third child wrong data size";
+  const Chunk* temp = c->GetSibling();
+  if( temp != NULL )                    return "Child list not properly terminated";
+  
+  c = c->GetChild();
+  if( c->GetChildCount() != 0 )         return "First grand child wrong child count";
+  if( c->GetDataSize() != sour_size )   return "First grand child wrong data size";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Second grand child wrong child count";
+  if( c->GetDataSize() != bitter_size ) return "Second grand child wrong data size";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Third grand child wrong child count";
+  if( c->GetDataSize() != umami_size )  return "Third grand child wrong data size";
+  temp = c->GetSibling();
+  if( temp != NULL )                    return "Grand child list not properly terminated";
+  
+  delete c;
+
   return NULL;
 }

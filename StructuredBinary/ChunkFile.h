@@ -11,6 +11,7 @@
 
 #include "Chunk.h"
 
-bool ChunkWrite( const char* file_name, const Chunk* chunk );
+int ChunkWrite( const char* file_name, const Chunk* chunk );
+const Chunk* ChunkRead( const char* file_name, char* buffer, int buffer_size );
 
 #endif
