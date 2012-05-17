@@ -11,32 +11,32 @@
 #include <stdio.h>
 
 // Project
-#include "Test.h"
 #include "Util.h"
-#include "TestNumberConvert.h"
-#include "TestScalarConvert.h"
-#include "TestSubStructConvert.h"
+#include "UnitTestNumberConvert.h"
+#include "UnitTestScalarConvert.h"
+#include "UnitTestSubStructConvert.h"
+#include "UnitTestChunk.h"
+#include "UnitTestScalarRead.h"
 
-#include "UnitTest/ScalarReadUnitTest.h"
-
-const Test* AllTests[] =
+const UnitTest* AllTests[] =
 {
-  new ScalarReadUnitTest(),
-  new TestNumberConvert(),
-  new TestScalarConvert(),
-  new TestSubStructConvert(),
+  new UnitTestScalarRead(),
+  new UnitTestNumberConvert(),
+  new UnitTestScalarConvert(),
+  new UnitTestSubStructConvert(),
+  new UnitTestChunk(),
 };
 
 int main (int argc, const char * argv[])
 {
   int test_count = ARRAY_SIZE( AllTests );
-  const Test** test_array = AllTests;
+  const UnitTest** test_array = AllTests;
 
   int fail_count = 0;
   
   for( int i = 0; i < test_count; ++i )
   {
-    const Test* test = test_array[ i ];
+    const UnitTest* test = test_array[ i ];
     printf( "Testing %s\n", test->GetName() );
     const char* error_message = test->RunTest();
     if( error_message )

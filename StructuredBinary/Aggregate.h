@@ -77,7 +77,7 @@ public:
     return WriteCursor( NULL, "null", NULL );
   }
   
-  virtual void Convert( char* dst_data, const char* src_data, const Field* src_desc ) const;
+  virtual void Convert( char* dst_data, const ReadCursor& rc ) const;
 
 private:
 

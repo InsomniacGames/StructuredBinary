@@ -27,13 +27,12 @@ FieldUInt32   Aggregate::s_UInt32;
 FieldUInt16   Aggregate::s_UInt16;
 FieldUInt8    Aggregate::s_UInt8;
 
-void Aggregate::Convert( char* dst_data, const char* src_data, const Field* src_desc ) const
+void Aggregate::Convert( char* dst_data, const ReadCursor& rc ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
     const char* name = m_Entry[ i ].m_Name;
-    ReadCursor rc = src_desc->Find( src_data, name );
-    m_Entry[ i ].m_Field->Convert( dst_data + m_Entry[ i ].m_Offset, rc.m_Data, rc.m_Field );
+    m_Entry[ i ].m_Field->Convert( dst_data + m_Entry[ i ].m_Offset, rc.m_Field->Find( rc.m_Data, name ) );
   }
 }
 

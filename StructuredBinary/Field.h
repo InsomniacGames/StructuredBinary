@@ -49,9 +49,9 @@ public:
   virtual Number ReadNumber( const char* data ) const { return Number::Null(); }
   virtual void WriteNumber( char* data, const Number& number ) const {}
 
-  virtual void Convert( char* dst_data, const char* src_data, const Field* src_desc ) const
+  virtual void Convert( char* dst_data, const ReadCursor& rc ) const
   {
-    Number n = src_desc->ReadNumber( src_data );
+    Number n = rc.m_Field->ReadNumber( rc.m_Data );
     WriteNumber( dst_data, n );
   }
 
