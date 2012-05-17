@@ -15,8 +15,9 @@
 #include "UnitTestNumberConvert.h"
 #include "UnitTestScalarConvert.h"
 #include "UnitTestSubStructConvert.h"
-#include "UnitTestChunk.h"
 #include "UnitTestScalarRead.h"
+#include "UnitTestChunk.h"
+#include "UnitTestChunkFile.h"
 
 const UnitTest* AllTests[] =
 {
@@ -25,6 +26,7 @@ const UnitTest* AllTests[] =
   new UnitTestScalarConvert(),
   new UnitTestSubStructConvert(),
   new UnitTestChunk(),
+  new UnitTestChunkFile(),
 };
 
 int main (int argc, const char * argv[])

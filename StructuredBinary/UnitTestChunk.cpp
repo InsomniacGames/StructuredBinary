@@ -17,7 +17,6 @@
 // Project
 #include "Chunk.h"
 
-
 const char* UnitTestChunk::RunTest() const
 {
   const char* sweet = "sweet data";
@@ -42,11 +41,11 @@ const char* UnitTestChunk::RunTest() const
   child->AddLeafChunk( "umami", umami, umami_size );
 
   const Chunk* c = &chunk;
-  if( c->GetChildCount() != 3 )           return "Top chunk wrong child count";
-  if( c->GetDataSize() != 0 )             return "Top chunk wrong data size";
+  if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
+  if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
   c = c->GetChild();
-  if( c->GetChildCount() != 0 )           return "First child wrong child count";
-  if( c->GetDataSize() != sweet_size )    return "First child wrong data size";
+  if( c->GetChildCount() != 0 )         return "First child wrong child count";
+  if( c->GetDataSize() != sweet_size )  return "First child wrong data size";
   if( 0 != strcmp( ( const char* )c->GetData(), sweet ) )  return "First child wrong data";
   c = c->GetSibling();
   if( c->GetChildCount() != 0 )         return "Second child wrong child count";
