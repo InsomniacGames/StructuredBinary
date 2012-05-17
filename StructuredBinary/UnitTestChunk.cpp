@@ -15,100 +15,60 @@
 #include <stdint.h>
 
 // Project
-#include "Number.h"
-#include "Field.h"
-#include "Aggregate.h"
-#include "Fnv.h"
+#include "Chunk.h"
 
-struct ChunkHeader
-{
-  uint32_t  m_Name;
-  uint32_t  m_Size;
-};
-
-class ChunkReadFile
-{
-public:
-  ChunkReadFile()
-  : m_File( NULL )
-  {}
-  
-  bool Open( const char* file_name );
-  uint32_t GetName() const { return m_Header.m_Name; }
-  uint32_t GetSize() const { return m_Header.m_Size; }
-  
-private:
-  FILE*       m_File;
-  ChunkHeader m_Header;
-};
-
-bool ChunkReadFile::Open( const char* file_name )
-{
-  m_File = fopen( file_name, "rb" );
-  if( m_File )
-  {
-    fread( &m_Header, 1, sizeof( m_Header ), m_File );
-  }
-  return m_File != NULL;
-}
-
-class ChunkWriteFile
-{
-public:
-  ChunkWriteFile()
-  : m_File( NULL )
-  {}
-  
-  bool Open( const char* file_name );
-  void Write( const char* data, uint32_t size );
-  void Close();
-  void SetName( uint32_t name ) { m_Header.m_Name = name; }
-  
-private:
-  FILE*       m_File;
-  ChunkHeader m_Header;
-};
-
-bool ChunkWriteFile::Open( const char* file_name )
-{
-  m_File = fopen( file_name, "wb" );
-  if( m_File )
-  {
-    ChunkHeader dummy_header;
-    dummy_header.m_Name = 0;
-    dummy_header.m_Size = 0;
-    fwrite( &dummy_header, 1, sizeof( dummy_header ), m_File );
-  }
-  return m_File != NULL;
-}
-
-void ChunkWriteFile::Write( const char* data, uint32_t size )
-{
-  fwrite( data, 1, size, m_File );
-}
-
-void ChunkWriteFile::Close()
-{
-  size_t size = ftell( m_File );
-  m_Header.m_Size = ( uint32_t )size;
-  fseek( m_File, 0, SEEK_SET );
-  fwrite( &m_Header, 1, sizeof( m_Header ), m_File );
-}
-
-
-static const char* s_TestFileName = "RonsTestFile.chunk";
 
 const char* UnitTestChunk::RunTest() const
 {
-  ChunkWriteFile wf;
-  if( wf.Open( s_TestFileName ) )
-  {
-    wf.SetName( Fnv32( "Header" ) );
-    wf.Write( "ABCDEFGH", 8 );
-    wf.Close();
-  }
-  else
-    return "Could not open file";
+  const char* sweet = "sweet data";
+  const char* salt = "salt data";
+  const char* bitter = "bitter data";
+  const char* sour = "sour data";
+  const char* umami = "umami data";
+
+  uint32_t sweet_size   = ( uint32_t )strlen( sweet   ) + 1;
+  uint32_t salt_size    = ( uint32_t )strlen( salt    ) + 1;
+  uint32_t bitter_size  = ( uint32_t )strlen( bitter  ) + 1;
+  uint32_t sour_size    = ( uint32_t )strlen( sour    ) + 1;
+  uint32_t umami_size   = ( uint32_t )strlen( umami   ) + 1;
+
+  Chunk chunk( "top" );
+  chunk.AddLeafChunk( "sweet", sweet, sweet_size );
+  chunk.AddLeafChunk( "salty", salt, salt_size );
+
+  Chunk* child = chunk.AddChunk( "child" );
+  child->AddLeafChunk( "sour", sour, sour_size );
+  child->AddLeafChunk( "bitter", bitter, bitter_size );
+  child->AddLeafChunk( "umami", umami, umami_size );
+
+  const Chunk* c = &chunk;
+  if( c->GetChildCount() != 3 )           return "Top chunk wrong child count";
+  if( c->GetDataSize() != 0 )             return "Top chunk wrong data size";
+  c = c->GetChild();
+  if( c->GetChildCount() != 0 )           return "First child wrong child count";
+  if( c->GetDataSize() != sweet_size )    return "First child wrong data size";
+  if( 0 != strcmp( ( const char* )c->GetData(), sweet ) )  return "First child wrong data";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Second child wrong child count";
+  if( c->GetDataSize() != salt_size )   return "Second child wrong data size";
+  if( 0 != strcmp( ( const char* )c->GetData(), salt ) )  return "Second child wrong data";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 3 )         return "Third child wrong child count";
+  if( c->GetDataSize() != 0 )           return "Third child wrong data size";
+  const Chunk* temp = c->GetSibling();
+  if( temp != NULL )                    return "Child list not properly terminated";
+
+  c = c->GetChild();
+  if( c->GetChildCount() != 0 )         return "First grand child wrong child count";
+  if( c->GetDataSize() != sour_size )   return "First grand child wrong data size";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Second grand child wrong child count";
+  if( c->GetDataSize() != bitter_size ) return "Second grand child wrong data size";
+  c = c->GetSibling();
+  if( c->GetChildCount() != 0 )         return "Third grand child wrong child count";
+  if( c->GetDataSize() != umami_size )  return "Third grand child wrong data size";
+  temp = c->GetSibling();
+  if( temp != NULL )                    return "Grand child list not properly terminated";
 
   return NULL;
 }

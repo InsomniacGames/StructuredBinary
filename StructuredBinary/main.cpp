@@ -45,8 +45,11 @@ int main (int argc, const char * argv[])
       fail_count += 1;
     }
   }
-  
-  printf( "%d test%s failed\n", fail_count, fail_count != 1 ? "s" : "" );
+
+  if( fail_count == 0 )
+    printf( "All tests successful\n" );
+  else
+    printf( "%d test%s failed\n", fail_count, fail_count != 1 ? "s" : "" );
   return fail_count;
 
 }
