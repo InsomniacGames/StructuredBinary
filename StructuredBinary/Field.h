@@ -17,6 +17,8 @@
 #include "Number.h"
 #include "Fnv.h"
 
+// This was made at work
+
 class Field;
 
 struct WriteCursor
