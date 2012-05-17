@@ -19,9 +19,9 @@ Chunk::~Chunk()
   }
 }
 
-Chunk* Chunk::AddChunk( const char* name )
+Chunk* Chunk::AddChunk( uint32_t id )
 {
-  Chunk* chunk = new Chunk( name );
+  Chunk* chunk = new Chunk( id );
   if( !m_Child )
   {
     m_Child = chunk;
@@ -39,9 +39,9 @@ Chunk* Chunk::AddChunk( const char* name )
   return chunk;
 }
 
-void Chunk::AddLeafChunk( const char* name, const void* data, uint32_t data_size )
+void Chunk::AddLeafChunk( uint32_t id, const void* data, uint32_t data_size )
 {
-  Chunk* chunk = new Chunk( name, data, data_size );
+  Chunk* chunk = new Chunk( id, data, data_size );
   if( !m_Child )
   {
     m_Child = chunk;

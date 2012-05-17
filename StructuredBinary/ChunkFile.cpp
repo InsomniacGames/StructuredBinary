@@ -13,9 +13,9 @@
 
 static const int s_HeaderSize = 8;
 
-uint32_t GetCompleteSize( const Chunk* chunk )
+static uint32_t GetDataSize( const Chunk* chunk )
 {  
-  uint32_t size = 8;
+  uint32_t size = 0;
 
   const void* data = chunk->GetData();
   if( data )
@@ -27,26 +27,32 @@ uint32_t GetCompleteSize( const Chunk* chunk )
     const Chunk* child = chunk->GetChild();
     while( child )
     {
-      size += GetCompleteSize( child );
+      size += GetDataSize( child );
+      size += 8;              // Add size of header
+      size += ( -size & 3 );  // Round up to nearest 4 bytes
       child = child->GetSibling();
     }
   }
   return size;
 }
 
-void ChunkWrite( FILE* file, const Chunk* chunk )
+static void ChunkWrite( FILE* file, const Chunk* chunk )
 {
-  uint32_t name = Fnv32( chunk->GetName() );
-  uint32_t size = GetCompleteSize( chunk );
+  uint32_t id = chunk->GetId();
+  uint32_t data_size = GetDataSize( chunk );
+  uint32_t pad = 0xcccccccc;
   
-  fwrite( &name, 1, sizeof( name ), file );
-  fwrite( &size, 1, sizeof( size ), file );
+  fwrite( &id, 1, sizeof( id ), file );
+  fwrite( &data_size, 1, sizeof( data_size ), file );
 
   const void* data = chunk->GetData();
   if( data )
   {
     uint32_t data_size = chunk->GetDataSize();
     fwrite( data, 1, data_size, file );
+    
+    int pad_size = ( -data_size & 3 );
+    fwrite( &pad, 1, pad_size, file );
   }
   else
   {

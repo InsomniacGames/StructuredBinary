@@ -42,7 +42,6 @@
 		BE147C6615649C3200C8A199 /* UnitTestChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestChunk.h; sourceTree = "<group>"; };
 		BE147C6815649DCA00C8A199 /* UnitTestScalarRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestScalarRead.cpp; sourceTree = "<group>"; };
 		BE147C6915649DCA00C8A199 /* UnitTestScalarRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestScalarRead.h; sourceTree = "<group>"; };
-		BE147C6D1564AC5900C8A199 /* RonsTestFile.chunk */ = {isa = PBXFileReference; lastKnownFileType = file; name = RonsTestFile.chunk; path = "../../Library/Developer/Xcode/DerivedData/StructuredBinary-ghcadxkxupnvjyhgrtbiflnmvybi/Build/Products/Debug/RonsTestFile.chunk"; sourceTree = "<group>"; };
 		BE147C6E1564BA7C00C8A199 /* Chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chunk.h; sourceTree = "<group>"; };
 		BE147C6F1564BA8B00C8A199 /* Chunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chunk.cpp; sourceTree = "<group>"; };
 		BE147C711564BCAA00C8A199 /* ChunkFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkFile.h; sourceTree = "<group>"; };
@@ -98,18 +97,9 @@
 			name = UnitTest;
 			sourceTree = "<group>";
 		};
-		BE147C6C1564AC3E00C8A199 /* Test Files */ = {
-			isa = PBXGroup;
-			children = (
-				BE147C6D1564AC5900C8A199 /* RonsTestFile.chunk */,
-			);
-			name = "Test Files";
-			sourceTree = "<group>";
-		};
 		BE57CC2C15605DEC00FFCB91 = {
 			isa = PBXGroup;
 			children = (
-				BE147C6C1564AC3E00C8A199 /* Test Files */,
 				BE57CC3A15605DEC00FFCB91 /* StructuredBinary */,
 				BE57CC3815605DEC00FFCB91 /* Products */,
 			);

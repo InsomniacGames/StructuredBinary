@@ -13,11 +13,13 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#define CHUNK_ID( a, b, c, d ) ((((uint32_t)a)<<0)|(((uint32_t)b)<<8)|(((uint32_t)c)<<16)|(((uint32_t)d)<<24))
+
 class Chunk
 {
 public:
-  Chunk( const char* name )
-  : m_Name( name )
+  Chunk( uint32_t id )
+  : m_Id( id )
   , m_DataSize( 0 )
   , m_Data( NULL )
   , m_Sibling( NULL )
@@ -29,17 +31,17 @@ public:
   
   const void* GetData() const { return m_Data; }
   const uint32_t GetDataSize() const { return m_DataSize; }
-  const char* GetName() const { return m_Name; }
+  const uint32_t GetId() const { return m_Id; }
   const Chunk* GetChild() const { return m_Child; }
   const Chunk* GetSibling() const { return m_Sibling; }
   int GetChildCount() const { return m_ChildCount; }
   
-  Chunk* AddChunk( const char* name );
-  void AddLeafChunk( const char* name, const void* data, uint32_t data_size );
+  Chunk* AddChunk( uint32_t id );
+  void AddLeafChunk( uint32_t id, const void* data, uint32_t data_size );
   
 private:
-  Chunk( const char* name, const void* data, uint32_t data_size )
-  : m_Name( name )
+  Chunk( uint32_t id, const void* data, uint32_t data_size )
+  : m_Id( id )
   , m_DataSize( data_size )
   , m_Data( data )
   , m_Sibling( NULL )
@@ -47,7 +49,7 @@ private:
   , m_ChildCount( 0 )
   {}
   
-  const char* m_Name;
+  uint32_t    m_Id;
   uint32_t    m_DataSize;
   const void* m_Data;
   Chunk*      m_Sibling;
