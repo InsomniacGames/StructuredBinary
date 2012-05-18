@@ -19,15 +19,15 @@ Chunk::~Chunk()
   }
 }
 
-Chunk* Chunk::AddChunk( uint32_t id )
+Chunk* Chunk::AddChild( Chunk* chunk )
 {
-  Chunk* chunk = new Chunk( id );
   if( !m_Child )
   {
     m_Child = chunk;
   }
   else
   {
+    // Append after last child
     Chunk* child = m_Child;
     while( child->m_Sibling )
     {
@@ -37,23 +37,4 @@ Chunk* Chunk::AddChunk( uint32_t id )
   }
   m_ChildCount += 1;
   return chunk;
-}
-
-void Chunk::AddLeafChunk( uint32_t id, const void* data, uint32_t data_size )
-{
-  Chunk* chunk = new Chunk( id, data, data_size );
-  if( !m_Child )
-  {
-    m_Child = chunk;
-  }
-  else
-  {
-    Chunk* child = m_Child;
-    while( child->m_Sibling )
-    {
-      child = child->m_Sibling;
-    }
-    child->m_Sibling = chunk;
-  }
-  m_ChildCount += 1;
 }

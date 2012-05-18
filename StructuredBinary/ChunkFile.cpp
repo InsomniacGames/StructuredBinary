@@ -77,37 +77,38 @@ int ChunkWrite( const char* file_name, const Chunk* chunk )
   return size;
 }
 
-static int GrabChunk( Chunk* parent_chunk, const char* data_start, const char* data_end )
+static Chunk* GrabChunk( const char** read_ptr, const char* data_end )
 {
-  int grabbed = 0;
-  uint32_t chunk_id = *( const uint32_t* )data_start;
-  uint32_t chunk_size = *( const uint32_t* )( data_start + 4 );
+  Chunk* chunk = NULL;
 
-  char first_char = data_start[ 0 ];
+  char first_char = **read_ptr;
+
+  uint32_t chunk_id = *( const uint32_t* )*read_ptr;
+  *read_ptr += 4;
+  uint32_t chunk_size = *( const uint32_t* )*read_ptr;
+  *read_ptr += 4;
+
   if( isupper( first_char ) )
   {
     // This is a container chunk
-    Chunk* chunk = parent_chunk->AddChunk( chunk_id );
-    const char* chunk_start = data_start + 8;
-    const char* chunk_end = chunk_start + chunk_size;
+    chunk = new Chunk( chunk_id );
+    const char* chunk_end = *read_ptr + chunk_size;
     
-    while( chunk_start < chunk_end )
+    while( *read_ptr < chunk_end )
     {
-      int gr = GrabChunk( chunk, chunk_start, chunk_end );
-      // ASSERT if gr == 0
-      chunk_start += gr;
-      chunk_start += ( -( intptr_t )chunk_start ) & 3;
+      Chunk* child = GrabChunk( read_ptr, chunk_end );
+      chunk->AddChild( child );
+      *read_ptr += ( -( intptr_t )*read_ptr ) & 3;
     }
-    grabbed = ( int )( chunk_start - data_start );
   }
   else
   {
     // This is a leaf chunk
-    parent_chunk->AddLeafChunk( chunk_id, data_start + 8, chunk_size ); // 8 = skip header 
-    grabbed = 8 + chunk_size; // 8 = size of header
+    chunk = new Chunk( chunk_id, *read_ptr, chunk_size );
+    *read_ptr += chunk_size;
   }
 
-  return grabbed;
+  return chunk;
 }
 
 const Chunk* ChunkRead( const char* file_name, char* buffer, int buffer_size )
@@ -122,8 +123,8 @@ const Chunk* ChunkRead( const char* file_name, char* buffer, int buffer_size )
     if( file_size <= buffer_size )
     {
       fread( buffer, 1, file_size, file );
-      chunk = new Chunk( 0 );
-      GrabChunk( chunk, buffer, buffer + file_size );
+      const char* read = buffer;
+      chunk = GrabChunk( &read, buffer + file_size );
     }
     fclose( file );
   }

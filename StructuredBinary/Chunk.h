@@ -27,19 +27,6 @@ public:
   , m_ChildCount( 0 )
   {}
   
-  ~Chunk();
-  
-  const void* GetData() const { return m_Data; }
-  const uint32_t GetDataSize() const { return m_DataSize; }
-  const uint32_t GetId() const { return m_Id; }
-  const Chunk* GetChild() const { return m_Child; }
-  const Chunk* GetSibling() const { return m_Sibling; }
-  int GetChildCount() const { return m_ChildCount; }
-  
-  Chunk* AddChunk( uint32_t id );
-  void AddLeafChunk( uint32_t id, const void* data, uint32_t data_size );
-  
-private:
   Chunk( uint32_t id, const void* data, uint32_t data_size )
   : m_Id( id )
   , m_DataSize( data_size )
@@ -48,6 +35,19 @@ private:
   , m_Child( NULL )
   , m_ChildCount( 0 )
   {}
+
+  ~Chunk();
+  
+  const void* GetData() const { return m_Data; }
+  const uint32_t GetDataSize() const { return m_DataSize; }
+  const uint32_t GetId() const { return m_Id; }
+  const Chunk* GetChild() const { return m_Child; }
+  const Chunk* GetSibling() const { return m_Sibling; }
+  int GetChildCount() const { return m_ChildCount; }
+
+  Chunk* AddChild( Chunk* chunk );
+  
+private:
   
   uint32_t    m_Id;
   uint32_t    m_DataSize;

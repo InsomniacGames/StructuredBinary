@@ -52,22 +52,23 @@ const char* UnitTestChunkFile::RunTest() const
   uint32_t sour_size    = ( uint32_t )strlen( sour_data   ) + 1;
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
-  Chunk chunk( top_id );
-  chunk.AddLeafChunk( sweet_id, sweet_data, sweet_size );
-  chunk.AddLeafChunk( salt_id, salt_data, salt_size );
+  Chunk* root = new Chunk( top_id );
+  root->AddChild( new Chunk( sweet_id, sweet_data, sweet_size ) );
+  root->AddChild( new Chunk( salt_id, salt_data, salt_size ) );
   
-  Chunk* child = chunk.AddChunk( child_id );
-  child->AddLeafChunk( sour_id, sour_data, sour_size );
-  child->AddLeafChunk( bitter_id, bitter_data, bitter_size );
-  child->AddLeafChunk( umami_id, umami_data, umami_size );
+  Chunk* child = root->AddChild( new Chunk( child_id ) );
+  child->AddChild( new Chunk( sour_id, sour_data, sour_size ) );
+  child->AddChild( new Chunk( bitter_id, bitter_data, bitter_size ) );
+  child->AddChild( new Chunk( umami_id, umami_data, umami_size ) );
 
-  int file_size = ChunkWrite( s_FileName, &chunk );
+  int file_size = ChunkWrite( s_FileName, root );
   if( file_size == 0 ) return "Could not write file";
+  
+  delete root;
 
   const Chunk* c = ChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
   
   if( !c ) return "Failed to read file";
-  c = c->GetChild();      // FIX ME - why do I need this outer chunk hack?
 
   if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
   if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
