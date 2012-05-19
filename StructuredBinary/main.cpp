@@ -18,10 +18,12 @@
 #include "UnitTestScalarRead.h"
 #include "UnitTestChunk.h"
 #include "UnitTestChunkFile.h"
+#include "UnitTestAlign.h"
 
 const UnitTest* AllTests[] =
 {
   new UnitTestScalarRead(),
+  new UnitTestAlign(),
   new UnitTestNumberConvert(),
   new UnitTestScalarConvert(),
   new UnitTestSubStructConvert(),

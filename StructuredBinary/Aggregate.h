@@ -82,6 +82,7 @@ public:
   virtual void FixSizeAndStride();
   virtual int GetElementSize() const { return m_ElementSize; }
   virtual int GetElementStride() const { return m_ElementStride; }
+  virtual int GetElementAlign() const { return m_ElementAlign; }
 
 private:
 
@@ -105,6 +106,7 @@ private:
 
   int     m_ElementSize;
   int     m_ElementStride;
+  int     m_ElementAlign;
   int     m_EntryCount;
   int     m_EntryIndex;
   Entry*  m_Entry;

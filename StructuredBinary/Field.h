@@ -70,6 +70,7 @@ public:
   virtual void FixSizeAndStride() {}
   virtual int GetElementSize() const = 0;
   virtual int GetElementStride() const { return GetElementSize(); }
+  virtual int GetElementAlign() const = 0;
 
 private:
 };
@@ -86,6 +87,7 @@ public:
     *( double* )data = ( double )number.AsFloat();
   }
   virtual int GetElementSize() const { return 8; }
+  virtual int GetElementAlign() const { return ( int )__alignof( double ); };
 };
 
 class FieldFloat32 : public Field
@@ -100,6 +102,7 @@ public:
     *( float* )data = ( float )number.AsFloat();
   }
   virtual int GetElementSize() const { return 4; }
+  virtual int GetElementAlign() const { return ( int )__alignof( float ); };
 };
 
 class FieldInt64 : public Field
@@ -114,6 +117,7 @@ public:
     *( int64_t* )data = ( int64_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 8; }
+  virtual int GetElementAlign() const { return ( int )__alignof( int64_t ); };
 };
 
 class FieldUInt64 : public Field
@@ -128,6 +132,7 @@ public:
     *( uint64_t* )data = ( uint64_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 8; }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint64_t ); };
 };
 
 class FieldInt32 : public Field
@@ -142,6 +147,7 @@ public:
     *( int32_t* )data = ( int32_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 4; }
+  virtual int GetElementAlign() const { return ( int )__alignof( int32_t ); };
 };
 
 class FieldUInt32 : public Field
@@ -156,6 +162,7 @@ public:
     *( uint32_t* )data = ( uint32_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 4; }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint32_t ); };
 };
 
 class FieldInt16 : public Field
@@ -170,6 +177,7 @@ public:
     *( int16_t* )data = ( int16_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 2; }
+  virtual int GetElementAlign() const { return ( int )__alignof( int16_t ); };
 };
 
 class FieldUInt16 : public Field
@@ -184,6 +192,7 @@ public:
     *( uint16_t* )data = ( uint16_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 2; }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint16_t ); };
 };
 
 class FieldInt8 : public Field
@@ -198,6 +207,7 @@ public:
     *( int8_t* )data = ( int8_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 1; }
+  virtual int GetElementAlign() const { return ( int )__alignof( int8_t ); };
 };
 
 class FieldUInt8 : public Field
@@ -212,6 +222,7 @@ public:
     *( uint8_t* )data = ( uint8_t )number.AsInt();
   }
   virtual int GetElementSize() const { return 1; }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint8_t ); };
 };
 
 #endif

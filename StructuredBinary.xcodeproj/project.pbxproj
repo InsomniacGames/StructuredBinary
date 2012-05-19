@@ -13,6 +13,7 @@
 		BE147C701564BA8B00C8A199 /* Chunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE147C6F1564BA8B00C8A199 /* Chunk.cpp */; };
 		BE147C731564BCBD00C8A199 /* ChunkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE147C721564BCBD00C8A199 /* ChunkFile.cpp */; };
 		BE147C751564C0CF00C8A199 /* UnitTestChunkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE147C741564C0CF00C8A199 /* UnitTestChunkFile.cpp */; };
+		BE147C7915682ADE00C8A199 /* UnitTestAlign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
 		BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* UnitTest.cpp */; };
 		BE57CC511560717400FFCB91 /* Number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* Number.cpp */; };
@@ -48,6 +49,8 @@
 		BE147C721564BCBD00C8A199 /* ChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkFile.cpp; sourceTree = "<group>"; };
 		BE147C741564C0CF00C8A199 /* UnitTestChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestChunkFile.cpp; sourceTree = "<group>"; };
 		BE147C761564C0DA00C8A199 /* UnitTestChunkFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestChunkFile.h; sourceTree = "<group>"; };
+		BE147C7715682AD400C8A199 /* UnitTestAlign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestAlign.h; sourceTree = "<group>"; };
+		BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestAlign.cpp; sourceTree = "<group>"; };
 		BE57CC3715605DEC00FFCB91 /* StructuredBinary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StructuredBinary; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE57CC3B15605DEC00FFCB91 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BE57CC4415605E7900FFCB91 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
@@ -83,12 +86,14 @@
 			children = (
 				BE57CC5B1560AF5500FFCB91 /* UnitTestNumberConvert.h */,
 				BE57CC601560B7A000FFCB91 /* UnitTestScalarConvert.h */,
+				BE147C7715682AD400C8A199 /* UnitTestAlign.h */,
 				BE147C5A156299B100C8A199 /* UnitTestSubStructConvert.h */,
 				BE147C6915649DCA00C8A199 /* UnitTestScalarRead.h */,
 				BE147C6615649C3200C8A199 /* UnitTestChunk.h */,
 				BE147C761564C0DA00C8A199 /* UnitTestChunkFile.h */,
 				BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */,
 				BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */,
+				BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */,
 				BE147C5B156299CD00C8A199 /* UnitTestSubStructConvert.cpp */,
 				BE147C6815649DCA00C8A199 /* UnitTestScalarRead.cpp */,
 				BE147C6515649C3200C8A199 /* UnitTestChunk.cpp */,
@@ -201,6 +206,7 @@
 				BE147C701564BA8B00C8A199 /* Chunk.cpp in Sources */,
 				BE147C731564BCBD00C8A199 /* ChunkFile.cpp in Sources */,
 				BE147C751564C0CF00C8A199 /* UnitTestChunkFile.cpp in Sources */,
+				BE147C7915682ADE00C8A199 /* UnitTestAlign.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

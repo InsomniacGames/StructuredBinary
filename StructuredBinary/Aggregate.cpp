@@ -39,12 +39,20 @@ void Aggregate::Convert( char* dst_data, const ReadCursor& rc ) const
 void Aggregate::FixSizeAndStride()
 {
   int offset = 0;
+  int max_align = 1;
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    m_Entry[ i ].m_Offset = offset;
     int field_stride = m_Entry[ i ].m_Field->GetElementStride();
+    int field_align = m_Entry[ i ].m_Field->GetElementAlign();
+    if( max_align < field_align )
+    {
+      max_align = field_align;
+    }
+    offset += ( -offset ) & ( field_align - 1 );
+    m_Entry[ i ].m_Offset = offset;
     offset += field_stride;
   }
   m_ElementSize = offset;
   m_ElementStride = offset;
+  m_ElementAlign = max_align;
 }
