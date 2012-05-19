@@ -23,24 +23,24 @@ class Field;
 
 struct WriteCursor
 {
-  WriteCursor( char* data, const char* name, const Field* field )
+  WriteCursor( char* data, uint32_t name, const Field* field )
   : m_Name( name )
   , m_Data( data )
   , m_Field( field )
   {}
-  const char*   m_Name; // Remove me
+  uint32_t      m_Name; // Remove me
   char*         m_Data;
   const Field*  m_Field;
 };
 
 struct ReadCursor
 {
-  ReadCursor( const char* data, const char* name, const Field* field )
+  ReadCursor( const char* data, uint32_t name, const Field* field )
   : m_Name( name )
   , m_Data( data )
   , m_Field( field )
   {}
-  const char*   m_Name; // Remove me
+  uint32_t      m_Name; // Remove me
   const char*   m_Data;
   const Field*  m_Field;
 };
@@ -57,14 +57,14 @@ public:
     WriteNumber( dst_data, n );
   }
 
-  virtual ReadCursor Find( const char* data, const char* name ) const
+  virtual ReadCursor Find( const char* data, uint32_t name ) const
   {
-    return ReadCursor( NULL, "null", NULL );
+    return ReadCursor( NULL, 0, NULL );
   }
 
-  virtual WriteCursor Find( char* data, const char* name ) const
+  virtual WriteCursor Find( char* data, uint32_t name ) const
   {
-    return WriteCursor( NULL, "null", NULL );
+    return WriteCursor( NULL, 0, NULL );
   }
 
 private:

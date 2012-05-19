@@ -32,22 +32,22 @@ public:
     delete[] m_Entry;
   }
 
-  void SetFloat64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Float64 ); }
-  void SetFloat32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Float32 ); }
-  void SetInt64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int64 ); }
-  void SetUInt64( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt64 ); }
-  void SetInt32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int32 ); }
-  void SetUInt32( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt32 ); }
-  void SetInt16( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int16 ); }
-  void SetUInt16( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt16 ); }
-  void SetInt8( int index, int offset, const char* name )  { SetField( index, offset, name, &s_Int8 ); }
-  void SetUInt8( int index, int offset, const char* name )  { SetField( index, offset, name, &s_UInt8 ); }
+  void SetFloat64 ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Float64 ); }
+  void SetFloat32 ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Float32 ); }
+  void SetInt64   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int64   ); }
+  void SetUInt64  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt64  ); }
+  void SetInt32   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int32   ); }
+  void SetUInt32  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt32  ); }
+  void SetInt16   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int16   ); }
+  void SetUInt16  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt16  ); }
+  void SetInt8    ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int8    ); }
+  void SetUInt8   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt8   ); }
   
-  void SetSubStruct( int index, int offset, const char* name, const Aggregate* agg );
+  void SetSubStruct( int index, int offset, uint32_t name, const Aggregate* agg );
   
   int GetFieldCount() const { return m_EntryCount; }
 
-  Number Read( const char* data, const char* name ) const
+  Number Read( const char* data, uint32_t name ) const
   {
     ReadCursor rc = Find( data, name );
     if( rc.m_Data )
@@ -57,31 +57,31 @@ public:
     return Number::Null();
   }
 
-  virtual ReadCursor Find( const char* data, const char* name ) const
+  virtual ReadCursor Find( const char* data, uint32_t name ) const
   {
     for( int i = 0; i < m_EntryCount; ++i )
     {
-      if( 0 == strcmp( m_Entry[ i ].m_Name, name ) )
+      if( m_Entry[ i ].m_Name == name )
         return ReadCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
     }
-    return ReadCursor( NULL, "null", NULL );
+    return ReadCursor( NULL, 0, NULL );
   }
   
-  virtual WriteCursor Find( char* data, const char* name ) const
+  virtual WriteCursor Find( char* data, uint32_t name ) const
   {
     for( int i = 0; i < m_EntryCount; ++i )
     {
-      if( 0 == strcmp( m_Entry[ i ].m_Name, name ) )
+      if( m_Entry[ i ].m_Name == name )
         return WriteCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
     }
-    return WriteCursor( NULL, "null", NULL );
+    return WriteCursor( NULL, 0, NULL );
   }
   
   virtual void Convert( char* dst_data, const ReadCursor& rc ) const;
 
 private:
 
-  void SetField( int index, int offset, const char* name, const Field* field )
+  void SetField( int index, int offset, uint32_t name, const Field* field )
   {
     m_Entry[ index ].m_Offset = offset;
     m_Entry[ index ].m_Name = name;
@@ -93,7 +93,7 @@ private:
     Entry()
     : m_Name( 0 )
     {}
-    const char*   m_Name;
+    uint32_t      m_Name;
     int           m_Offset;
     const Field*  m_Field;
   };

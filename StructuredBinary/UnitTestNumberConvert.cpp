@@ -38,19 +38,22 @@ const char* UnitTestNumberConvert::RunTest() const
   if( n.AsFloat() != -1.0 )                 return "i8 -> float did not convert correctly";
   n = Number::Int( u8 );
   if( n.AsInt() != 0x00000000000000ffLL )   return "u8 did not convert correctly";
+  if( n.AsFloat() != 255.0 )                return "u8 -> float did not convert correctly";
   
   n = Number::Int( i16 );
   if( n.AsInt() != -1LL )                   return "i16 did not convert correctly";
   if( n.AsFloat() != -1.0 )                 return "i16 -> float did not convert correctly";
   n = Number::Int( u16 );
   if( n.AsInt() != 0x000000000000ffffLL )   return "u16 did not convert correctly";
+  if( n.AsFloat() != 65535.0 )              return "u16 -> float did not convert correctly";
   
   n = Number::Int( i32 );
   if( n.AsInt() != -1LL )                   return "i32 did not convert correctly";
   if( n.AsFloat() != -1.0 )                 return "i32 -> float did not convert correctly";
   n = Number::Int( u32 );
   if( n.AsInt() != 0x00000000ffffffffLL )   return "u32 did not convert correctly";
-  
+  if( n.AsFloat() != 4294967295.0 )         return "u32 -> float did not convert correctly";
+
   n = Number::Int( i64 );
   if( n.AsInt() != -1LL )                   return "i64 did not convert correctly";
   if( n.AsFloat() != -1.0 )                 return "i64 -> float did not convert correctly";

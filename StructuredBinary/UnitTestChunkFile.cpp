@@ -41,7 +41,7 @@ const char* UnitTestChunkFile::RunTest() const
   const uint32_t umami_id  = CHUNK_ID( 'u', 'm', 'a', 'm' );
 
   const char* sweet_data  = "Sugar&Honey";
-  const char* salt_data   = "Chips&Jerky";
+  const char* salt_data   = "Chips&Pretzels";
   const char* bitter_data = "Chocolate&Grapefruit";
   const char* sour_data   = "Lemon&Vinegar";
   const char* umami_data  = "Asparagus&Cheese";

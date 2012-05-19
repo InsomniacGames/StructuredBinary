@@ -53,28 +53,28 @@ struct ScalarConvertDestStruct
 const char* UnitTestScalarConvert::RunTest() const
 {
   Aggregate src_agg( 10 );
-  src_agg.SetFloat64( 0,  0, "f64" );
-  src_agg.SetInt64  ( 1,  8, "i64" );
-  src_agg.SetUInt64 ( 2, 16, "u64" );
-  src_agg.SetFloat32( 3, 24, "f32" );
-  src_agg.SetInt32  ( 4, 28, "i32" );
-  src_agg.SetUInt32 ( 5, 32, "u32" );
-  src_agg.SetInt16  ( 6, 36, "i16" );
-  src_agg.SetUInt16 ( 7, 38, "u16" );
-  src_agg.SetInt8   ( 8, 40, "i8"  );
-  src_agg.SetUInt8  ( 9, 41, "u8"  );
+  src_agg.SetFloat64( 0,  0, Fnv32( "f64" ) );
+  src_agg.SetInt64  ( 1,  8, Fnv32( "i64" ) );
+  src_agg.SetUInt64 ( 2, 16, Fnv32( "u64" ) );
+  src_agg.SetFloat32( 3, 24, Fnv32( "f32" ) );
+  src_agg.SetInt32  ( 4, 28, Fnv32( "i32" ) );
+  src_agg.SetUInt32 ( 5, 32, Fnv32( "u32" ) );
+  src_agg.SetInt16  ( 6, 36, Fnv32( "i16" ) );
+  src_agg.SetUInt16 ( 7, 38, Fnv32( "u16" ) );
+  src_agg.SetInt8   ( 8, 40, Fnv32( "i8"  ) );
+  src_agg.SetUInt8  ( 9, 41, Fnv32( "u8"  ) );
   
   Aggregate dest_agg( 10 );
-  dest_agg.SetUInt64 ( 0,  0, "u64" );
-  dest_agg.SetInt64  ( 1,  8, "i64" );
-  dest_agg.SetFloat64( 2, 16, "f64" );
-  dest_agg.SetUInt32 ( 3, 24, "u32" );
-  dest_agg.SetInt32  ( 4, 28, "i32" );
-  dest_agg.SetFloat32( 5, 32, "f32" );
-  dest_agg.SetUInt8  ( 6, 36, "u8"  );
-  dest_agg.SetInt8   ( 7, 37, "i8"  );
-  dest_agg.SetUInt16 ( 8, 38, "u16" );
-  dest_agg.SetInt16  ( 9, 40, "i16" );
+  dest_agg.SetUInt64 ( 0,  0, Fnv32( "u64" ) );
+  dest_agg.SetInt64  ( 1,  8, Fnv32( "i64" ) );
+  dest_agg.SetFloat64( 2, 16, Fnv32( "f64" ) );
+  dest_agg.SetUInt32 ( 3, 24, Fnv32( "u32" ) );
+  dest_agg.SetInt32  ( 4, 28, Fnv32( "i32" ) );
+  dest_agg.SetFloat32( 5, 32, Fnv32( "f32" ) );
+  dest_agg.SetUInt8  ( 6, 36, Fnv32( "u8"  ) );
+  dest_agg.SetInt8   ( 7, 37, Fnv32( "i8"  ) );
+  dest_agg.SetUInt16 ( 8, 38, Fnv32( "u16" ) );
+  dest_agg.SetInt16  ( 9, 40, Fnv32( "i16" ) );
   
   ScalarConvertSourceStruct src;
   src.f64 = 3.14159265358979;
@@ -93,7 +93,7 @@ const char* UnitTestScalarConvert::RunTest() const
   const char* src_data = ( const char* )&src;
   char* dest_data = ( char* )&dest;
   
-  dest_agg.Convert( dest_data, ReadCursor( src_data, "", &src_agg )  );
+  dest_agg.Convert( dest_data, ReadCursor( src_data, 0, &src_agg )  );
 
   if( dest.f64 != src.f64 )  return "f64 converted incorrectly";
   if( dest.f32 != src.f32 )  return "f32 converted incorrectly";

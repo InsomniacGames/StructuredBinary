@@ -57,28 +57,28 @@ struct DestStruct
 const char* UnitTestSubStructConvert::RunTest() const
 {
   Aggregate src_sub1( 2 );
-  src_sub1.SetFloat32 ( 0,  0, "var1" );
-  src_sub1.SetFloat32 ( 1,  4, "var2" );
+  src_sub1.SetFloat32 ( 0,  0, Fnv32( "var1" ) );
+  src_sub1.SetFloat32 ( 1,  4, Fnv32( "var2" ) );
   Aggregate src_sub2( 2 );
-  src_sub2.SetFloat32 ( 0,  0, "var1" );
-  src_sub2.SetFloat32 ( 1,  4, "var2" );
+  src_sub2.SetFloat32 ( 0,  0, Fnv32( "var1" ) );
+  src_sub2.SetFloat32 ( 1,  4, Fnv32( "var2" ) );
   Aggregate src_agg( 4 );
-  src_agg.SetFloat32  ( 0,  0, "var1" );
-  src_agg.SetFloat32  ( 1,  4, "var2" );
-  src_agg.SetSubStruct( 2,  8, "sub1", &src_sub1 );
-  src_agg.SetSubStruct( 3, 16, "sub2", &src_sub2 );
+  src_agg.SetFloat32  ( 0,  0, Fnv32( "var1" ) );
+  src_agg.SetFloat32  ( 1,  4, Fnv32( "var2" ) );
+  src_agg.SetSubStruct( 2,  8, Fnv32( "sub1" ), &src_sub1 );
+  src_agg.SetSubStruct( 3, 16, Fnv32( "sub2" ), &src_sub2 );
   
   Aggregate dst_sub1( 2 );
-  dst_sub1.SetFloat32 ( 0,  0, "var2" );
-  dst_sub1.SetFloat32 ( 1,  4, "var1" );
+  dst_sub1.SetFloat32 ( 0,  0, Fnv32( "var2" ) );
+  dst_sub1.SetFloat32 ( 1,  4, Fnv32( "var1" ) );
   Aggregate dst_sub2( 2 );
-  dst_sub2.SetFloat32 ( 0,  0, "var1" );
-  dst_sub2.SetFloat32 ( 1,  4, "var2" );
+  dst_sub2.SetFloat32 ( 0,  0, Fnv32( "var1" ) );
+  dst_sub2.SetFloat32 ( 1,  4, Fnv32( "var2" ) );
   Aggregate dst_agg( 4 );
-  dst_agg.SetFloat32  ( 0,  0, "var2" );
-  dst_agg.SetSubStruct( 1,  4, "sub1", &dst_sub1 );
-  dst_agg.SetSubStruct( 2, 12, "sub2", &dst_sub2 );
-  dst_agg.SetFloat32  ( 3, 20, "var1" );
+  dst_agg.SetFloat32  ( 0,  0, Fnv32( "var2" ) );
+  dst_agg.SetSubStruct( 1,  4, Fnv32( "sub1" ), &dst_sub1 );
+  dst_agg.SetSubStruct( 2, 12, Fnv32( "sub2" ), &dst_sub2 );
+  dst_agg.SetFloat32  ( 3, 20, Fnv32( "var1" ) );
   
   SourceStruct src;
   src.var1      = 1.0f;
@@ -93,7 +93,7 @@ const char* UnitTestSubStructConvert::RunTest() const
   const char* src_data = ( const char* )&src;
   char* dst_data = ( char* )&dst;
   
-  dst_agg.Convert( dst_data, ReadCursor( src_data, "", &src_agg ) );
+  dst_agg.Convert( dst_data, ReadCursor( src_data, 0, &src_agg ) );
 
   if( dst.var1      != src.var1 )       return "var1 is wrong";
   if( dst.var2      != src.var2 )       return "var2 is wrong";
