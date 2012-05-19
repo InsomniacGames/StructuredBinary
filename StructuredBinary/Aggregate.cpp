@@ -36,7 +36,15 @@ void Aggregate::Convert( char* dst_data, const ReadCursor& rc ) const
   }
 }
 
-void Aggregate::SetSubStruct( int index, int offset, uint32_t name, const Aggregate* agg )
+void Aggregate::FixSizeAndStride()
 {
-  SetField( index, offset, name, agg );
+  int offset = 0;
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    m_Entry[ i ].m_Offset = offset;
+    int field_stride = m_Entry[ i ].m_Field->GetElementStride();
+    offset += field_stride;
+  }
+  m_ElementSize = offset;
+  m_ElementStride = offset;
 }

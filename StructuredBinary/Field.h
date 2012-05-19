@@ -67,6 +67,10 @@ public:
     return WriteCursor( NULL, 0, NULL );
   }
 
+  virtual void FixSizeAndStride() {}
+  virtual int GetElementSize() const = 0;
+  virtual int GetElementStride() const { return GetElementSize(); }
+
 private:
 };
 
@@ -81,6 +85,7 @@ public:
   {
     *( double* )data = ( double )number.AsFloat();
   }
+  virtual int GetElementSize() const { return 8; }
 };
 
 class FieldFloat32 : public Field
@@ -94,6 +99,7 @@ public:
   {
     *( float* )data = ( float )number.AsFloat();
   }
+  virtual int GetElementSize() const { return 4; }
 };
 
 class FieldInt64 : public Field
@@ -107,6 +113,7 @@ public:
   {
     *( int64_t* )data = ( int64_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 8; }
 };
 
 class FieldUInt64 : public Field
@@ -120,6 +127,7 @@ public:
   {
     *( uint64_t* )data = ( uint64_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 8; }
 };
 
 class FieldInt32 : public Field
@@ -133,6 +141,7 @@ public:
   {
     *( int32_t* )data = ( int32_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 4; }
 };
 
 class FieldUInt32 : public Field
@@ -146,6 +155,7 @@ public:
   {
     *( uint32_t* )data = ( uint32_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 4; }
 };
 
 class FieldInt16 : public Field
@@ -159,6 +169,7 @@ public:
   {
     *( int16_t* )data = ( int16_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 2; }
 };
 
 class FieldUInt16 : public Field
@@ -172,6 +183,7 @@ public:
   {
     *( uint16_t* )data = ( uint16_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 2; }
 };
 
 class FieldInt8 : public Field
@@ -185,6 +197,7 @@ public:
   {
     *( int8_t* )data = ( int8_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 1; }
 };
 
 class FieldUInt8 : public Field
@@ -198,6 +211,7 @@ public:
   {
     *( uint8_t* )data = ( uint8_t )number.AsInt();
   }
+  virtual int GetElementSize() const { return 1; }
 };
 
 #endif

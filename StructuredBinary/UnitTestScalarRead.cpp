@@ -40,17 +40,18 @@ struct ReadStruct
 const char* UnitTestScalarRead::RunTest() const
 {
   Aggregate agg( 10 );
-  agg.SetFloat64( 0,  0, Fnv32( "f64" ) );
-  agg.SetInt64  ( 1,  8, Fnv32( "i64" ) );
-  agg.SetUInt64 ( 2, 16, Fnv32( "u64" ) );
-  agg.SetFloat32( 3, 24, Fnv32( "f32" ) );
-  agg.SetInt32  ( 4, 28, Fnv32( "i32" ) );
-  agg.SetUInt32 ( 5, 32, Fnv32( "u32" ) );
-  agg.SetInt16  ( 6, 36, Fnv32( "i16" ) );
-  agg.SetUInt16 ( 7, 38, Fnv32( "u16" ) );
-  agg.SetInt8   ( 8, 40, Fnv32( "i8"  ) );
-  agg.SetUInt8  ( 9, 41, Fnv32( "u8"  ) );
-  
+  agg.AddFloat64( Fnv32( "f64" ) );
+  agg.AddInt64  ( Fnv32( "i64" ) );
+  agg.AddUInt64 ( Fnv32( "u64" ) );
+  agg.AddFloat32( Fnv32( "f32" ) );
+  agg.AddInt32  ( Fnv32( "i32" ) );
+  agg.AddUInt32 ( Fnv32( "u32" ) );
+  agg.AddInt16  ( Fnv32( "i16" ) );
+  agg.AddUInt16 ( Fnv32( "u16" ) );
+  agg.AddInt8   ( Fnv32( "i8"  ) );
+  agg.AddUInt8  ( Fnv32( "u8"  ) );
+  agg.FixSizeAndStride();
+
   ReadStruct s;
   s.f64 = 3.14159265358979;
   s.i64 = 0x69b0aee3db807b41ULL;

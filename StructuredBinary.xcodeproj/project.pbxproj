@@ -82,16 +82,16 @@
 			isa = PBXGroup;
 			children = (
 				BE57CC5B1560AF5500FFCB91 /* UnitTestNumberConvert.h */,
-				BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */,
 				BE57CC601560B7A000FFCB91 /* UnitTestScalarConvert.h */,
-				BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */,
 				BE147C5A156299B100C8A199 /* UnitTestSubStructConvert.h */,
-				BE147C5B156299CD00C8A199 /* UnitTestSubStructConvert.cpp */,
 				BE147C6915649DCA00C8A199 /* UnitTestScalarRead.h */,
-				BE147C6815649DCA00C8A199 /* UnitTestScalarRead.cpp */,
 				BE147C6615649C3200C8A199 /* UnitTestChunk.h */,
-				BE147C6515649C3200C8A199 /* UnitTestChunk.cpp */,
 				BE147C761564C0DA00C8A199 /* UnitTestChunkFile.h */,
+				BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */,
+				BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */,
+				BE147C5B156299CD00C8A199 /* UnitTestSubStructConvert.cpp */,
+				BE147C6815649DCA00C8A199 /* UnitTestScalarRead.cpp */,
+				BE147C6515649C3200C8A199 /* UnitTestChunk.cpp */,
 				BE147C741564C0CF00C8A199 /* UnitTestChunkFile.cpp */,
 			);
 			name = UnitTest;

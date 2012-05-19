@@ -24,6 +24,7 @@ class Aggregate : public Field
 public:
   Aggregate( int field_count )
   : m_EntryCount( field_count )
+  , m_EntryIndex( 0 )
   , m_Entry( new Entry[ field_count ] )
   {}
 
@@ -32,18 +33,17 @@ public:
     delete[] m_Entry;
   }
 
-  void SetFloat64 ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Float64 ); }
-  void SetFloat32 ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Float32 ); }
-  void SetInt64   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int64   ); }
-  void SetUInt64  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt64  ); }
-  void SetInt32   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int32   ); }
-  void SetUInt32  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt32  ); }
-  void SetInt16   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int16   ); }
-  void SetUInt16  ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt16  ); }
-  void SetInt8    ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_Int8    ); }
-  void SetUInt8   ( int index, int offset, uint32_t name )  { SetField( index, offset, name, &s_UInt8   ); }
-  
-  void SetSubStruct( int index, int offset, uint32_t name, const Aggregate* agg );
+  void AddFloat64 ( uint32_t name )  { AddField( name, &s_Float64 ); }
+  void AddFloat32 ( uint32_t name )  { AddField( name, &s_Float32 ); }
+  void AddInt64   ( uint32_t name )  { AddField( name, &s_Int64   ); }
+  void AddUInt64  ( uint32_t name )  { AddField( name, &s_UInt64  ); }
+  void AddInt32   ( uint32_t name )  { AddField( name, &s_Int32   ); }
+  void AddUInt32  ( uint32_t name )  { AddField( name, &s_UInt32  ); }
+  void AddInt16   ( uint32_t name )  { AddField( name, &s_Int16   ); }
+  void AddUInt16  ( uint32_t name )  { AddField( name, &s_UInt16  ); }
+  void AddInt8    ( uint32_t name )  { AddField( name, &s_Int8    ); }
+  void AddUInt8   ( uint32_t name )  { AddField( name, &s_UInt8   ); }
+  void AddSubStruct( uint32_t name, const Aggregate* agg ) { AddField( name, agg ); }
   
   int GetFieldCount() const { return m_EntryCount; }
 
@@ -79,12 +79,17 @@ public:
   
   virtual void Convert( char* dst_data, const ReadCursor& rc ) const;
 
+  virtual void FixSizeAndStride();
+  virtual int GetElementSize() const { return m_ElementSize; }
+  virtual int GetElementStride() const { return m_ElementStride; }
+
 private:
 
-  void SetField( int index, int offset, uint32_t name, const Field* field )
+  void AddField( uint32_t name, const Field* field )
   {
-    m_Entry[ index ].m_Offset = offset;
+    int index = m_EntryIndex++;
     m_Entry[ index ].m_Name = name;
+    m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
     m_Entry[ index ].m_Field = field;
   }
 
@@ -98,7 +103,10 @@ private:
     const Field*  m_Field;
   };
 
+  int     m_ElementSize;
+  int     m_ElementStride;
   int     m_EntryCount;
+  int     m_EntryIndex;
   Entry*  m_Entry;
   
   static FieldFloat32  s_Float32;
