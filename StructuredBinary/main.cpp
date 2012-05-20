@@ -19,6 +19,7 @@
 #include "UnitTestChunk.h"
 #include "UnitTestChunkFile.h"
 #include "UnitTestAlign.h"
+#include "UnitTestFormatFile.h"
 
 const UnitTest* AllTests[] =
 {
@@ -29,7 +30,9 @@ const UnitTest* AllTests[] =
   new UnitTestSubStructConvert(),
   new UnitTestChunk(),
   new UnitTestChunkFile(),
+  new UnitTestFormatFile(),
 };
+
 
 int main (int argc, const char * argv[])
 {
@@ -42,7 +45,7 @@ int main (int argc, const char * argv[])
   {
     const UnitTest* test = test_array[ i ];
     printf( "Testing %s\n", test->GetName() );
-    const char* error_message = test->RunTest();
+    const char* error_message = test->Run();
     if( error_message )
     {
       printf( "** FAIL: %s\n", error_message );

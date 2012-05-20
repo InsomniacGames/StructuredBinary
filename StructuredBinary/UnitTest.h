@@ -14,6 +14,7 @@ class UnitTest
 public:
   virtual const char* GetName() const = 0;
   virtual const char* RunTest() const = 0;
+  const char* Run() const;
 };
 
 #endif

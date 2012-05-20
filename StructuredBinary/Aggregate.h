@@ -22,10 +22,10 @@
 class Aggregate : public Field
 {
 public:
-  Aggregate( int field_count )
-  : m_EntryCount( field_count )
-  , m_EntryIndex( 0 )
-  , m_Entry( new Entry[ field_count ] )
+  Aggregate( int field_max_count )
+  : m_EntryMax( field_max_count )
+  , m_EntryCount( 0 )
+  , m_Entry( new Entry[ field_max_count ] )
   {}
 
   ~Aggregate()
@@ -83,15 +83,20 @@ public:
   virtual int GetElementSize() const { return m_ElementSize; }
   virtual int GetElementStride() const { return m_ElementStride; }
   virtual int GetElementAlign() const { return m_ElementAlign; }
+  
+  bool IsValid() const { return m_EntryCount <= m_EntryMax; }
 
 private:
 
   void AddField( uint32_t name, const Field* field )
   {
-    int index = m_EntryIndex++;
-    m_Entry[ index ].m_Name = name;
-    m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
-    m_Entry[ index ].m_Field = field;
+    int index = m_EntryCount++;
+    if( index < m_EntryMax )
+    {
+      m_Entry[ index ].m_Name = name;
+      m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
+      m_Entry[ index ].m_Field = field;
+    }
   }
 
   struct Entry
@@ -107,8 +112,8 @@ private:
   int     m_ElementSize;
   int     m_ElementStride;
   int     m_ElementAlign;
+  int     m_EntryMax;
   int     m_EntryCount;
-  int     m_EntryIndex;
   Entry*  m_Entry;
   
   static FieldFloat32  s_Float32;

@@ -22,6 +22,7 @@
 		BE57CC5915607B3500FFCB91 /* Aggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5815607B3500FFCB91 /* Aggregate.cpp */; };
 		BE57CC5D1560AF6000FFCB91 /* UnitTestNumberConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */; };
 		BE57CC5F1560B79400FFCB91 /* UnitTestScalarConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */; };
+		BE6D49FB156856ED00F1402E /* UnitTestFormatFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,6 +69,8 @@
 		BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestNumberConvert.cpp; sourceTree = "<group>"; };
 		BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestScalarConvert.cpp; sourceTree = "<group>"; };
 		BE57CC601560B7A000FFCB91 /* UnitTestScalarConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestScalarConvert.h; sourceTree = "<group>"; };
+		BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestFormatFile.cpp; sourceTree = "<group>"; };
+		BE6D49FD156856F800F1402E /* UnitTestFormatFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestFormatFile.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,7 @@
 				BE147C6915649DCA00C8A199 /* UnitTestScalarRead.h */,
 				BE147C6615649C3200C8A199 /* UnitTestChunk.h */,
 				BE147C761564C0DA00C8A199 /* UnitTestChunkFile.h */,
+				BE6D49FD156856F800F1402E /* UnitTestFormatFile.h */,
 				BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */,
 				BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */,
 				BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */,
@@ -98,6 +102,7 @@
 				BE147C6815649DCA00C8A199 /* UnitTestScalarRead.cpp */,
 				BE147C6515649C3200C8A199 /* UnitTestChunk.cpp */,
 				BE147C741564C0CF00C8A199 /* UnitTestChunkFile.cpp */,
+				BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 				BE147C731564BCBD00C8A199 /* ChunkFile.cpp in Sources */,
 				BE147C751564C0CF00C8A199 /* UnitTestChunkFile.cpp in Sources */,
 				BE147C7915682ADE00C8A199 /* UnitTestAlign.cpp in Sources */,
+				BE6D49FB156856ED00F1402E /* UnitTestFormatFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

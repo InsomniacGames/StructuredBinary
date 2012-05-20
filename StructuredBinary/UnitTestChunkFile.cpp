@@ -19,7 +19,7 @@
 #include "ChunkFile.h"
 
 static char FileBuffer[ 1000 ];
-static const char* s_FileName = "RonsTestFile.chunk";
+static const char* s_FileName = "TestChunkFile.chunk";
 
 const char* UnitTestChunkFile::RunTest() const
 {
