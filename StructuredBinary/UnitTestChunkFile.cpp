@@ -52,24 +52,25 @@ const char* UnitTestChunkFile::RunTest() const
   uint32_t sour_size    = ( uint32_t )strlen( sour_data   ) + 1;
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
-  Chunk* root = new Chunk( top_id );
-  root->AddChild( new Chunk( sweet_id, sweet_data, sweet_size ) );
-  root->AddChild( new Chunk( salt_id, salt_data, salt_size ) );
+  Chunk* write_root = new Chunk( top_id );
+  write_root->AddChild( new Chunk( sweet_id, sweet_data, sweet_size ) );
+  write_root->AddChild( new Chunk( salt_id, salt_data, salt_size ) );
   
-  Chunk* child = root->AddChild( new Chunk( child_id ) );
+  Chunk* child = write_root->AddChild( new Chunk( child_id ) );
   child->AddChild( new Chunk( sour_id, sour_data, sour_size ) );
   child->AddChild( new Chunk( bitter_id, bitter_data, bitter_size ) );
   child->AddChild( new Chunk( umami_id, umami_data, umami_size ) );
 
-  int file_size = ChunkWrite( s_FileName, root );
+  int file_size = ChunkWrite( s_FileName, write_root );
   if( file_size == 0 ) return "Could not write file";
   
-  delete root;
+  delete write_root;
 
-  const Chunk* c = ChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
+  const Chunk* read_root = ChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
   
-  if( !c ) return "Failed to read file";
+  if( !read_root ) return "Failed to read file";
 
+  const Chunk* c = read_root;
   if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
   if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
   c = c->GetChild();
@@ -98,7 +99,7 @@ const char* UnitTestChunkFile::RunTest() const
   temp = c->GetSibling();
   if( temp != NULL )                    return "Grand child list not properly terminated";
   
-  delete c;
+  delete read_root;
 
   return NULL;
 }

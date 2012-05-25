@@ -18,7 +18,6 @@
 #include "Fnv.h"
 #include "Field.h"
 
-
 class Aggregate : public Field
 {
 public:
@@ -83,8 +82,12 @@ public:
   virtual int GetElementSize() const { return m_ElementSize; }
   virtual int GetElementStride() const { return m_ElementStride; }
   virtual int GetElementAlign() const { return m_ElementAlign; }
-  
+  virtual FieldType GetType() const { return kField_Agg; }
+
   bool IsValid() const { return m_EntryCount <= m_EntryMax; }
+  
+  FieldType GetFieldType( int index ) const;
+  uint32_t GetFieldName( int index ) const;
 
 private:
 

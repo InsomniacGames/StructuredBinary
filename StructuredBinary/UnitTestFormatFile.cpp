@@ -13,123 +13,15 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <assert.h>
 
 // Project
 #include "Fnv.h"
 #include "Aggregate.h"
 #include "Chunk.h"
 #include "ChunkFile.h"
-
-enum FieldType
-{
-  kField_Unknown = 0,
-  
-  kField_I8,
-  kField_U8,
-  
-  kField_I16,
-  kField_U16,
-  
-  kField_I32,
-  kField_U32,
-  
-  kField_I64,
-  kField_U64,
-  
-  kField_F32,
-  kField_F64,
-  
-  kField_Count
-};
-
-class Writer
-{
-public:
-  Writer( char* start, char* end )
-  : m_Start( start )
-  , m_End( end )
-  , m_Pointer( start )
-  {}
-  
-  void Write8( uint8_t value )
-  {
-    *m_Pointer++ = value;
-  }
-  
-  void Write16( uint16_t value )
-  {
-    Write8( ( uint8_t )( value >> 8 ) );
-    Write8( ( uint8_t )( value >> 0 ) );
-  }
-  
-  void Write32( uint32_t value )
-  {
-    Write16( ( uint16_t )( value >> 16 ) );
-    Write16( ( uint16_t )( value >>  0 ) );
-  }
-  
-  void Write64( uint64_t value )
-  {
-    Write32( ( uint32_t )( value >> 32 ) );
-    Write32( ( uint32_t )( value >>  0 ) );
-  }
-  
-  int GetSize() const
-  {
-    return ( int )( m_Pointer - m_Start );
-  }
-  
-private:
-  char* m_Start;
-  char* m_End;
-  char* m_Pointer;
-};
-
-class Reader
-{
-public:
-  Reader( const char* start, const char* end )
-  : m_Start( start )
-  , m_End( end )
-  , m_Pointer( start )
-  {}
-  
-  uint8_t Read8()
-  {
-    return *m_Pointer++;
-  }
-  
-  uint16_t Read16()
-  {
-    uint16_t hi = Read8();
-    uint16_t lo = Read8();
-    return ( hi << 8 ) | lo;
-  }
-  
-  uint32_t Read32()
-  {
-    uint32_t hi = Read16();
-    uint32_t lo = Read16();
-    return ( hi << 16 ) | lo;
-  }
-  
-  uint64_t Read64()
-  {
-    uint64_t hi = Read32();
-    uint64_t lo = Read32();
-    return ( hi << 32 ) | lo;
-  }
-
-  int GetRemain() const
-  {
-    return ( int )( m_End - m_Pointer );
-  }
-  
-private:
-  const char* m_Start;
-  const char* m_End;
-  const char* m_Pointer;
-};
+#include "ByteReader.h"
+#include "ByteWriter.h"
 
 struct ReadStruct
 {
@@ -148,41 +40,33 @@ struct ReadStruct
 
 const char* UnitTestFormatFile::RunTest() const
 {
+  Aggregate org_agg( 10 );
+  org_agg.AddFloat64( Fnv32( "f64" ) );
+  org_agg.AddInt64  ( Fnv32( "i64" ) );
+  org_agg.AddUInt64 ( Fnv32( "u64" ) );
+  org_agg.AddFloat32( Fnv32( "f32" ) );
+  org_agg.AddInt32  ( Fnv32( "i32" ) );
+  org_agg.AddUInt32 ( Fnv32( "u32" ) );
+  org_agg.AddInt16  ( Fnv32( "i16" ) );
+  org_agg.AddUInt16 ( Fnv32( "u16" ) );
+  org_agg.AddInt8   ( Fnv32( "i8"  ) );
+  org_agg.AddUInt8  ( Fnv32( "u8"  ) );
+  org_agg.FixSizeAndStride();
+
   char format_buffer[ 1000 ];
-  Writer w( format_buffer, format_buffer + sizeof( format_buffer ) );
+  ByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
   
-  w.Write32( Fnv32( "f64" ) );
-  w.Write8( kField_F64 );
-
-  w.Write32( Fnv32( "i64" ) );
-  w.Write8( kField_I64 );
-
-  w.Write32( Fnv32( "u64" ) );
-  w.Write8( kField_U64 );
-
-  w.Write32( Fnv32( "f32" ) );
-  w.Write8( kField_F32 );
-
-  w.Write32( Fnv32( "i32" ) );
-  w.Write8( kField_I32 );
+  for( int i = 0; i < org_agg.GetFieldCount(); ++i )
+  {
+    uint32_t name = org_agg.GetFieldName( i ); 
+    uint8_t field_type = org_agg.GetFieldType( i );
+    w.Write32( name );
+    w.Write8( field_type );
+  }
   
-  w.Write32( Fnv32( "u32" ) );
-  w.Write8( kField_U32 );
-  
-  w.Write32( Fnv32( "i16" ) );
-  w.Write8( kField_I16 );
-
-  w.Write32( Fnv32( "u16" ) );
-  w.Write8( kField_U16 );
-
-  w.Write32( Fnv32( "i8" ) );
-  w.Write8( kField_I8 );
-
-  w.Write32( Fnv32( "u8" ) );
-  w.Write8( kField_U8 );
   int write_size = w.GetSize();
   
-  Reader r( format_buffer, format_buffer + write_size );
+  ByteReader r( format_buffer, format_buffer + write_size );
   Aggregate src_agg( 10 );
   while( r.GetRemain() > 0 )
   {

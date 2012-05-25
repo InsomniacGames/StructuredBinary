@@ -17,7 +17,29 @@
 #include "Number.h"
 #include "Fnv.h"
 
-// This was made at work
+enum FieldType
+{
+  kField_Unknown = 0,
+  
+  kField_I8,
+  kField_U8,
+  
+  kField_I16,
+  kField_U16,
+  
+  kField_I32,
+  kField_U32,
+  
+  kField_I64,
+  kField_U64,
+  
+  kField_F32,
+  kField_F64,
+
+  kField_Agg,
+
+  kField_Count
+};
 
 class Field;
 
@@ -71,6 +93,7 @@ public:
   virtual int GetElementSize() const = 0;
   virtual int GetElementStride() const { return GetElementSize(); }
   virtual int GetElementAlign() const = 0;
+  virtual FieldType GetType() const = 0;
 
 private:
 };
@@ -88,6 +111,7 @@ public:
   }
   virtual int GetElementSize() const { return 8; }
   virtual int GetElementAlign() const { return ( int )__alignof( double ); };
+  virtual FieldType GetType() const { return kField_F64; }
 };
 
 class FieldFloat32 : public Field
@@ -103,6 +127,7 @@ public:
   }
   virtual int GetElementSize() const { return 4; }
   virtual int GetElementAlign() const { return ( int )__alignof( float ); };
+  virtual FieldType GetType() const { return kField_F32; }
 };
 
 class FieldInt64 : public Field
@@ -118,6 +143,7 @@ public:
   }
   virtual int GetElementSize() const { return 8; }
   virtual int GetElementAlign() const { return ( int )__alignof( int64_t ); };
+  virtual FieldType GetType() const { return kField_I64; }
 };
 
 class FieldUInt64 : public Field
@@ -133,6 +159,7 @@ public:
   }
   virtual int GetElementSize() const { return 8; }
   virtual int GetElementAlign() const { return ( int )__alignof( uint64_t ); };
+  virtual FieldType GetType() const { return kField_U64; }
 };
 
 class FieldInt32 : public Field
@@ -148,6 +175,7 @@ public:
   }
   virtual int GetElementSize() const { return 4; }
   virtual int GetElementAlign() const { return ( int )__alignof( int32_t ); };
+  virtual FieldType GetType() const { return kField_I32; }
 };
 
 class FieldUInt32 : public Field
@@ -163,6 +191,7 @@ public:
   }
   virtual int GetElementSize() const { return 4; }
   virtual int GetElementAlign() const { return ( int )__alignof( uint32_t ); };
+  virtual FieldType GetType() const { return kField_U32; }
 };
 
 class FieldInt16 : public Field
@@ -178,6 +207,7 @@ public:
   }
   virtual int GetElementSize() const { return 2; }
   virtual int GetElementAlign() const { return ( int )__alignof( int16_t ); };
+  virtual FieldType GetType() const { return kField_I16; }
 };
 
 class FieldUInt16 : public Field
@@ -193,6 +223,7 @@ public:
   }
   virtual int GetElementSize() const { return 2; }
   virtual int GetElementAlign() const { return ( int )__alignof( uint16_t ); };
+  virtual FieldType GetType() const { return kField_U16; }
 };
 
 class FieldInt8 : public Field
@@ -208,6 +239,7 @@ public:
   }
   virtual int GetElementSize() const { return 1; }
   virtual int GetElementAlign() const { return ( int )__alignof( int8_t ); };
+  virtual FieldType GetType() const { return kField_I8; }
 };
 
 class FieldUInt8 : public Field
@@ -223,6 +255,7 @@ public:
   }
   virtual int GetElementSize() const { return 1; }
   virtual int GetElementAlign() const { return ( int )__alignof( uint8_t ); };
+  virtual FieldType GetType() const { return kField_U8; }
 };
 
 #endif

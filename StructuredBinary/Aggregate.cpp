@@ -11,6 +11,7 @@
 // Libraries
 #include <cstring>
 #include <stdint.h>
+#include <assert.h>
 // Project
 #include "Number.h"
 #include "Fnv.h"
@@ -56,3 +57,16 @@ void Aggregate::FixSizeAndStride()
   m_ElementStride = offset;
   m_ElementAlign = max_align;
 }
+
+FieldType Aggregate::GetFieldType( int index ) const
+{
+  assert( index < m_EntryCount );
+  return m_Entry[ index ].m_Field->GetType();
+}
+
+uint32_t Aggregate::GetFieldName( int index ) const
+{
+  assert( index < m_EntryCount );
+  return m_Entry[ index ].m_Name;
+}
+

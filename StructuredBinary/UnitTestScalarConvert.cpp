@@ -21,7 +21,7 @@
 
 //--------------------------------------------------------------------------------------------------
 
-struct ScalarConvertSourceStruct
+struct SourceStruct
 {
   double    f64;
   int64_t   i64;
@@ -35,7 +35,7 @@ struct ScalarConvertSourceStruct
   uint8_t   u8;
 };
 
-struct ScalarConvertDestStruct
+struct DestStruct
 {
   uint64_t  u64;
   int64_t   i64;
@@ -79,7 +79,7 @@ const char* UnitTestScalarConvert::RunTest() const
   dest_agg.AddInt16  ( Fnv32( "i16" ) );
   dest_agg.FixSizeAndStride();
 
-  ScalarConvertSourceStruct src;
+  SourceStruct src;
   src.f64 = 3.14159265358979;
   src.i64 = 0x69b0aee3db807b41ULL;
   src.u64 = 0x0dbf9bf837f5adb0ULL;
@@ -91,7 +91,7 @@ const char* UnitTestScalarConvert::RunTest() const
   src.i8  = 0xc3;
   src.u8  = 0x40;
 
-  ScalarConvertDestStruct dest;
+  DestStruct dest;
 
   const char* src_data = ( const char* )&src;
   char* dest_data = ( char* )&dest;
