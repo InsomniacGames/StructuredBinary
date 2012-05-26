@@ -17,6 +17,8 @@
 #include "Number.h"
 #include "Fnv.h"
 #include "Field.h"
+#include "ByteWriter.h"
+#include "ByteReader.h"
 
 class Aggregate : public Field
 {
@@ -27,22 +29,10 @@ public:
   , m_Entry( new Entry[ field_max_count ] )
   {}
 
-  ~Aggregate()
-  {
-    delete[] m_Entry;
-  }
+  virtual ~Aggregate();
 
-  void AddFloat64 ( uint32_t name )  { AddField( name, &s_Float64 ); }
-  void AddFloat32 ( uint32_t name )  { AddField( name, &s_Float32 ); }
-  void AddInt64   ( uint32_t name )  { AddField( name, &s_Int64   ); }
-  void AddUInt64  ( uint32_t name )  { AddField( name, &s_UInt64  ); }
-  void AddInt32   ( uint32_t name )  { AddField( name, &s_Int32   ); }
-  void AddUInt32  ( uint32_t name )  { AddField( name, &s_UInt32  ); }
-  void AddInt16   ( uint32_t name )  { AddField( name, &s_Int16   ); }
-  void AddUInt16  ( uint32_t name )  { AddField( name, &s_UInt16  ); }
-  void AddInt8    ( uint32_t name )  { AddField( name, &s_Int8    ); }
-  void AddUInt8   ( uint32_t name )  { AddField( name, &s_UInt8   ); }
-  void AddSubStruct( uint32_t name, const Aggregate* agg ) { AddField( name, agg ); }
+  void AddField( uint32_t name, FieldType field_type );
+  void AddSubStructTemp( uint32_t name, const Aggregate* agg ) { AddField( name, agg ); }
   
   int GetFieldCount() const { return m_EntryCount; }
 
@@ -56,25 +46,8 @@ public:
     return Number::Null();
   }
 
-  virtual ReadCursor Find( const char* data, uint32_t name ) const
-  {
-    for( int i = 0; i < m_EntryCount; ++i )
-    {
-      if( m_Entry[ i ].m_Name == name )
-        return ReadCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
-    }
-    return ReadCursor( NULL, 0, NULL );
-  }
-  
-  virtual WriteCursor Find( char* data, uint32_t name ) const
-  {
-    for( int i = 0; i < m_EntryCount; ++i )
-    {
-      if( m_Entry[ i ].m_Name == name )
-        return WriteCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
-    }
-    return WriteCursor( NULL, 0, NULL );
-  }
+  virtual ReadCursor Find( const char* data, uint32_t name ) const;
+  virtual WriteCursor Find( char* data, uint32_t name ) const;
   
   virtual void Convert( char* dst_data, const ReadCursor& rc ) const;
 
@@ -88,19 +61,13 @@ public:
   
   FieldType GetFieldType( int index ) const;
   uint32_t GetFieldName( int index ) const;
+  
+  void WriteFormat( ByteWriter* writer ) const;
+  void ReadFormat( ByteReader* reader );
 
 private:
 
-  void AddField( uint32_t name, const Field* field )
-  {
-    int index = m_EntryCount++;
-    if( index < m_EntryMax )
-    {
-      m_Entry[ index ].m_Name = name;
-      m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
-      m_Entry[ index ].m_Field = field;
-    }
-  }
+  void AddField( uint32_t name, const Field* field );
 
   struct Entry
   {
@@ -118,17 +85,6 @@ private:
   int     m_EntryMax;
   int     m_EntryCount;
   Entry*  m_Entry;
-  
-  static FieldFloat32  s_Float32;
-  static FieldFloat64  s_Float64;
-  static FieldInt64    s_Int64;
-  static FieldInt32    s_Int32;
-  static FieldInt16    s_Int16;
-  static FieldInt8     s_Int8;
-  static FieldUInt64   s_UInt64;
-  static FieldUInt32   s_UInt32;
-  static FieldUInt16   s_UInt16;
-  static FieldUInt8    s_UInt8;
 };
 
 class DataDesc;

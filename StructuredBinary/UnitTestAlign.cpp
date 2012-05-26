@@ -38,49 +38,49 @@ struct SourceStruct
 };
 
 struct DestStruct
-{
-  uint8_t   u8;
-  uint64_t  u64;
-  int64_t   i64;
-  uint16_t  u16;
-  double    f64;
-  int8_t    i8;
-  uint32_t  u32;
-  int32_t   i32;
-  float     f32;
-  int16_t   i16;
-};
+{                 // Offset
+  uint8_t   u8;   //  0
+  uint64_t  u64;  //  8
+  int64_t   i64;  // 16
+  uint16_t  u16;  // 24
+  double    f64;  // 32
+  int8_t    i8;   // 40
+  uint32_t  u32;  // 44
+  int32_t   i32;  // 48
+  float     f32;  // 52
+  int16_t   i16;  // 56
+};                // 58
 
 //--------------------------------------------------------------------------------------------------
 
 const char* UnitTestAlign::RunTest() const
 {
   Aggregate src_agg( 10 );
-  src_agg.AddUInt8  ( Fnv32( "u8"  ) );
-  src_agg.AddFloat64( Fnv32( "f64" ) );
-  src_agg.AddUInt16 ( Fnv32( "u16" ) );
-  src_agg.AddInt32  ( Fnv32( "i32" ) );
-  src_agg.AddInt64  ( Fnv32( "i64" ) );
-  src_agg.AddUInt64 ( Fnv32( "u64" ) );
-  src_agg.AddInt8   ( Fnv32( "i8"  ) );
-  src_agg.AddFloat32( Fnv32( "f32" ) );
-  src_agg.AddUInt32 ( Fnv32( "u32" ) );
-  src_agg.AddInt16  ( Fnv32( "i16" ) );
+  src_agg.AddField( Fnv32( "u8"  ), kField_U8  );
+  src_agg.AddField( Fnv32( "f64" ), kField_F64 );
+  src_agg.AddField( Fnv32( "u16" ), kField_U16 );
+  src_agg.AddField( Fnv32( "i32" ), kField_I32 );
+  src_agg.AddField( Fnv32( "i64" ), kField_I64 );
+  src_agg.AddField( Fnv32( "u64" ), kField_U64 );
+  src_agg.AddField( Fnv32( "i8"  ), kField_I8  );
+  src_agg.AddField( Fnv32( "f32" ), kField_F32 );
+  src_agg.AddField( Fnv32( "u32" ), kField_U32 );
+  src_agg.AddField( Fnv32( "i16" ), kField_I16 );
   src_agg.FixSizeAndStride();
   
-  Aggregate dest_agg( 10 );
-  dest_agg.AddUInt8  ( Fnv32( "u8"  ) );
-  dest_agg.AddUInt64 ( Fnv32( "u64" ) );
-  dest_agg.AddInt64  ( Fnv32( "i64" ) );
-  dest_agg.AddUInt16 ( Fnv32( "u16" ) );
-  dest_agg.AddFloat64( Fnv32( "f64" ) );
-  dest_agg.AddInt8   ( Fnv32( "i8"  ) );
-  dest_agg.AddUInt32 ( Fnv32( "u32" ) );
-  dest_agg.AddInt32  ( Fnv32( "i32" ) );
-  dest_agg.AddFloat32( Fnv32( "f32" ) );
-  dest_agg.AddInt16  ( Fnv32( "i16" ) );
-  dest_agg.FixSizeAndStride();
-  
+  Aggregate dst_agg( 10 );
+  dst_agg.AddField( Fnv32( "u8"  ), kField_U8  );
+  dst_agg.AddField( Fnv32( "u64" ), kField_U64 );
+  dst_agg.AddField( Fnv32( "i64" ), kField_I64 );
+  dst_agg.AddField( Fnv32( "u16" ), kField_U16 );
+  dst_agg.AddField( Fnv32( "f64" ), kField_F64 );
+  dst_agg.AddField( Fnv32( "i8"  ), kField_I8  );
+  dst_agg.AddField( Fnv32( "u32" ), kField_U32 );
+  dst_agg.AddField( Fnv32( "i32" ), kField_I32 );
+  dst_agg.AddField( Fnv32( "f32" ), kField_F32 );
+  dst_agg.AddField( Fnv32( "i16" ), kField_I16 );
+  dst_agg.FixSizeAndStride();
+
   SourceStruct src;
   src.f64 = 3.14159265358979;
   src.i64 = 0x69b0aee3db807b41ULL;
@@ -93,23 +93,23 @@ const char* UnitTestAlign::RunTest() const
   src.i8  = 0xc3;
   src.u8  = 0x40;
   
-  DestStruct dest;
+  DestStruct dst;
   
   const char* src_data = ( const char* )&src;
-  char* dest_data = ( char* )&dest;
+  char* dst_data = ( char* )&dst;
   
-  dest_agg.Convert( dest_data, ReadCursor( src_data, 0, &src_agg )  );
+  dst_agg.Convert( dst_data, ReadCursor( src_data, 0, &src_agg )  );
   
-  if( dest.f64 != src.f64 )  return "f64 converted incorrectly";
-  if( dest.f32 != src.f32 )  return "f32 converted incorrectly";
-  if( dest.i64 != src.i64 )  return "i64 converted incorrectly";
-  if( dest.u64 != src.u64 )  return "u64 converted incorrectly";
-  if( dest.i32 != src.i32 )  return "i32 converted incorrectly";
-  if( dest.u32 != src.u32 )  return "u32 converted incorrectly";
-  if( dest.i16 != src.i16 )  return "i16 converted incorrectly";
-  if( dest.u16 != src.u16 )  return "u16 converted incorrectly";
-  if( dest.i8  != src.i8  )  return "i8 converted incorrectly";
-  if( dest.u8  != src.u8  )  return "u8 converted incorrectly";
+  if( dst.u8  != src.u8  )  return "u8 converted incorrectly";
+  if( dst.i8  != src.i8  )  return "i8 converted incorrectly";
+  if( dst.f64 != src.f64 )  return "f64 converted incorrectly";
+  if( dst.f32 != src.f32 )  return "f32 converted incorrectly";
+  if( dst.i64 != src.i64 )  return "i64 converted incorrectly";
+  if( dst.u64 != src.u64 )  return "u64 converted incorrectly";
+  if( dst.i32 != src.i32 )  return "i32 converted incorrectly";
+  if( dst.u32 != src.u32 )  return "u32 converted incorrectly";
+  if( dst.i16 != src.i16 )  return "i16 converted incorrectly";
+  if( dst.u16 != src.u16 )  return "u16 converted incorrectly";
   
   return NULL;
 }

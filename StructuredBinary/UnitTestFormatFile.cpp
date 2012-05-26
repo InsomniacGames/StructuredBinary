@@ -41,71 +41,32 @@ struct ReadStruct
 const char* UnitTestFormatFile::RunTest() const
 {
   Aggregate org_agg( 10 );
-  org_agg.AddFloat64( Fnv32( "f64" ) );
-  org_agg.AddInt64  ( Fnv32( "i64" ) );
-  org_agg.AddUInt64 ( Fnv32( "u64" ) );
-  org_agg.AddFloat32( Fnv32( "f32" ) );
-  org_agg.AddInt32  ( Fnv32( "i32" ) );
-  org_agg.AddUInt32 ( Fnv32( "u32" ) );
-  org_agg.AddInt16  ( Fnv32( "i16" ) );
-  org_agg.AddUInt16 ( Fnv32( "u16" ) );
-  org_agg.AddInt8   ( Fnv32( "i8"  ) );
-  org_agg.AddUInt8  ( Fnv32( "u8"  ) );
+  org_agg.AddField( Fnv32( "f64" ), kField_F64 );
+  org_agg.AddField( Fnv32( "i64" ), kField_I64 );
+  org_agg.AddField( Fnv32( "u64" ), kField_U64 );
+  org_agg.AddField( Fnv32( "f32" ), kField_F32 );
+  org_agg.AddField( Fnv32( "i32" ), kField_I32 );
+  org_agg.AddField( Fnv32( "u32" ), kField_U32 );
+  org_agg.AddField( Fnv32( "i16" ), kField_I16 );
+  org_agg.AddField( Fnv32( "u16" ), kField_U16 );
+  org_agg.AddField( Fnv32( "i8"  ), kField_I8  );
+  org_agg.AddField( Fnv32( "u8"  ), kField_U8  );
   org_agg.FixSizeAndStride();
 
   char format_buffer[ 1000 ];
   ByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
-  
-  for( int i = 0; i < org_agg.GetFieldCount(); ++i )
-  {
-    uint32_t name = org_agg.GetFieldName( i ); 
-    uint8_t field_type = org_agg.GetFieldType( i );
-    w.Write32( name );
-    w.Write8( field_type );
-  }
+
+  org_agg.WriteFormat( &w );
   
   int write_size = w.GetSize();
-  
+
   ByteReader r( format_buffer, format_buffer + write_size );
   Aggregate src_agg( 10 );
   while( r.GetRemain() > 0 )
   {
     uint32_t name = r.Read32();
     uint8_t field_type = r.Read8();
-
-    switch( field_type )
-    {
-      case kField_I8:
-        src_agg.AddInt8( name );
-        break;
-      case kField_U8:
-        src_agg.AddUInt8( name );
-        break;
-      case kField_I16:
-        src_agg.AddInt16( name );
-        break;
-      case kField_U16:
-        src_agg.AddUInt16( name );
-        break;
-      case kField_I32:
-        src_agg.AddInt32( name );
-        break;
-      case kField_U32:
-        src_agg.AddUInt32( name );
-        break;
-      case kField_I64:
-        src_agg.AddInt64( name );
-        break;
-      case kField_U64:
-        src_agg.AddUInt64( name );
-        break;
-      case kField_F32:
-        src_agg.AddFloat32( name );
-        break;
-      case kField_F64:
-        src_agg.AddFloat64( name );
-        break;
-    }
+    src_agg.AddField( name, ( FieldType )field_type );
   }
   src_agg.FixSizeAndStride();
 

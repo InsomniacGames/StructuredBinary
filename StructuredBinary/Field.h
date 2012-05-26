@@ -17,31 +17,35 @@
 #include "Number.h"
 #include "Fnv.h"
 
+class Field;
+
 enum FieldType
 {
   kField_Unknown = 0,
-  
   kField_I8,
   kField_U8,
-  
   kField_I16,
   kField_U16,
-  
   kField_I32,
   kField_U32,
-  
   kField_I64,
   kField_U64,
-  
   kField_F32,
   kField_F64,
-
   kField_Agg,
-
   kField_Count
 };
 
-class Field;
+typedef const Field* (BuildField)();
+
+struct FieldInfo
+{
+  FieldType   field_type;
+  const char* description;
+  BuildField* build_field;
+};
+
+const FieldInfo& GetInfo( FieldType field_type );
 
 struct WriteCursor
 {
@@ -70,6 +74,7 @@ struct ReadCursor
 class Field
 {
 public:
+  virtual ~Field() {}
   virtual Number ReadNumber( const char* data ) const { return Number::Null(); }
   virtual void WriteNumber( char* data, const Number& number ) const {}
 
@@ -109,7 +114,7 @@ public:
   {
     *( double* )data = ( double )number.AsFloat();
   }
-  virtual int GetElementSize() const { return 8; }
+  virtual int GetElementSize() const { return sizeof( double ); }
   virtual int GetElementAlign() const { return ( int )__alignof( double ); };
   virtual FieldType GetType() const { return kField_F64; }
 };
@@ -125,7 +130,7 @@ public:
   {
     *( float* )data = ( float )number.AsFloat();
   }
-  virtual int GetElementSize() const { return 4; }
+  virtual int GetElementSize() const { return sizeof( float ); }
   virtual int GetElementAlign() const { return ( int )__alignof( float ); };
   virtual FieldType GetType() const { return kField_F32; }
 };
@@ -141,7 +146,7 @@ public:
   {
     *( int64_t* )data = ( int64_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 8; }
+  virtual int GetElementSize() const { return sizeof( int64_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( int64_t ); };
   virtual FieldType GetType() const { return kField_I64; }
 };
@@ -157,7 +162,7 @@ public:
   {
     *( uint64_t* )data = ( uint64_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 8; }
+  virtual int GetElementSize() const { return sizeof( uint64_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( uint64_t ); };
   virtual FieldType GetType() const { return kField_U64; }
 };
@@ -173,7 +178,7 @@ public:
   {
     *( int32_t* )data = ( int32_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 4; }
+  virtual int GetElementSize() const { return sizeof( int32_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( int32_t ); };
   virtual FieldType GetType() const { return kField_I32; }
 };
@@ -189,7 +194,7 @@ public:
   {
     *( uint32_t* )data = ( uint32_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 4; }
+  virtual int GetElementSize() const { return sizeof( uint32_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( uint32_t ); };
   virtual FieldType GetType() const { return kField_U32; }
 };
@@ -205,7 +210,7 @@ public:
   {
     *( int16_t* )data = ( int16_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 2; }
+  virtual int GetElementSize() const { return sizeof( int16_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( int16_t ); };
   virtual FieldType GetType() const { return kField_I16; }
 };
@@ -221,7 +226,7 @@ public:
   {
     *( uint16_t* )data = ( uint16_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 2; }
+  virtual int GetElementSize() const { return sizeof( uint16_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( uint16_t ); };
   virtual FieldType GetType() const { return kField_U16; }
 };
@@ -237,7 +242,7 @@ public:
   {
     *( int8_t* )data = ( int8_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 1; }
+  virtual int GetElementSize() const { return sizeof( int8_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( int8_t ); };
   virtual FieldType GetType() const { return kField_I8; }
 };
@@ -253,7 +258,7 @@ public:
   {
     *( uint8_t* )data = ( uint8_t )number.AsInt();
   }
-  virtual int GetElementSize() const { return 1; }
+  virtual int GetElementSize() const { return sizeof( uint8_t ); }
   virtual int GetElementAlign() const { return ( int )__alignof( uint8_t ); };
   virtual FieldType GetType() const { return kField_U8; }
 };

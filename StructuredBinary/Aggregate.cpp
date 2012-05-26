@@ -17,17 +17,6 @@
 #include "Fnv.h"
 #include "Field.h"
 
-FieldFloat32  Aggregate::s_Float32;
-FieldFloat64  Aggregate::s_Float64;
-FieldInt64    Aggregate::s_Int64;
-FieldInt32    Aggregate::s_Int32;
-FieldInt16    Aggregate::s_Int16;
-FieldInt8     Aggregate::s_Int8;
-FieldUInt64   Aggregate::s_UInt64;
-FieldUInt32   Aggregate::s_UInt32;
-FieldUInt16   Aggregate::s_UInt16;
-FieldUInt8    Aggregate::s_UInt8;
-
 void Aggregate::Convert( char* dst_data, const ReadCursor& rc ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
@@ -35,6 +24,28 @@ void Aggregate::Convert( char* dst_data, const ReadCursor& rc ) const
     uint32_t name = m_Entry[ i ].m_Name;
     m_Entry[ i ].m_Field->Convert( dst_data + m_Entry[ i ].m_Offset, rc.m_Field->Find( rc.m_Data, name ) );
   }
+}
+
+ReadCursor Aggregate::Find( const char* data, uint32_t name ) const
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    if( m_Entry[ i ].m_Name == name )
+    {
+      return ReadCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
+    }
+  }
+  return ReadCursor( NULL, 0, NULL );
+}
+
+WriteCursor Aggregate::Find( char* data, uint32_t name ) const
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    if( m_Entry[ i ].m_Name == name )
+      return WriteCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
+  }
+  return WriteCursor( NULL, 0, NULL );
 }
 
 void Aggregate::FixSizeAndStride()
@@ -69,4 +80,46 @@ uint32_t Aggregate::GetFieldName( int index ) const
   assert( index < m_EntryCount );
   return m_Entry[ index ].m_Name;
 }
+
+void Aggregate::WriteFormat( ByteWriter* writer ) const
+{
+  for( int i = 0; i < GetFieldCount(); ++i )
+  {
+    uint32_t name = GetFieldName( i ); 
+    uint8_t field_type = GetFieldType( i );
+    writer->Write32( name );
+    writer->Write8( field_type );
+  }
+}
+
+void Aggregate::ReadFormat( ByteReader* reader )
+{
+}
+
+void Aggregate::AddField( uint32_t name, const Field* field )
+{
+  int index = m_EntryCount++;
+  if( index < m_EntryMax )
+  {
+    m_Entry[ index ].m_Name = name;
+    m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
+    m_Entry[ index ].m_Field = field;
+  }
+}
+
+void Aggregate::AddField( uint32_t name, FieldType field_type )
+{
+  AddField( name, GetInfo( field_type ).build_field() );  
+}
+
+Aggregate::~Aggregate()
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    delete m_Entry[ i ].m_Field;
+  }
+
+  delete[] m_Entry;
+}
+
 

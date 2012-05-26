@@ -40,16 +40,16 @@ struct ReadStruct
 const char* UnitTestScalarRead::RunTest() const
 {
   Aggregate agg( 10 );
-  agg.AddFloat64( Fnv32( "f64" ) );
-  agg.AddInt64  ( Fnv32( "i64" ) );
-  agg.AddUInt64 ( Fnv32( "u64" ) );
-  agg.AddFloat32( Fnv32( "f32" ) );
-  agg.AddInt32  ( Fnv32( "i32" ) );
-  agg.AddUInt32 ( Fnv32( "u32" ) );
-  agg.AddInt16  ( Fnv32( "i16" ) );
-  agg.AddUInt16 ( Fnv32( "u16" ) );
-  agg.AddInt8   ( Fnv32( "i8"  ) );
-  agg.AddUInt8  ( Fnv32( "u8"  ) );
+  agg.AddField( Fnv32( "f64" ), kField_F64 );
+  agg.AddField( Fnv32( "i64" ), kField_I64 );
+  agg.AddField( Fnv32( "u64" ), kField_U64 );
+  agg.AddField( Fnv32( "f32" ), kField_F32 );
+  agg.AddField( Fnv32( "i32" ), kField_I32 );
+  agg.AddField( Fnv32( "u32" ), kField_U32 );
+  agg.AddField( Fnv32( "i16" ), kField_I16 );
+  agg.AddField( Fnv32( "u16" ), kField_U16 );
+  agg.AddField( Fnv32( "i8"  ), kField_I8 );
+  agg.AddField( Fnv32( "u8"  ), kField_U8 );
   agg.FixSizeAndStride();
 
   ReadStruct s;

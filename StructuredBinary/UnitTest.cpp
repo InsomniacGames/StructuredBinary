@@ -71,6 +71,10 @@ static void FreeAllocation( void* p )
   {
     record->m_Pointer = NULL;
   }
+  else
+  {
+    printf( "Could not free %p\n", p );
+  }
 }
 
 static int CountRemainingAllocations()
@@ -82,6 +86,7 @@ static int CountRemainingAllocations()
   {
     if( record->m_Pointer )
     {
+      printf( "Leaking %lu bytes at %p\n", record->m_Size, record->m_Pointer );
       count += 1;
     }
     record += 1;
@@ -98,7 +103,10 @@ const char* UnitTest::Run() const
   {
     int count = CountRemainingAllocations();
     if( count > 0 )
+    {
+      printf( "Leak count: %d\n", count );
       s = "Leaking memory";
+    }
   }
   return s;
 }
