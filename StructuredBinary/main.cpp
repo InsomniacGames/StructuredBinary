@@ -37,6 +37,7 @@ const UnitTest* AllTests[] =
 int main (int argc, const char * argv[])
 {
   int test_count = ARRAY_SIZE( AllTests );
+  printf( "test_count = %d\n", test_count );
   const UnitTest** test_array = AllTests;
 
   int fail_count = 0;

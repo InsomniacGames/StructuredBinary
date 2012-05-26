@@ -69,27 +69,21 @@ void sbStruct::FixSizeAndStride()
   m_ElementAlign = max_align;
 }
 
-FieldType sbStruct::GetFieldType( int index ) const
+sbFieldType sbStruct::GetFieldType( int index ) const
+{
+  return GetField( index )->GetType();
+}
+
+const sbField* sbStruct::GetField( int index ) const
 {
   assert( index < m_EntryCount );
-  return m_Entry[ index ].m_Field->GetType();
+  return m_Entry[ index ].m_Field;
 }
 
 uint32_t sbStruct::GetFieldName( int index ) const
 {
   assert( index < m_EntryCount );
   return m_Entry[ index ].m_Name;
-}
-
-void sbStruct::WriteFormat( sbByteWriter* writer ) const
-{
-  for( int i = 0; i < GetFieldCount(); ++i )
-  {
-    uint32_t name = GetFieldName( i ); 
-    uint8_t field_type = GetFieldType( i );
-    writer->Write32( name );
-    writer->Write8( field_type );
-  }
 }
 
 void sbStruct::AddField( uint32_t name, const sbField* field )
@@ -114,23 +108,34 @@ sbStruct::~sbStruct()
   delete[] m_Entry;
 }
 
-const sbField* sbStruct::BuildAgg( sbByteReader* reader )
+const sbField* sbStruct::ReadSchema( sbByteReader* reader )
 {
   sbStruct* a = new sbStruct( 100 );
   while( reader->GetRemain() > 0 )
   {
     uint32_t name = reader->Read32();
-    FieldType field_type = ( FieldType )reader->Read8();
-    const sbField* f = GetInfo( field_type ).build_field( reader );  
+    sbFieldType field_type = ( sbFieldType )reader->Read8();
+    const sbField* f = GetInfo( field_type ).read_field( reader );  
     a->AddField( name, f );
   }
   a->FixSizeAndStride();
   return a;
 }
 
-void sbStruct::AddField( uint32_t name, FieldType field_type )
+void sbStruct::WriteSchema( sbByteWriter* writer ) const
 {
-  const sbField* f = GetInfo( field_type ).build_field( NULL );   // ???
+  for( int i = 0; i < GetFieldCount(); ++i )
+  {
+    uint32_t name = GetFieldName( i ); 
+    const sbField* field = GetField( i );
+    writer->Write32( name );
+    field->WriteSchema( writer );
+  }
+}
+
+void sbStruct::AddField( uint32_t name, sbFieldType field_type )
+{
+  const sbField* f = GetInfo( field_type ).read_field( NULL );   // ???
   AddField( name, f );
 }
 

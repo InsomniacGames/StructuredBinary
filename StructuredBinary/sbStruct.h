@@ -54,17 +54,18 @@ public:
   virtual int GetElementSize() const { return m_ElementSize; }
   virtual int GetElementStride() const { return m_ElementStride; }
   virtual int GetElementAlign() const { return m_ElementAlign; }
-  virtual FieldType GetType() const { return kField_Agg; }
+  virtual sbFieldType GetType() const { return kField_Agg; }
 
   bool IsValid() const { return m_EntryCount <= m_EntryMax; }
   
-  FieldType GetFieldType( int index ) const;
+  sbFieldType GetFieldType( int index ) const;
+  const sbField* GetField( int index ) const;
   uint32_t GetFieldName( int index ) const;
   
-  void WriteFormat( sbByteWriter* writer ) const;
-  static const sbField* BuildAgg( sbByteReader* reader );
+  virtual void WriteSchema( sbByteWriter* writer ) const;
+  static const sbField* ReadSchema( sbByteReader* reader );
 
-  void AddField( uint32_t name, FieldType field_type );
+  void AddField( uint32_t name, sbFieldType field_type );
 
 private:
 

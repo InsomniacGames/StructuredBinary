@@ -56,12 +56,12 @@ const char* UnitTestFormatFile::RunTest() const
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
 
-  org_agg.WriteFormat( &w );
+  org_agg.WriteSchema( &w );
   
   int write_size = w.GetSize();
 
   sbByteReader r( format_buffer, format_buffer + write_size );
-  const sbStruct* src_agg = ( const sbStruct* )sbStruct::BuildAgg( &r );
+  const sbStruct* src_agg = ( const sbStruct* )sbStruct::ReadSchema( &r );
 
   ReadStruct s;
   s.f64 = 3.14159265358979;

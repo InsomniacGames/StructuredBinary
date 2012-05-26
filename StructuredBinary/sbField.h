@@ -16,12 +16,14 @@
 // Project
 #include "sbNumber.h"
 #include "sbFnv.h"
+#include "sbReadCursor.h"
+#include "sbWriteCursor.h"
 
 class sbField;
 class sbByteReader;
 class sbByteWriter;
 
-enum FieldType
+enum sbFieldType
 {
   kField_Unknown = 0,
   kField_I8,
@@ -38,40 +40,16 @@ enum FieldType
   kField_Count
 };
 
-typedef const sbField* (BuildField)( sbByteReader* reader );
+typedef const sbField* ( sbReadField )( sbByteReader* reader );
 
-struct FieldInfo
+struct sbFieldTypeInfo
 {
-  FieldType   field_type;
-  const char* description;
-  BuildField* build_field;
+  sbFieldType   field_type;
+  const char*   description;
+  sbReadField*  read_field;
 };
 
-const FieldInfo& GetInfo( FieldType field_type );
-
-struct WriteCursor
-{
-  WriteCursor( char* data, uint32_t name, const sbField* field )
-  : m_Name( name )
-  , m_Data( data )
-  , m_Field( field )
-  {}
-  uint32_t      m_Name; // Remove me
-  char*         m_Data;
-  const sbField*  m_Field;
-};
-
-struct ReadCursor
-{
-  ReadCursor( const char* data, uint32_t name, const sbField* field )
-  : m_Name( name )
-  , m_Data( data )
-  , m_Field( field )
-  {}
-  uint32_t      m_Name; // Remove me
-  const char*   m_Data;
-  const sbField*  m_Field;
-};
+const sbFieldTypeInfo& GetInfo( sbFieldType field_type );
 
 class sbField
 {
@@ -100,169 +78,11 @@ public:
   virtual int GetElementSize() const = 0;
   virtual int GetElementStride() const { return GetElementSize(); }
   virtual int GetElementAlign() const = 0;
-  virtual FieldType GetType() const = 0;
+  virtual sbFieldType GetType() const = 0;
+
+  virtual void WriteSchema( sbByteWriter* writer ) const = 0;
 
 private:
-};
-
-class FieldFloat64 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Float( *( double* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( double* )data = ( double )number.AsFloat();
-  }
-  virtual int GetElementSize() const { return sizeof( double ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( double ); };
-  virtual FieldType GetType() const { return kField_F64; }
-};
-
-class FieldFloat32 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Float( *( float* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( float* )data = ( float )number.AsFloat();
-  }
-  virtual int GetElementSize() const { return sizeof( float ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( float ); };
-  virtual FieldType GetType() const { return kField_F32; }
-};
-
-class FieldInt64 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Int( *( int64_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( int64_t* )data = ( int64_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( int64_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( int64_t ); };
-  virtual FieldType GetType() const { return kField_I64; }
-};
-
-class FieldUInt64 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::UInt( *( uint64_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( uint64_t* )data = ( uint64_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( uint64_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( uint64_t ); };
-  virtual FieldType GetType() const { return kField_U64; }
-};
-
-class FieldInt32 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Int( *( int32_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( int32_t* )data = ( int32_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( int32_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( int32_t ); };
-  virtual FieldType GetType() const { return kField_I32; }
-};
-
-class FieldUInt32 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::UInt( *( uint32_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( uint32_t* )data = ( uint32_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( uint32_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( uint32_t ); };
-  virtual FieldType GetType() const { return kField_U32; }
-};
-
-class FieldInt16 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Int( *( int16_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( int16_t* )data = ( int16_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( int16_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( int16_t ); };
-  virtual FieldType GetType() const { return kField_I16; }
-};
-
-class FieldUInt16 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::UInt( *( uint16_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( uint16_t* )data = ( uint16_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( uint16_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( uint16_t ); };
-  virtual FieldType GetType() const { return kField_U16; }
-};
-
-class FieldInt8 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::Int( *( int8_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( int8_t* )data = ( int8_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( int8_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( int8_t ); };
-  virtual FieldType GetType() const { return kField_I8; }
-};
-
-class FieldUInt8 : public sbField
-{
-public:
-  virtual sbNumber ReadNumber( const char* data ) const
-  {
-    return sbNumber::UInt( *( uint8_t* )data );
-  }
-  virtual void WriteNumber( char* data, const sbNumber& number ) const
-  {
-    *( uint8_t* )data = ( uint8_t )number.AsInt();
-  }
-  virtual int GetElementSize() const { return sizeof( uint8_t ); }
-  virtual int GetElementAlign() const { return ( int )__alignof( uint8_t ); };
-  virtual FieldType GetType() const { return kField_U8; }
 };
 
 #endif
