@@ -15,8 +15,8 @@
 #include <stdint.h>
 
 // Project
-#include "Chunk.h"
-#include "ChunkFile.h"
+#include "sbChunk.h"
+#include "sbChunkFile.h"
 
 static char FileBuffer[ 1000 ];
 static const char* s_FileName = "TestChunkFile.chunk";
@@ -52,25 +52,25 @@ const char* UnitTestChunkFile::RunTest() const
   uint32_t sour_size    = ( uint32_t )strlen( sour_data   ) + 1;
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
-  Chunk* write_root = new Chunk( top_id );
-  write_root->AddChild( new Chunk( sweet_id, sweet_data, sweet_size ) );
-  write_root->AddChild( new Chunk( salt_id, salt_data, salt_size ) );
+  sbChunk* write_root = new sbChunk( top_id );
+  write_root->AddChild( new sbChunk( sweet_id, sweet_data, sweet_size ) );
+  write_root->AddChild( new sbChunk( salt_id, salt_data, salt_size ) );
   
-  Chunk* child = write_root->AddChild( new Chunk( child_id ) );
-  child->AddChild( new Chunk( sour_id, sour_data, sour_size ) );
-  child->AddChild( new Chunk( bitter_id, bitter_data, bitter_size ) );
-  child->AddChild( new Chunk( umami_id, umami_data, umami_size ) );
+  sbChunk* child = write_root->AddChild( new sbChunk( child_id ) );
+  child->AddChild( new sbChunk( sour_id, sour_data, sour_size ) );
+  child->AddChild( new sbChunk( bitter_id, bitter_data, bitter_size ) );
+  child->AddChild( new sbChunk( umami_id, umami_data, umami_size ) );
 
-  int file_size = ChunkWrite( s_FileName, write_root );
+  int file_size = sbChunkWrite( s_FileName, write_root );
   if( file_size == 0 ) return "Could not write file";
   
   delete write_root;
 
-  const Chunk* read_root = ChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
+  const sbChunk* read_root = sbChunkRead( s_FileName, FileBuffer, sizeof( FileBuffer ) );
   
   if( !read_root ) return "Failed to read file";
 
-  const Chunk* c = read_root;
+  const sbChunk* c = read_root;
   if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
   if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
   c = c->GetChild();
@@ -84,7 +84,7 @@ const char* UnitTestChunkFile::RunTest() const
   c = c->GetSibling();
   if( c->GetChildCount() != 3 )         return "Third child wrong child count";
   if( c->GetDataSize() != 0 )           return "Third child wrong data size";
-  const Chunk* temp = c->GetSibling();
+  const sbChunk* temp = c->GetSibling();
   if( temp != NULL )                    return "Child list not properly terminated";
   
   c = c->GetChild();

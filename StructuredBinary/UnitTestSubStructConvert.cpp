@@ -14,9 +14,9 @@
 #include <stdint.h>
 
 // Project
-#include "Number.h"
-#include "Field.h"
-#include "Aggregate.h"
+#include "sbNumber.h"
+#include "sbField.h"
+#include "sbStruct.h"
 
 //--------------------------------------------------------------------------------------------------
 
@@ -56,38 +56,38 @@ struct DestStruct
 
 const char* UnitTestSubStructConvert::RunTest() const
 {
-  Aggregate* src_sub1 = new Aggregate( 2 );
-  src_sub1->AddField( Fnv32( "var1" ), kField_F32 );
-  src_sub1->AddField( Fnv32( "var2" ), kField_F32 );
+  sbStruct* src_sub1 = new sbStruct( 2 );
+  src_sub1->AddField( sbFnv32( "var1" ), kField_F32 );
+  src_sub1->AddField( sbFnv32( "var2" ), kField_F32 );
   src_sub1->FixSizeAndStride();
 
-  Aggregate* src_sub2 = new Aggregate( 2 );
-  src_sub2->AddField( Fnv32( "var1" ), kField_F32 );
-  src_sub2->AddField( Fnv32( "var2" ), kField_F32 );
+  sbStruct* src_sub2 = new sbStruct( 2 );
+  src_sub2->AddField( sbFnv32( "var1" ), kField_F32 );
+  src_sub2->AddField( sbFnv32( "var2" ), kField_F32 );
   src_sub2->FixSizeAndStride();
 
-  Aggregate src_agg( 4 );
-  src_agg.AddField( Fnv32( "var1" ), kField_F32 );
-  src_agg.AddField( Fnv32( "var2" ), kField_F32 );
-  src_agg.AddSubStructTemp( Fnv32( "sub1" ), src_sub1 );
-  src_agg.AddSubStructTemp( Fnv32( "sub2" ), src_sub2 );
+  sbStruct src_agg( 4 );
+  src_agg.AddField( sbFnv32( "var1" ), kField_F32 );
+  src_agg.AddField( sbFnv32( "var2" ), kField_F32 );
+  src_agg.AddSubStructTemp( sbFnv32( "sub1" ), src_sub1 );
+  src_agg.AddSubStructTemp( sbFnv32( "sub2" ), src_sub2 );
   src_agg.FixSizeAndStride();
 
-  Aggregate* dst_sub1 = new Aggregate( 2 );
-  dst_sub1->AddField( Fnv32( "var2" ), kField_F32 );
-  dst_sub1->AddField( Fnv32( "var1" ), kField_F32 );
+  sbStruct* dst_sub1 = new sbStruct( 2 );
+  dst_sub1->AddField( sbFnv32( "var2" ), kField_F32 );
+  dst_sub1->AddField( sbFnv32( "var1" ), kField_F32 );
   dst_sub1->FixSizeAndStride();
 
-  Aggregate* dst_sub2 = new Aggregate( 2 );
-  dst_sub2->AddField( Fnv32( "var1" ), kField_F32 );
-  dst_sub2->AddField( Fnv32( "var2" ), kField_F32 );
+  sbStruct* dst_sub2 = new sbStruct( 2 );
+  dst_sub2->AddField( sbFnv32( "var1" ), kField_F32 );
+  dst_sub2->AddField( sbFnv32( "var2" ), kField_F32 );
   dst_sub2->FixSizeAndStride();
 
-  Aggregate dst_agg( 4 );
-  dst_agg.AddField    ( Fnv32( "var2" ), kField_F32 );
-  dst_agg.AddSubStructTemp( Fnv32( "sub1" ), dst_sub1 );
-  dst_agg.AddSubStructTemp( Fnv32( "sub2" ), dst_sub2 );
-  dst_agg.AddField    ( Fnv32( "var1" ), kField_F32 );
+  sbStruct dst_agg( 4 );
+  dst_agg.AddField    ( sbFnv32( "var2" ), kField_F32 );
+  dst_agg.AddSubStructTemp( sbFnv32( "sub1" ), dst_sub1 );
+  dst_agg.AddSubStructTemp( sbFnv32( "sub2" ), dst_sub2 );
+  dst_agg.AddField    ( sbFnv32( "var1" ), kField_F32 );
   dst_agg.FixSizeAndStride();
   
   SourceStruct src;

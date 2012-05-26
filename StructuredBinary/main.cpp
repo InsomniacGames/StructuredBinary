@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 // Project
-#include "Util.h"
+#include "sbUtil.h"
 #include "UnitTestNumberConvert.h"
 #include "UnitTestScalarConvert.h"
 #include "UnitTestSubStructConvert.h"

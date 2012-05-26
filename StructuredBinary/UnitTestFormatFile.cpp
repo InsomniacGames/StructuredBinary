@@ -16,12 +16,12 @@
 #include <assert.h>
 
 // Project
-#include "Fnv.h"
-#include "Aggregate.h"
-#include "Chunk.h"
-#include "ChunkFile.h"
-#include "ByteReader.h"
-#include "ByteWriter.h"
+#include "sbFnv.h"
+#include "sbStruct.h"
+#include "sbChunk.h"
+#include "sbChunkFile.h"
+#include "sbByteReader.h"
+#include "sbByteWriter.h"
 
 struct ReadStruct
 {
@@ -40,35 +40,28 @@ struct ReadStruct
 
 const char* UnitTestFormatFile::RunTest() const
 {
-  Aggregate org_agg( 10 );
-  org_agg.AddField( Fnv32( "f64" ), kField_F64 );
-  org_agg.AddField( Fnv32( "i64" ), kField_I64 );
-  org_agg.AddField( Fnv32( "u64" ), kField_U64 );
-  org_agg.AddField( Fnv32( "f32" ), kField_F32 );
-  org_agg.AddField( Fnv32( "i32" ), kField_I32 );
-  org_agg.AddField( Fnv32( "u32" ), kField_U32 );
-  org_agg.AddField( Fnv32( "i16" ), kField_I16 );
-  org_agg.AddField( Fnv32( "u16" ), kField_U16 );
-  org_agg.AddField( Fnv32( "i8"  ), kField_I8  );
-  org_agg.AddField( Fnv32( "u8"  ), kField_U8  );
+  sbStruct org_agg( 10 );
+  org_agg.AddField( sbFnv32( "f64" ), kField_F64 );
+  org_agg.AddField( sbFnv32( "i64" ), kField_I64 );
+  org_agg.AddField( sbFnv32( "u64" ), kField_U64 );
+  org_agg.AddField( sbFnv32( "f32" ), kField_F32 );
+  org_agg.AddField( sbFnv32( "i32" ), kField_I32 );
+  org_agg.AddField( sbFnv32( "u32" ), kField_U32 );
+  org_agg.AddField( sbFnv32( "i16" ), kField_I16 );
+  org_agg.AddField( sbFnv32( "u16" ), kField_U16 );
+  org_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
+  org_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
   org_agg.FixSizeAndStride();
 
   char format_buffer[ 1000 ];
-  ByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
+  sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
 
   org_agg.WriteFormat( &w );
   
   int write_size = w.GetSize();
 
-  ByteReader r( format_buffer, format_buffer + write_size );
-  Aggregate src_agg( 10 );
-  while( r.GetRemain() > 0 )
-  {
-    uint32_t name = r.Read32();
-    uint8_t field_type = r.Read8();
-    src_agg.AddField( name, ( FieldType )field_type );
-  }
-  src_agg.FixSizeAndStride();
+  sbByteReader r( format_buffer, format_buffer + write_size );
+  const sbStruct* src_agg = ( const sbStruct* )sbStruct::BuildAgg( &r );
 
   ReadStruct s;
   s.f64 = 3.14159265358979;
@@ -83,38 +76,39 @@ const char* UnitTestFormatFile::RunTest() const
   s.u8  = 0x40;
   const char* data = ( const char* )&s;
   
-  Number n;
-  n = src_agg.Read( data, Fnv32( "f64" ) );
+  sbNumber n;
+  n = src_agg->Read( data, sbFnv32( "f64" ) );
   if( !n.IsFloat() )          return "f64 returned wrong type";
   if( n.AsFloat() != s.f64 )  return "f64 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "i64" ) );
+  n = src_agg->Read( data, sbFnv32( "i64" ) );
   if( !n.IsInt() )            return "i64 returned wrong type";
   if( n.AsFloat() != s.i64 )  return "i64 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "u64" ) );
+  n = src_agg->Read( data, sbFnv32( "u64" ) );
   if( !n.IsInt() )            return "u64 returned wrong type";
   if( n.AsFloat() != s.u64 )  return "u64 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "f32" ) );
+  n = src_agg->Read( data, sbFnv32( "f32" ) );
   if( !n.IsFloat() )          return "f32 returned wrong type";
   if( n.AsFloat() != s.f32 )  return "f32 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "i32" ) );
+  n = src_agg->Read( data, sbFnv32( "i32" ) );
   if( !n.IsInt() )            return "i32 returned wrong type";
   if( n.AsFloat() != s.i32 )  return "i32 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "u32" ) );
+  n = src_agg->Read( data, sbFnv32( "u32" ) );
   if( !n.IsInt() )            return "u32 returned wrong type";
   if( n.AsFloat() != s.u32 )  return "u32 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "i16" ) );
+  n = src_agg->Read( data, sbFnv32( "i16" ) );
   if( !n.IsInt() )            return "i16 returned wrong type";
   if( n.AsFloat() != s.i16 )  return "i16 returned wrong value";
   
-  n = src_agg.Read( data, Fnv32( "u8" ) );
+  n = src_agg->Read( data, sbFnv32( "u8" ) );
   if( !n.IsInt() )            return "u8 returned wrong type";
   if( n.AsFloat() != s.u8 )   return "u8 returned wrong value";
-  
+
+  delete src_agg;
   return NULL;
 }

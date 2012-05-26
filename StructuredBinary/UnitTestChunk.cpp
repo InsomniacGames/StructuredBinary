@@ -15,7 +15,7 @@
 #include <stdint.h>
 
 // Project
-#include "Chunk.h"
+#include "sbChunk.h"
 
 const char* UnitTestChunk::RunTest() const
 {
@@ -39,16 +39,16 @@ const char* UnitTestChunk::RunTest() const
   uint32_t sour_size    = ( uint32_t )strlen( sour_data   ) + 1;
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
-  Chunk* root = new Chunk( top_id );
-  root->AddChild( new Chunk( sweet_id, sweet_data, sweet_size ) );
-  root->AddChild( new Chunk( salt_id, salt_data, salt_size ) );
+  sbChunk* root = new sbChunk( top_id );
+  root->AddChild( new sbChunk( sweet_id, sweet_data, sweet_size ) );
+  root->AddChild( new sbChunk( salt_id, salt_data, salt_size ) );
   
-  Chunk* child = root->AddChild( new Chunk( child_id ) );
-  child->AddChild( new Chunk( sour_id, sour_data, sour_size ) );
-  child->AddChild( new Chunk( bitter_id, bitter_data, bitter_size ) );
-  child->AddChild( new Chunk( umami_id, umami_data, umami_size ) );
+  sbChunk* child = root->AddChild( new sbChunk( child_id ) );
+  child->AddChild( new sbChunk( sour_id, sour_data, sour_size ) );
+  child->AddChild( new sbChunk( bitter_id, bitter_data, bitter_size ) );
+  child->AddChild( new sbChunk( umami_id, umami_data, umami_size ) );
 
-  const Chunk* c = root;
+  const sbChunk* c = root;
   if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
   if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
   c = c->GetChild();
@@ -62,7 +62,7 @@ const char* UnitTestChunk::RunTest() const
   c = c->GetSibling();
   if( c->GetChildCount() != 3 )         return "Third child wrong child count";
   if( c->GetDataSize() != 0 )           return "Third child wrong data size";
-  const Chunk* temp = c->GetSibling();
+  const sbChunk* temp = c->GetSibling();
   if( temp != NULL )                    return "Child list not properly terminated";
 
   c = c->GetChild();

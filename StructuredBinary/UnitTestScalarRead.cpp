@@ -15,9 +15,9 @@
 #include <stdint.h>
 
 // Project
-#include "Number.h"
-#include "Field.h"
-#include "Aggregate.h"
+#include "sbNumber.h"
+#include "sbField.h"
+#include "sbStruct.h"
 
 //--------------------------------------------------------------------------------------------------
 
@@ -39,17 +39,17 @@ struct ReadStruct
 
 const char* UnitTestScalarRead::RunTest() const
 {
-  Aggregate agg( 10 );
-  agg.AddField( Fnv32( "f64" ), kField_F64 );
-  agg.AddField( Fnv32( "i64" ), kField_I64 );
-  agg.AddField( Fnv32( "u64" ), kField_U64 );
-  agg.AddField( Fnv32( "f32" ), kField_F32 );
-  agg.AddField( Fnv32( "i32" ), kField_I32 );
-  agg.AddField( Fnv32( "u32" ), kField_U32 );
-  agg.AddField( Fnv32( "i16" ), kField_I16 );
-  agg.AddField( Fnv32( "u16" ), kField_U16 );
-  agg.AddField( Fnv32( "i8"  ), kField_I8 );
-  agg.AddField( Fnv32( "u8"  ), kField_U8 );
+  sbStruct agg( 10 );
+  agg.AddField( sbFnv32( "f64" ), kField_F64 );
+  agg.AddField( sbFnv32( "i64" ), kField_I64 );
+  agg.AddField( sbFnv32( "u64" ), kField_U64 );
+  agg.AddField( sbFnv32( "f32" ), kField_F32 );
+  agg.AddField( sbFnv32( "i32" ), kField_I32 );
+  agg.AddField( sbFnv32( "u32" ), kField_U32 );
+  agg.AddField( sbFnv32( "i16" ), kField_I16 );
+  agg.AddField( sbFnv32( "u16" ), kField_U16 );
+  agg.AddField( sbFnv32( "i8"  ), kField_I8 );
+  agg.AddField( sbFnv32( "u8"  ), kField_U8 );
   agg.FixSizeAndStride();
 
   ReadStruct s;
@@ -65,36 +65,36 @@ const char* UnitTestScalarRead::RunTest() const
   s.u8  = 0x40;
   const char* data = ( const char* )&s;
   
-  Number n;
-  n = agg.Read( data, Fnv32( "f64" ) );
+  sbNumber n;
+  n = agg.Read( data, sbFnv32( "f64" ) );
   if( !n.IsFloat() )          return "f64 returned wrong type";
   if( n.AsFloat() != s.f64 )  return "f64 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "i64" ) );
+  n = agg.Read( data, sbFnv32( "i64" ) );
   if( !n.IsInt() )            return "i64 returned wrong type";
   if( n.AsFloat() != s.i64 )  return "i64 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "u64" ) );
+  n = agg.Read( data, sbFnv32( "u64" ) );
   if( !n.IsInt() )            return "u64 returned wrong type";
   if( n.AsFloat() != s.u64 )  return "u64 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "f32" ) );
+  n = agg.Read( data, sbFnv32( "f32" ) );
   if( !n.IsFloat() )          return "f32 returned wrong type";
   if( n.AsFloat() != s.f32 )  return "f32 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "i32" ) );
+  n = agg.Read( data, sbFnv32( "i32" ) );
   if( !n.IsInt() )            return "i32 returned wrong type";
   if( n.AsFloat() != s.i32 )  return "i32 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "u32" ) );
+  n = agg.Read( data, sbFnv32( "u32" ) );
   if( !n.IsInt() )            return "u32 returned wrong type";
   if( n.AsFloat() != s.u32 )  return "u32 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "i16" ) );
+  n = agg.Read( data, sbFnv32( "i16" ) );
   if( !n.IsInt() )            return "i16 returned wrong type";
   if( n.AsFloat() != s.i16 )  return "i16 returned wrong value";
   
-  n = agg.Read( data, Fnv32( "u8" ) );
+  n = agg.Read( data, sbFnv32( "u8" ) );
   if( !n.IsInt() )            return "u8 returned wrong type";
   if( n.AsFloat() != s.u8 )   return "u8 returned wrong value";
   
