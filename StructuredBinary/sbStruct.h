@@ -66,7 +66,7 @@ public:
   uint32_t GetScalarName( int index ) const;
 */
   virtual void WriteSchema( sbByteWriter* writer ) const;
-  static const sbStruct* ReadSchema( sbByteReader* reader );
+  static const sbStruct* NewFromSchema( sbByteReader* reader );
 
   void AddScalar( uint32_t name, sbFieldType field_type, int count = 1 );
   void AddStruct( uint32_t name, const sbStruct* str, int count = 1 )
@@ -75,6 +75,8 @@ public:
   }
 
 private:
+
+  void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar, int offset );
 
   void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar );
   void AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str );

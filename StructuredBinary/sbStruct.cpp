@@ -119,37 +119,42 @@ int sbStruct::GetAlign() const
   return m_Align;
 }
 
-void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar )
+void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar, int offset )
 {
   int index = m_ScalarCount++;
   if( index < m_ScalarMax )
-  {
-    int scalar_size = scalar->GetSize();
-    int scalar_align = scalar->GetAlign();
-    int scalar_offset = FixAlign( m_Size, scalar_align );
-    
+  {    
     ScalarEntry* entry = m_Scalars + index;
-
+    
     entry->m_Name   = name;
-    entry->m_Offset = scalar_offset;
+    entry->m_Offset = offset;
     entry->m_Type   = field_type;
     entry->m_Count  = count;
     entry->m_Scalar  = scalar;
-    
-    m_Size = scalar_offset + scalar_size * count;
-    m_Align = scalar_align > m_Align ? scalar_align : m_Align;
   }
+}
+
+void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar )
+{
+  int scalar_size = scalar->GetSize();
+  int scalar_align = scalar->GetAlign();
+  int scalar_offset = FixAlign( m_Size, scalar_align );
+  
+  AddScalar( name, field_type, count, scalar, scalar_offset );
+  
+  m_Size = scalar_offset + scalar_size * count;
+  m_Align = scalar_align > m_Align ? scalar_align : m_Align;
 }
 
 void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str )
 {
+  int scalar_size = str->GetSize();
+  int scalar_align = str->GetAlign();
+  int scalar_offset = FixAlign( m_Size, scalar_align );
+
   int index = m_StructCount++;
   if( index < m_StructMax )
   {
-    int scalar_size = str->GetSize();
-    int scalar_align = str->GetAlign();
-    int scalar_offset = FixAlign( m_Size, scalar_align );
-
     StructEntry* entry = m_Structs + index;
 
     entry->m_Name   = name;
@@ -157,10 +162,10 @@ void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, cons
     entry->m_Type   = field_type;
     entry->m_Count  = count;
     entry->m_Struct = str;
-
-    m_Size = scalar_offset + scalar_size * count;
-    m_Align = scalar_align > m_Align ? scalar_align : m_Align;
   }
+
+  m_Size = scalar_offset + scalar_size * count;
+  m_Align = scalar_align > m_Align ? scalar_align : m_Align;
 }
 
 
@@ -175,7 +180,7 @@ sbStruct::~sbStruct()
   delete[] m_Structs;
 }
 
-static const sbScalar* NewScalar( sbFieldType field_type )
+static const sbScalar* FindScalar( sbFieldType field_type )
 {
   switch( field_type )
   {
@@ -195,13 +200,19 @@ static const sbScalar* NewScalar( sbFieldType field_type )
   }
 }
 
-const sbStruct* sbStruct::ReadSchema( sbByteReader* reader )
+const sbStruct* sbStruct::NewFromSchema( sbByteReader* reader )
 {
   sbStruct* a = new sbStruct( 100, 100 );
-  while( reader->GetRemain() > 0 )
+
+  a->m_Size = reader->Read32();
+  a->m_Align = reader->Read8();
+
+  sbFieldType field_type = ( sbFieldType )reader->Read8();
+  while( field_type != sbFieldType_End )
   {
+    uint16_t offset = reader->Read16();
     uint32_t name = reader->Read32();
-    sbFieldType field_type = ( sbFieldType )reader->Read8();
+
     const sbScalar* f = NULL;
 
     switch( field_type )
@@ -210,28 +221,36 @@ const sbStruct* sbStruct::ReadSchema( sbByteReader* reader )
         f = new sbScalarF64();
         break;
       default:
-        f = NewScalar( field_type );
+        f = FindScalar( field_type );
         break;
     }
 
-    a->AddScalar( name, field_type, 1, f );
+    a->AddScalar( name, field_type, 1, f, offset );
+
+    field_type = ( sbFieldType )reader->Read8();
   }
   return a;
 }
 
 void sbStruct::WriteSchema( sbByteWriter* writer ) const
 {
+  writer->Write32( m_Size );
+  writer->Write8( m_Align );
+
   for( int i = 0; i < m_ScalarCount; ++i )
   {
     ScalarEntry* entry = m_Scalars + i;
 
-    writer->Write32( entry->m_Name );
     writer->Write8( ( uint8_t )entry->m_Type );
+    writer->Write16( entry->m_Offset );
+    writer->Write32( entry->m_Name );
   }
+
+  writer->Write8( ( uint8_t )sbFieldType_End );
 }
 
 void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count )
 {
-  const sbScalar* f = NewScalar( field_type );
+  const sbScalar* f = FindScalar( field_type );
   AddScalar( name, field_type, count, f );
 }

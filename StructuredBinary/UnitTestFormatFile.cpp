@@ -23,7 +23,7 @@
 #include "sbByteReader.h"
 #include "sbByteWriter.h"
 
-struct ReadStruct
+struct SourceStruct
 {
   double    f64;
   int64_t   i64;
@@ -37,10 +37,22 @@ struct ReadStruct
   uint8_t   u8;
 };
 
+struct DestStruct
+{
+  uint64_t  u64;
+  int64_t   i64;
+  double    f64;
+  uint32_t  u32;
+  int32_t   i32;
+  float     f32;
+  uint8_t   u8;
+  int8_t    i8;
+  uint16_t  u16;
+  int16_t   i16;
+};
 
 const char* UnitTestFormatFile::RunTest() const
 {
-/*
   sbStruct org_agg( 100, 100 );
   org_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
   org_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
@@ -55,61 +67,55 @@ const char* UnitTestFormatFile::RunTest() const
 
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
-
   org_agg.WriteSchema( &w );
   
   int write_size = w.GetSize();
-
+  printf( "size = %d\n", write_size );
   sbByteReader r( format_buffer, format_buffer + write_size );
-  const sbStruct* src_agg = ( const sbStruct* )sbStruct::ReadSchema( &r );
+  const sbStruct* src_agg = ( const sbStruct* )sbStruct::NewFromSchema( &r );
 
-  ReadStruct s;
-  s.f64 = 3.14159265358979;
-  s.i64 = 0x69b0aee3db807b41ULL;
-  s.u64 = 0x0dbf9bf837f5adb0ULL;
-  s.f32 = 2.71828f;
-  s.i32 = 0xc4aa8c4a;
-  s.u32 = 0x140bbf84;
-  s.i16 = 0x4a90;
-  s.u16 = 0x6eb6;
-  s.i8  = 0xc3;
-  s.u8  = 0x40;
-  const char* data = ( const char* )&s;
+  sbStruct dest_agg( 100, 100 );
+  dest_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
+  dest_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
+  dest_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
+  dest_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_U32 );
+  dest_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_I32 );
+  dest_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_F32 );
+  dest_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8  );
+  dest_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_I8  );
+  dest_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_U16 );
+  dest_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_I16 );
   
-  sbScalarValue value;
-  n = src_agg->Read( data, sbFnv32( "f64" ) );
-  if( !n.IsFloat() )          return "f64 returned wrong type";
-  if( n.AsFloat() != s.f64 )  return "f64 returned wrong value";
+  SourceStruct src;
+  src.f64 = 3.14159265358979;
+  src.i64 = 0x69b0aee3db807b41ULL;
+  src.u64 = 0x0dbf9bf837f5adb0ULL;
+  src.f32 = 2.71828f;
+  src.i32 = 0xc4aa8c4a;
+  src.u32 = 0x140bbf84;
+  src.i16 = 0x4a90;
+  src.u16 = 0x6eb6;
+  src.i8  = 0xc3;
+  src.u8  = 0x40;
+
+  DestStruct dest;
+
+  const char* src_data = ( const char* )&src;
+  char* dest_data = ( char* )&dest;
   
-  n = src_agg->Read( data, sbFnv32( "i64" ) );
-  if( !n.IsInt() )            return "i64 returned wrong type";
-  if( n.AsFloat() != s.i64 )  return "i64 returned wrong value";
+  dest_agg.Convert( dest_data, src_data, src_agg );
   
-  n = src_agg->Read( data, sbFnv32( "u64" ) );
-  if( !n.IsInt() )            return "u64 returned wrong type";
-  if( n.AsFloat() != s.u64 )  return "u64 returned wrong value";
-  
-  n = src_agg->Read( data, sbFnv32( "f32" ) );
-  if( !n.IsFloat() )          return "f32 returned wrong type";
-  if( n.AsFloat() != s.f32 )  return "f32 returned wrong value";
-  
-  n = src_agg->Read( data, sbFnv32( "i32" ) );
-  if( !n.IsInt() )            return "i32 returned wrong type";
-  if( n.AsFloat() != s.i32 )  return "i32 returned wrong value";
-  
-  n = src_agg->Read( data, sbFnv32( "u32" ) );
-  if( !n.IsInt() )            return "u32 returned wrong type";
-  if( n.AsFloat() != s.u32 )  return "u32 returned wrong value";
-  
-  n = src_agg->Read( data, sbFnv32( "i16" ) );
-  if( !n.IsInt() )            return "i16 returned wrong type";
-  if( n.AsFloat() != s.i16 )  return "i16 returned wrong value";
-  
-  n = src_agg->Read( data, sbFnv32( "u8" ) );
-  if( !n.IsInt() )            return "u8 returned wrong type";
-  if( n.AsFloat() != s.u8 )   return "u8 returned wrong value";
+  if( dest.f64 != src.f64 )  return "f64 converted incorrectly";
+  if( dest.f32 != src.f32 )  return "f32 converted incorrectly";
+  if( dest.i64 != src.i64 )  return "i64 converted incorrectly";
+  if( dest.u64 != src.u64 )  return "u64 converted incorrectly";
+  if( dest.i32 != src.i32 )  return "i32 converted incorrectly";
+  if( dest.u32 != src.u32 )  return "u32 converted incorrectly";
+  if( dest.i16 != src.i16 )  return "i16 converted incorrectly";
+  if( dest.u16 != src.u16 )  return "u16 converted incorrectly";
+  if( dest.i8  != src.i8  )  return "i8 converted incorrectly";
+  if( dest.u8  != src.u8  )  return "u8 converted incorrectly";
 
   delete src_agg;
-*/
   return NULL;
 }

@@ -49,7 +49,7 @@ int main (int argc, const char * argv[])
   for( int i = 0; i < test_count; ++i )
   {
     const UnitTest* test = test_array[ i ];
-    printf( "Testing %s\n", test->GetName() );
+    printf( "[%2d] Testing %s\n", i, test->GetName() );
     const char* error_message = test->Run();
     if( error_message )
     {
