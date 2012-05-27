@@ -20,6 +20,7 @@
 #include "UnitTestChunkFile.h"
 #include "UnitTestAlign.h"
 #include "UnitTestFormatFile.h"
+#include "UnitTestArrayConvert.h"
 
 const UnitTest* AllTests[] =
 {
@@ -31,6 +32,7 @@ const UnitTest* AllTests[] =
   new UnitTestChunk(),
   new UnitTestChunkFile(),
   new UnitTestFormatFile(),
+  new UnitTestArrayConvert(),
 };
 
 

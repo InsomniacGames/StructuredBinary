@@ -22,6 +22,7 @@
 		BE57CC5915607B3500FFCB91 /* sbStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5815607B3500FFCB91 /* sbStruct.cpp */; };
 		BE57CC5D1560AF6000FFCB91 /* UnitTestNumberConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */; };
 		BE57CC5F1560B79400FFCB91 /* UnitTestScalarConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */; };
+		BE6104541571E2020089A922 /* UnitTestArrayConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE6104531571E2020089A922 /* UnitTestArrayConvert.cpp */; };
 		BE6D49FB156856ED00F1402E /* UnitTestFormatFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
@@ -71,6 +72,8 @@
 		BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestNumberConvert.cpp; sourceTree = "<group>"; };
 		BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestScalarConvert.cpp; sourceTree = "<group>"; };
 		BE57CC601560B7A000FFCB91 /* UnitTestScalarConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestScalarConvert.h; sourceTree = "<group>"; };
+		BE6104531571E2020089A922 /* UnitTestArrayConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestArrayConvert.cpp; sourceTree = "<group>"; };
+		BE6104551571E2240089A922 /* UnitTestArrayConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestArrayConvert.h; sourceTree = "<group>"; };
 		BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestFormatFile.cpp; sourceTree = "<group>"; };
 		BE6D49FD156856F800F1402E /* UnitTestFormatFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestFormatFile.h; sourceTree = "<group>"; };
 		BE9275F4156F2130008F1288 /* sbByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteReader.h; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 				BE147C6615649C3200C8A199 /* UnitTestChunk.h */,
 				BE147C761564C0DA00C8A199 /* UnitTestChunkFile.h */,
 				BE6D49FD156856F800F1402E /* UnitTestFormatFile.h */,
+				BE6104551571E2240089A922 /* UnitTestArrayConvert.h */,
 				BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */,
 				BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */,
 				BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */,
@@ -109,6 +113,7 @@
 				BE147C6515649C3200C8A199 /* UnitTestChunk.cpp */,
 				BE147C741564C0CF00C8A199 /* UnitTestChunkFile.cpp */,
 				BE6D49FA156856ED00F1402E /* UnitTestFormatFile.cpp */,
+				BE6104531571E2020089A922 /* UnitTestArrayConvert.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 				BE6D49FB156856ED00F1402E /* UnitTestFormatFile.cpp in Sources */,
 				BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */,
 				BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */,
+				BE6104541571E2020089A922 /* UnitTestArrayConvert.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

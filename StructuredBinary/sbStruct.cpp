@@ -21,12 +21,27 @@
 void sbStruct::Convert( char* write_data, const char* read_data, const sbField* read_field ) const
 {
   const sbStruct* read_struct = ( const sbStruct* )read_field;  // !!! UGH
+  const sbStruct::Entry* write_entry = m_Entry;
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    uint32_t name = m_Entry[ i ].m_Name;
+    uint32_t name = write_entry->m_Name;
     const Entry* read_entry = read_struct->FindEntry( name );
+    
+    char* write_element = write_data + m_Entry[ i ].m_Offset;
+    const char* read_element = read_data + read_entry->m_Offset;
 
-    m_Entry[ i ].m_Field->Convert( write_data + m_Entry[ i ].m_Offset, read_data + read_entry->m_Offset, read_entry->m_Field );
+    int write_stride = write_entry->m_Field->GetElementStride();
+    int read_stride = read_entry->m_Field->GetElementStride();
+
+    int count = write_entry->m_Count;
+    for( int j = 0; j < count; ++j )
+    {
+      write_entry->m_Field->Convert( write_element, read_element, read_entry->m_Field );
+      write_element += write_stride;
+      read_element += read_stride;
+    }
+    
+    write_entry += 1;
   }
 }
 
@@ -52,13 +67,14 @@ void sbStruct::FixSizeAndStride()
   {
     int field_stride = m_Entry[ i ].m_Field->GetElementStride();
     int field_align = m_Entry[ i ].m_Field->GetElementAlign();
+    int count = m_Entry[ i ].m_Count;
     if( max_align < field_align )
     {
       max_align = field_align;
     }
     offset += ( -offset ) & ( field_align - 1 );
     m_Entry[ i ].m_Offset = offset;
-    offset += field_stride;
+    offset += field_stride * count;
   }
   m_ElementSize = offset;
   m_ElementStride = offset;
