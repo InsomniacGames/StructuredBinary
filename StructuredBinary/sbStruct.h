@@ -77,6 +77,7 @@ public:
 private:
 
   void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar, int offset );
+  void AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str, int offset );
 
   void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar );
   void AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str );

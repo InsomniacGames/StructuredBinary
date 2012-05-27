@@ -136,36 +136,41 @@ void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, cons
 
 void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar )
 {
-  int scalar_size = scalar->GetSize();
-  int scalar_align = scalar->GetAlign();
-  int scalar_offset = FixAlign( m_Size, scalar_align );
+  int size = scalar->GetSize();
+  int align = scalar->GetAlign();
+  int offset = FixAlign( m_Size, align );
   
-  AddScalar( name, field_type, count, scalar, scalar_offset );
+  AddScalar( name, field_type, count, scalar, offset );
   
-  m_Size = scalar_offset + scalar_size * count;
-  m_Align = scalar_align > m_Align ? scalar_align : m_Align;
+  m_Size = offset + size * count;
+  m_Align = align > m_Align ? align : m_Align;
 }
 
-void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str )
+void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str, int offset )
 {
-  int scalar_size = str->GetSize();
-  int scalar_align = str->GetAlign();
-  int scalar_offset = FixAlign( m_Size, scalar_align );
-
   int index = m_StructCount++;
   if( index < m_StructMax )
   {
     StructEntry* entry = m_Structs + index;
-
+    
     entry->m_Name   = name;
-    entry->m_Offset = scalar_offset;
+    entry->m_Offset = offset;
     entry->m_Type   = field_type;
     entry->m_Count  = count;
     entry->m_Struct = str;
   }
+}
 
-  m_Size = scalar_offset + scalar_size * count;
-  m_Align = scalar_align > m_Align ? scalar_align : m_Align;
+void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str )
+{
+  int size = str->GetSize();
+  int align = str->GetAlign();
+  int offset = FixAlign( m_Size, align );
+  
+  AddStruct( name, field_type, count, str, offset );
+  
+  m_Size = offset + size * count;
+  m_Align = align > m_Align ? align : m_Align;
 }
 
 
@@ -213,19 +218,21 @@ const sbStruct* sbStruct::NewFromSchema( sbByteReader* reader )
     uint16_t offset = reader->Read16();
     uint32_t name = reader->Read32();
 
-    const sbScalar* f = NULL;
-
     switch( field_type )
     {
       case sbFieldType_Struct:
-        f = new sbScalarF64();
+      {
+        const sbStruct* s = NewFromSchema( reader );
+        a->AddStruct( name, field_type, 1, s, offset );
         break;
+      }
       default:
-        f = FindScalar( field_type );
+      {
+        const sbScalar* f = FindScalar( field_type );
+        a->AddScalar( name, field_type, 1, f, offset );
         break;
+      }
     }
-
-    a->AddScalar( name, field_type, 1, f, offset );
 
     field_type = ( sbFieldType )reader->Read8();
   }
@@ -236,16 +243,25 @@ void sbStruct::WriteSchema( sbByteWriter* writer ) const
 {
   writer->Write32( m_Size );
   writer->Write8( m_Align );
-
+  
   for( int i = 0; i < m_ScalarCount; ++i )
   {
     ScalarEntry* entry = m_Scalars + i;
-
+    
     writer->Write8( ( uint8_t )entry->m_Type );
     writer->Write16( entry->m_Offset );
     writer->Write32( entry->m_Name );
   }
-
+  
+  for( int i = 0; i < m_StructCount; ++i )
+  {
+    StructEntry* entry = m_Structs + i;
+    
+    writer->Write8( ( uint8_t )entry->m_Type );
+    writer->Write16( entry->m_Offset );
+    writer->Write32( entry->m_Name );
+    entry->m_Struct->WriteSchema( writer );
+  }
   writer->Write8( ( uint8_t )sbFieldType_End );
 }
 
