@@ -18,6 +18,17 @@
 #include "sbFnv.h"
 #include "sbScalar.h"
 
+sbScalarF64 s_ScalarF64;
+sbScalarF32 s_ScalarF32;
+sbScalarU64 s_ScalarU64;
+sbScalarI64 s_ScalarI64;
+sbScalarU32 s_ScalarU32;
+sbScalarI32 s_ScalarI32;
+sbScalarU16 s_ScalarU16;
+sbScalarI16 s_ScalarI16;
+sbScalarU8 s_ScalarU8;
+sbScalarI8 s_ScalarI8;
+
 void sbStruct::Convert( char* write_data, const char* read_data, const sbStruct* read_struct ) const
 {
   // Convert scalars
@@ -155,11 +166,6 @@ void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, cons
 
 sbStruct::~sbStruct()
 {
-  // TO DO: no need to create new scalars - can use statics.
-  for( int i = 0; i < m_ScalarCount; ++i )
-  {
-    delete m_Scalars[ i ].m_Scalar;
-  }
   delete[] m_Scalars;
 
   for( int i = 0; i < m_StructCount; ++i )
@@ -173,30 +179,19 @@ static const sbScalar* NewScalar( sbFieldType field_type )
 {
   switch( field_type )
   {
-    case sbFieldType_ScalarI8:
-      return new sbScalarI8();
-    case sbFieldType_ScalarU8:
-      return new sbScalarU8();
-    case sbFieldType_ScalarI16:
-      return new sbScalarI16();
-    case sbFieldType_ScalarU16:
-      return new sbScalarU16();
-    case sbFieldType_ScalarI32:
-      return new sbScalarI32();
-    case sbFieldType_ScalarU32:
-      return new sbScalarU32();
-    case sbFieldType_ScalarI64:
-      return new sbScalarI64();
-    case sbFieldType_ScalarU64:
-      return new sbScalarU64();
-    case sbFieldType_ScalarF32:
-      return new sbScalarF32();
-    case sbFieldType_ScalarF64:
-      return new sbScalarF64();
-    case sbFieldType_Struct:
-      return new sbScalarF64();
+    case sbFieldType_ScalarF64:     return &s_ScalarF64;
+    case sbFieldType_ScalarF32:     return &s_ScalarF32;
+    case sbFieldType_ScalarI64:     return &s_ScalarI64;
+    case sbFieldType_ScalarU64:     return &s_ScalarU64;
+    case sbFieldType_ScalarI32:     return &s_ScalarI32;
+    case sbFieldType_ScalarU32:     return &s_ScalarU32;
+    case sbFieldType_ScalarI16:     return &s_ScalarI16;
+    case sbFieldType_ScalarU16:     return &s_ScalarU16;
+    case sbFieldType_ScalarI8:      return &s_ScalarI8;
+    case sbFieldType_ScalarU8:      return &s_ScalarU8;
     default:
       assert( false );
+      return NULL;
   }
 }
 
