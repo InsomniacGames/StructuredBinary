@@ -12,40 +12,36 @@
 #include <cstring>
 #include <stdint.h>
 #include <assert.h>
+#include <stdio.h>
 // Project
 #include "sbNumber.h"
 #include "sbFnv.h"
 #include "sbField.h"
 
-void sbStruct::Convert( char* dst_data, const ReadCursor& rc ) const
+void sbStruct::Convert( char* write_data, const char* read_data, const sbField* read_field ) const
 {
+  const sbStruct* read_struct = ( const sbStruct* )read_field;  // !!! UGH
   for( int i = 0; i < m_EntryCount; ++i )
   {
     uint32_t name = m_Entry[ i ].m_Name;
-    m_Entry[ i ].m_Field->Convert( dst_data + m_Entry[ i ].m_Offset, rc.m_Field->Find( rc.m_Data, name ) );
+    const Entry* read_entry = read_struct->FindEntry( name );
+
+    m_Entry[ i ].m_Field->Convert( write_data + m_Entry[ i ].m_Offset, read_data + read_entry->m_Offset, read_entry->m_Field );
   }
 }
 
-ReadCursor sbStruct::Find( const char* data, uint32_t name ) const
+const sbStruct::Entry* sbStruct::FindEntry( uint32_t name ) const
 {
+  const sbStruct::Entry* entry = m_Entry;
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    if( m_Entry[ i ].m_Name == name )
+    if( entry->m_Name == name )
     {
-      return ReadCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
-    }
+      return entry;
+    }    
+    entry += 1;
   }
-  return ReadCursor( NULL, 0, NULL );
-}
-
-WriteCursor sbStruct::Find( char* data, uint32_t name ) const
-{
-  for( int i = 0; i < m_EntryCount; ++i )
-  {
-    if( m_Entry[ i ].m_Name == name )
-      return WriteCursor( data + m_Entry[ i ].m_Offset, m_Entry[ i ].m_Name, m_Entry[ i ].m_Field );
-  }
-  return WriteCursor( NULL, 0, NULL );
+  return NULL;
 }
 
 void sbStruct::FixSizeAndStride()
@@ -71,7 +67,8 @@ void sbStruct::FixSizeAndStride()
 
 sbFieldType sbStruct::GetFieldType( int index ) const
 {
-  return GetField( index )->GetType();
+  assert( index < m_EntryCount );
+  return m_Entry[ index ].m_Type;
 }
 
 const sbField* sbStruct::GetField( int index ) const
@@ -86,13 +83,15 @@ uint32_t sbStruct::GetFieldName( int index ) const
   return m_Entry[ index ].m_Name;
 }
 
-void sbStruct::AddField( uint32_t name, const sbField* field )
+void sbStruct::AddField( uint32_t name, sbFieldType field_type, int count, const sbField* field )
 {
   int index = m_EntryCount++;
   if( index < m_EntryMax )
   {
     m_Entry[ index ].m_Name = name;
     m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
+    m_Entry[ index ].m_Type = field_type;
+    m_Entry[ index ].m_Count = count;
     m_Entry[ index ].m_Field = field;
   }
 }
@@ -108,6 +107,37 @@ sbStruct::~sbStruct()
   delete[] m_Entry;
 }
 
+static const sbField* NewScalar( sbFieldType field_type )
+{
+  switch( field_type )
+  {
+    case kField_I8:
+      return new sbFieldI8();
+    case kField_U8:
+      return new sbFieldU8();
+    case kField_I16:
+      return new sbFieldI16();
+    case kField_U16:
+      return new sbFieldU16();
+    case kField_I32:
+      return new sbFieldI32();
+    case kField_U32:
+      return new sbFieldU32();
+    case kField_I64:
+      return new sbFieldI64();
+    case kField_U64:
+      return new sbFieldU64();
+    case kField_F32:
+      return new sbFieldF32();
+    case kField_F64:
+      return new sbFieldF64();
+    case kField_Struct:
+      return new sbFieldF64();
+    default:
+      assert( false );
+  }
+}
+
 const sbField* sbStruct::ReadSchema( sbByteReader* reader )
 {
   sbStruct* a = new sbStruct( 100 );
@@ -115,8 +145,19 @@ const sbField* sbStruct::ReadSchema( sbByteReader* reader )
   {
     uint32_t name = reader->Read32();
     sbFieldType field_type = ( sbFieldType )reader->Read8();
-    const sbField* f = GetInfo( field_type ).read_field( reader );  
-    a->AddField( name, f );
+    const sbField* f = NULL;
+
+    switch( field_type )
+    {
+      case kField_Struct:
+        f = new sbFieldF64();
+        break;
+      default:
+        f = NewScalar( field_type );
+        break;
+    }
+
+    a->AddField( name, field_type, 1, f );
   }
   a->FixSizeAndStride();
   return a;
@@ -126,17 +167,25 @@ void sbStruct::WriteSchema( sbByteWriter* writer ) const
 {
   for( int i = 0; i < GetFieldCount(); ++i )
   {
-    uint32_t name = GetFieldName( i ); 
-    const sbField* field = GetField( i );
-    writer->Write32( name );
-    field->WriteSchema( writer );
+    writer->Write32( GetFieldName( i ) );
+    writer->Write8( GetFieldType( i ) );
   }
 }
 
-void sbStruct::AddField( uint32_t name, sbFieldType field_type )
+void sbStruct::AddField( uint32_t name, sbFieldType field_type, int count )
 {
-  const sbField* f = GetInfo( field_type ).read_field( NULL );   // ???
-  AddField( name, f );
+  const sbField* f = NewScalar( field_type );
+  AddField( name, field_type, count, f );
+}
+
+sbNumber sbStruct::Read( const char* read_data, uint32_t name ) const
+{
+  const Entry* read_entry = FindEntry( name );
+  if( read_entry )
+  {
+    return read_entry->m_Field->ReadNumber( read_data + read_entry->m_Offset );
+  }
+  return sbNumber::Null();
 }
 
 

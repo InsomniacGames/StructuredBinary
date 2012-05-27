@@ -20,6 +20,23 @@
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
+enum sbFieldType
+{
+  kField_End = 0,
+  kField_I8,
+  kField_U8,
+  kField_I16,
+  kField_U16,
+  kField_I32,
+  kField_U32,
+  kField_I64,
+  kField_U64,
+  kField_F32,
+  kField_F64,
+  kField_Struct,
+  kField_Count
+};
+
 class sbStruct : public sbField
 {
 public:
@@ -31,30 +48,18 @@ public:
 
   virtual ~sbStruct();
 
-  void AddSubStructTemp( uint32_t name, const sbStruct* agg ) { AddField( name, agg ); }
-  
+  void AddSubStructTemp( uint32_t name, const sbStruct* agg, int count = 1 ) { AddField( name, kField_Struct, count, agg ); }
+
   int GetFieldCount() const { return m_EntryCount; }
 
-  sbNumber Read( const char* data, uint32_t name ) const
-  {
-    ReadCursor rc = Find( data, name );
-    if( rc.m_Data )
-    {
-      return rc.m_Field->ReadNumber( rc.m_Data );
-    }
-    return sbNumber::Null();
-  }
-
-  virtual ReadCursor Find( const char* data, uint32_t name ) const;
-  virtual WriteCursor Find( char* data, uint32_t name ) const;
+  sbNumber Read( const char* data, uint32_t name ) const;
   
-  virtual void Convert( char* dst_data, const ReadCursor& rc ) const;
+  virtual void Convert( char* write_data, const char* read_data, const sbField* read_field ) const;
 
   virtual void FixSizeAndStride();
   virtual int GetElementSize() const { return m_ElementSize; }
   virtual int GetElementStride() const { return m_ElementStride; }
   virtual int GetElementAlign() const { return m_ElementAlign; }
-  virtual sbFieldType GetType() const { return kField_Agg; }
 
   bool IsValid() const { return m_EntryCount <= m_EntryMax; }
   
@@ -65,19 +70,18 @@ public:
   virtual void WriteSchema( sbByteWriter* writer ) const;
   static const sbField* ReadSchema( sbByteReader* reader );
 
-  void AddField( uint32_t name, sbFieldType field_type );
+  void AddField( uint32_t name, sbFieldType field_type, int count = 1 );
 
 private:
 
-  void AddField( uint32_t name, const sbField* field );
+  void AddField( uint32_t name, sbFieldType field_type, int count, const sbField* field );
 
   struct Entry
   {
-    Entry()
-    : m_Name( 0 )
-    {}
-    uint32_t      m_Name;
-    int           m_Offset;
+    sbFieldType     m_Type;
+    uint32_t        m_Name;
+    int             m_Offset;
+    int             m_Count;
     const sbField*  m_Field;
   };
 
@@ -87,10 +91,8 @@ private:
   int     m_EntryMax;
   int     m_EntryCount;
   Entry*  m_Entry;
+
+  const Entry* FindEntry( uint32_t name ) const;
 };
-
-class DataDesc;
-
-void Convert( char* dst_data, const DataDesc* dst_desc, const char* src_data, const DataDesc* src_desc );
 
 #endif

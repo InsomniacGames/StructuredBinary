@@ -16,40 +16,6 @@
 // Project
 #include "sbNumber.h"
 #include "sbFnv.h"
-#include "sbReadCursor.h"
-#include "sbWriteCursor.h"
-
-class sbField;
-class sbByteReader;
-class sbByteWriter;
-
-enum sbFieldType
-{
-  kField_Unknown = 0,
-  kField_I8,
-  kField_U8,
-  kField_I16,
-  kField_U16,
-  kField_I32,
-  kField_U32,
-  kField_I64,
-  kField_U64,
-  kField_F32,
-  kField_F64,
-  kField_Agg,
-  kField_Count
-};
-
-typedef const sbField* ( sbReadField )( sbByteReader* reader );
-
-struct sbFieldTypeInfo
-{
-  sbFieldType   field_type;
-  const char*   description;
-  sbReadField*  read_field;
-};
-
-const sbFieldTypeInfo& GetInfo( sbFieldType field_type );
 
 class sbField
 {
@@ -58,31 +24,166 @@ public:
   virtual sbNumber ReadNumber( const char* data ) const { return sbNumber::Null(); }
   virtual void WriteNumber( char* data, const sbNumber& number ) const {}
 
-  virtual void Convert( char* dst_data, const ReadCursor& rc ) const
+  virtual void Convert( char* write_data, const char* read_data, const sbField* read_field ) const
   {
-    sbNumber n = rc.m_Field->ReadNumber( rc.m_Data );
-    WriteNumber( dst_data, n );
-  }
-
-  virtual ReadCursor Find( const char* data, uint32_t name ) const
-  {
-    return ReadCursor( NULL, 0, NULL );
-  }
-
-  virtual WriteCursor Find( char* data, uint32_t name ) const
-  {
-    return WriteCursor( NULL, 0, NULL );
+    sbNumber n = read_field->ReadNumber( read_data );
+    WriteNumber( write_data, n );
   }
 
   virtual void FixSizeAndStride() {}
   virtual int GetElementSize() const = 0;
   virtual int GetElementStride() const { return GetElementSize(); }
   virtual int GetElementAlign() const = 0;
-  virtual sbFieldType GetType() const = 0;
+};
 
-  virtual void WriteSchema( sbByteWriter* writer ) const = 0;
+class sbFieldF64 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Float( *( double* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( double* )data = ( double )number.AsFloat();
+  }
+  virtual int GetElementSize() const { return sizeof( double ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( double ); };
+};
 
-private:
+class sbFieldF32 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Float( *( float* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( float* )data = ( float )number.AsFloat();
+  }
+  virtual int GetElementSize() const { return sizeof( float ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( float ); };
+};
+
+class sbFieldI64 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Int( *( int64_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( int64_t* )data = ( int64_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( int64_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( int64_t ); };
+};
+
+class sbFieldU64 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::UInt( *( uint64_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( uint64_t* )data = ( uint64_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( uint64_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint64_t ); };
+};
+
+class sbFieldI32 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Int( *( int32_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( int32_t* )data = ( int32_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( int32_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( int32_t ); };
+};
+
+class sbFieldU32 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::UInt( *( uint32_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( uint32_t* )data = ( uint32_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( uint32_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint32_t ); };
+};
+
+class sbFieldI16 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Int( *( int16_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( int16_t* )data = ( int16_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( int16_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( int16_t ); };
+};
+
+class sbFieldU16 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::UInt( *( uint16_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( uint16_t* )data = ( uint16_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( uint16_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint16_t ); };
+};
+
+class sbFieldI8 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::Int( *( int8_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( int8_t* )data = ( int8_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( int8_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( int8_t ); };
+};
+
+class sbFieldU8 : public sbField
+{
+public:
+  virtual sbNumber ReadNumber( const char* data ) const
+  {
+    return sbNumber::UInt( *( uint8_t* )data );
+  }
+  virtual void WriteNumber( char* data, const sbNumber& number ) const
+  {
+    *( uint8_t* )data = ( uint8_t )number.AsInt();
+  }
+  virtual int GetElementSize() const { return sizeof( uint8_t ); }
+  virtual int GetElementAlign() const { return ( int )__alignof( uint8_t ); };
 };
 
 #endif

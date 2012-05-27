@@ -97,8 +97,8 @@ const char* UnitTestAlign::RunTest() const
   
   const char* src_data = ( const char* )&src;
   char* dst_data = ( char* )&dst;
-  
-  dst_agg.Convert( dst_data, ReadCursor( src_data, 0, &src_agg )  );
+
+  dst_agg.Convert( dst_data, src_data, &src_agg );
   
   if( dst.u8  != src.u8  )  return "u8 converted incorrectly";
   if( dst.i8  != src.i8  )  return "i8 converted incorrectly";

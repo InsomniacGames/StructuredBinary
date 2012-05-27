@@ -96,7 +96,7 @@ const char* UnitTestScalarConvert::RunTest() const
   const char* src_data = ( const char* )&src;
   char* dest_data = ( char* )&dest;
   
-  dest_agg.Convert( dest_data, ReadCursor( src_data, 0, &src_agg )  );
+  dest_agg.Convert( dest_data, src_data, &src_agg );
 
   if( dest.f64 != src.f64 )  return "f64 converted incorrectly";
   if( dest.f32 != src.f32 )  return "f32 converted incorrectly";

@@ -103,7 +103,7 @@ const char* UnitTestSubStructConvert::RunTest() const
   const char* src_data = ( const char* )&src;
   char* dst_data = ( char* )&dst;
   
-  dst_agg.Convert( dst_data, ReadCursor( src_data, 0, &src_agg ) );
+  dst_agg.Convert( dst_data, src_data, &src_agg );
 
   if( dst.var1      != src.var1 )       return "var1 is wrong";
   if( dst.var2      != src.var2 )       return "var2 is wrong";
