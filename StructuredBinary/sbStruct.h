@@ -23,16 +23,16 @@
 enum sbFieldType
 {
   sbFieldType_End = 0,
-  sbFieldType_ScalarI8,
-  sbFieldType_ScalarU8,
-  sbFieldType_ScalarI16,
-  sbFieldType_ScalarU16,
-  sbFieldType_ScalarI32,
-  sbFieldType_ScalarU32,
-  sbFieldType_ScalarI64,
-  sbFieldType_ScalarU64,
-  sbFieldType_ScalarF32,
-  sbFieldType_ScalarF64,
+  sbFieldType_I8,
+  sbFieldType_U8,
+  sbFieldType_I16,
+  sbFieldType_U16,
+  sbFieldType_I32,
+  sbFieldType_U32,
+  sbFieldType_I64,
+  sbFieldType_U64,
+  sbFieldType_F32,
+  sbFieldType_F64,
   sbFieldType_Struct,
   sbFieldType_Count
 };
@@ -41,8 +41,8 @@ class sbStruct
 {
 public:
   sbStruct( int scalar_max, int struct_max )
-  : m_ElementSize( 0 )
-  , m_ElementAlign( 1 )
+  : m_Size( 0 )
+  , m_Align( 1 )
   , m_ScalarMax( scalar_max )
   , m_StructMax( struct_max )
   , m_ScalarCount( 0 )
@@ -58,8 +58,8 @@ public:
 
   void Convert( char* write_data, const char* read_data, const sbStruct* read_struct ) const;
 
-  int GetElementSize() const;
-  int GetElementAlign() const;
+  int GetSize() const;
+  int GetAlign() const;
 /*
   sbFieldType GetScalarType( int index ) const;
   const sbScalar* GetScalar( int index ) const;
@@ -97,8 +97,8 @@ private:
     const sbStruct*   m_Struct;
   };
   
-  int           m_ElementSize;    // Stored UNALIGNED!!! GetElementSize() will returned this value aligned.
-  int           m_ElementAlign;
+  int           m_Size;    // Stored UNALIGNED!!! GetSize() will returned this value aligned.
+  int           m_Align;
 
   int           m_ScalarMax;
   int           m_StructMax;

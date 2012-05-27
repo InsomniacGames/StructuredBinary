@@ -57,32 +57,32 @@ struct DestStruct
 const char* UnitTestSubStructConvert::RunTest() const
 {
   sbStruct* src_sub1 = new sbStruct( 100, 100 );
-  src_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
-  src_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
+  src_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
+  src_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
 
   sbStruct* src_sub2 = new sbStruct( 100, 100 );
-  src_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
-  src_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
+  src_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
+  src_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
 
   sbStruct src_agg( 100, 100 );
-  src_agg.AddScalar( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
-  src_agg.AddScalar( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
+  src_agg.AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
+  src_agg.AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   src_agg.AddStruct( sbFnv32( "sub1" ), src_sub1 );
   src_agg.AddStruct( sbFnv32( "sub2" ), src_sub2 );
 
   sbStruct* dst_sub1 = new sbStruct( 100, 100 );
-  dst_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
-  dst_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
+  dst_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
+  dst_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
 
   sbStruct* dst_sub2 = new sbStruct( 100, 100 );
-  dst_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
-  dst_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
+  dst_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
+  dst_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
 
   sbStruct dst_agg( 100, 100 );
-  dst_agg.AddScalar    ( sbFnv32( "var2" ), sbFieldType_ScalarF32 );
+  dst_agg.AddScalar    ( sbFnv32( "var2" ), sbFieldType_F32 );
   dst_agg.AddStruct( sbFnv32( "sub1" ), dst_sub1 );
   dst_agg.AddStruct( sbFnv32( "sub2" ), dst_sub2 );
-  dst_agg.AddScalar    ( sbFnv32( "var1" ), sbFieldType_ScalarF32 );
+  dst_agg.AddScalar    ( sbFnv32( "var1" ), sbFieldType_F32 );
   
   SourceStruct src;
   src.var1      = 1.0f;

@@ -42,16 +42,16 @@ const char* UnitTestFormatFile::RunTest() const
 {
 /*
   sbStruct org_agg( 100, 100 );
-  org_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
-  org_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
-  org_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
-  org_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
-  org_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
-  org_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
-  org_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
-  org_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
-  org_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8  );
-  org_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8  );
+  org_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
+  org_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
+  org_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
+  org_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_F32 );
+  org_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_I32 );
+  org_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_U32 );
+  org_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_I16 );
+  org_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_U16 );
+  org_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_I8  );
+  org_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8  );
 
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );

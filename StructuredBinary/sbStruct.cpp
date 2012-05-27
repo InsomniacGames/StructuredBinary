@@ -41,8 +41,8 @@ void sbStruct::Convert( char* write_data, const char* read_data, const sbStruct*
     char* write_element = write_data + write_entry->m_Offset;
     const char* read_element = read_data + read_entry->m_Offset;
 
-    int write_size = write_entry->m_Scalar->GetElementSize();
-    int read_size = read_entry->m_Scalar->GetElementSize();
+    int write_size = write_entry->m_Scalar->GetSize();
+    int read_size = read_entry->m_Scalar->GetSize();
 
     int count = m_Scalars[ i ].m_Count;
     for( int j = 0; j < count; ++j )
@@ -63,8 +63,8 @@ void sbStruct::Convert( char* write_data, const char* read_data, const sbStruct*
     char* write_element = write_data + write_entry->m_Offset;
     const char* read_element = read_data + read_entry->m_Offset;
     
-    int write_size = write_entry->m_Struct->GetElementSize();
-    int read_size = read_entry->m_Struct->GetElementSize();
+    int write_size = write_entry->m_Struct->GetSize();
+    int read_size = read_entry->m_Struct->GetSize();
     
     int count = write_entry->m_Count;
     for( int j = 0; j < count; ++j )
@@ -109,14 +109,14 @@ static int FixAlign( int value, int alignment )
   return value + ( ( -value ) & ( alignment - 1 ) );
 }
 
-int sbStruct::GetElementSize() const
+int sbStruct::GetSize() const
 {
-  return FixAlign( m_ElementSize, m_ElementAlign );
+  return FixAlign( m_Size, m_Align );
 }
 
-int sbStruct::GetElementAlign() const
+int sbStruct::GetAlign() const
 {
-  return m_ElementAlign;
+  return m_Align;
 }
 
 void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar )
@@ -124,9 +124,9 @@ void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, cons
   int index = m_ScalarCount++;
   if( index < m_ScalarMax )
   {
-    int scalar_size = scalar->GetElementSize();
-    int scalar_align = scalar->GetElementAlign();
-    int scalar_offset = FixAlign( m_ElementSize, scalar_align );
+    int scalar_size = scalar->GetSize();
+    int scalar_align = scalar->GetAlign();
+    int scalar_offset = FixAlign( m_Size, scalar_align );
     
     ScalarEntry* entry = m_Scalars + index;
 
@@ -136,8 +136,8 @@ void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, cons
     entry->m_Count  = count;
     entry->m_Scalar  = scalar;
     
-    m_ElementSize = scalar_offset + scalar_size * count;
-    m_ElementAlign = scalar_align > m_ElementAlign ? scalar_align : m_ElementAlign;
+    m_Size = scalar_offset + scalar_size * count;
+    m_Align = scalar_align > m_Align ? scalar_align : m_Align;
   }
 }
 
@@ -146,9 +146,9 @@ void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, cons
   int index = m_StructCount++;
   if( index < m_StructMax )
   {
-    int scalar_size = str->GetElementSize();
-    int scalar_align = str->GetElementAlign();
-    int scalar_offset = FixAlign( m_ElementSize, scalar_align );
+    int scalar_size = str->GetSize();
+    int scalar_align = str->GetAlign();
+    int scalar_offset = FixAlign( m_Size, scalar_align );
 
     StructEntry* entry = m_Structs + index;
 
@@ -158,8 +158,8 @@ void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, cons
     entry->m_Count  = count;
     entry->m_Struct = str;
 
-    m_ElementSize = scalar_offset + scalar_size * count;
-    m_ElementAlign = scalar_align > m_ElementAlign ? scalar_align : m_ElementAlign;
+    m_Size = scalar_offset + scalar_size * count;
+    m_Align = scalar_align > m_Align ? scalar_align : m_Align;
   }
 }
 
@@ -179,16 +179,16 @@ static const sbScalar* NewScalar( sbFieldType field_type )
 {
   switch( field_type )
   {
-    case sbFieldType_ScalarF64:     return &s_ScalarF64;
-    case sbFieldType_ScalarF32:     return &s_ScalarF32;
-    case sbFieldType_ScalarI64:     return &s_ScalarI64;
-    case sbFieldType_ScalarU64:     return &s_ScalarU64;
-    case sbFieldType_ScalarI32:     return &s_ScalarI32;
-    case sbFieldType_ScalarU32:     return &s_ScalarU32;
-    case sbFieldType_ScalarI16:     return &s_ScalarI16;
-    case sbFieldType_ScalarU16:     return &s_ScalarU16;
-    case sbFieldType_ScalarI8:      return &s_ScalarI8;
-    case sbFieldType_ScalarU8:      return &s_ScalarU8;
+    case sbFieldType_F64:     return &s_ScalarF64;
+    case sbFieldType_F32:     return &s_ScalarF32;
+    case sbFieldType_I64:     return &s_ScalarI64;
+    case sbFieldType_U64:     return &s_ScalarU64;
+    case sbFieldType_I32:     return &s_ScalarI32;
+    case sbFieldType_U32:     return &s_ScalarU32;
+    case sbFieldType_I16:     return &s_ScalarI16;
+    case sbFieldType_U16:     return &s_ScalarU16;
+    case sbFieldType_I8:      return &s_ScalarI8;
+    case sbFieldType_U8:      return &s_ScalarU8;
     default:
       assert( false );
       return NULL;

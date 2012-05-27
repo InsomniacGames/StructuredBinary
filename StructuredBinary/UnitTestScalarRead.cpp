@@ -40,16 +40,16 @@ struct ReadStruct
 const char* UnitTestScalarRead::RunTest() const
 {/*
   sbStruct agg( 100, 100 );
-  agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
-  agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
-  agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
-  agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
-  agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
-  agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
-  agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
-  agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
-  agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8 );
-  agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8 );
+  agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
+  agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
+  agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
+  agg.AddScalar( sbFnv32( "f32" ), sbFieldType_F32 );
+  agg.AddScalar( sbFnv32( "i32" ), sbFieldType_I32 );
+  agg.AddScalar( sbFnv32( "u32" ), sbFieldType_U32 );
+  agg.AddScalar( sbFnv32( "i16" ), sbFieldType_I16 );
+  agg.AddScalar( sbFnv32( "u16" ), sbFieldType_U16 );
+  agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_I8 );
+  agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8 );
 
   ReadStruct s;
   s.f64 = 3.14159265358979;
