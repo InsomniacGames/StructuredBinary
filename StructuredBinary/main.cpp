@@ -21,6 +21,7 @@
 #include "UnitTestAlign.h"
 #include "UnitTestFormatFile.h"
 #include "UnitTestArrayConvert.h"
+#include "UnitTestPointer.h"
 
 const UnitTest* AllTests[] =
 {
@@ -33,6 +34,7 @@ const UnitTest* AllTests[] =
   new UnitTestChunkFile(),
   new UnitTestFormatFile(),
   new UnitTestArrayConvert(),
+  new UnitTestPointer(),
 };
 
 

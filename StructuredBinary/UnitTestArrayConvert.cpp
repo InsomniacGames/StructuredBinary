@@ -40,12 +40,10 @@ const char* UnitTestArrayConvert::RunTest() const
   sbStruct src_agg( 10 );
   src_agg.AddField( sbFnv32( "array1" ), kField_U8, 3 );
   src_agg.AddField( sbFnv32( "array2" ), kField_U8, 3 );
-  src_agg.FixSizeAndStride();
 
   sbStruct dst_agg( 10 );
   dst_agg.AddField( sbFnv32( "array2" ), kField_U8, 3 );
   dst_agg.AddField( sbFnv32( "array1" ), kField_U8, 3 );
-  dst_agg.FixSizeAndStride();
   
   SourceStruct src;
   src.array1[ 0 ] = 0x79;

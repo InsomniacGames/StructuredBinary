@@ -41,7 +41,9 @@ class sbStruct : public sbField
 {
 public:
   sbStruct( int field_max_count )
-  : m_EntryMax( field_max_count )
+  : m_ElementSize( 0 )
+  , m_ElementAlign( 1 )
+  , m_EntryMax( field_max_count )
   , m_EntryCount( 0 )
   , m_Entry( new Entry[ field_max_count ] )
   {}
@@ -56,10 +58,8 @@ public:
   
   virtual void Convert( char* write_data, const char* read_data, const sbField* read_field ) const;
 
-  virtual void FixSizeAndStride();
-  virtual int GetElementSize() const { return m_ElementSize; }
-  virtual int GetElementStride() const { return m_ElementStride; }
-  virtual int GetElementAlign() const { return m_ElementAlign; }
+  virtual int GetElementSize() const;
+  virtual int GetElementAlign() const;
 
   bool IsValid() const { return m_EntryCount <= m_EntryMax; }
   
@@ -85,8 +85,7 @@ private:
     const sbField*  m_Field;
   };
 
-  int     m_ElementSize;
-  int     m_ElementStride;
+  int     m_ElementSize;    // Stored UNALIGNED!!! GetElementSize() will returned this value aligned.
   int     m_ElementAlign;
   int     m_EntryMax;
   int     m_EntryCount;

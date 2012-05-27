@@ -26,21 +26,22 @@ void sbStruct::Convert( char* write_data, const char* read_data, const sbField* 
   {
     uint32_t name = write_entry->m_Name;
     const Entry* read_entry = read_struct->FindEntry( name );
-    
+
+    // What if not found??? Default!
+
     char* write_element = write_data + m_Entry[ i ].m_Offset;
     const char* read_element = read_data + read_entry->m_Offset;
 
-    int write_stride = write_entry->m_Field->GetElementStride();
-    int read_stride = read_entry->m_Field->GetElementStride();
+    int write_size = write_entry->m_Field->GetElementSize();
+    int read_size = read_entry->m_Field->GetElementSize();
 
     int count = write_entry->m_Count;
     for( int j = 0; j < count; ++j )
     {
       write_entry->m_Field->Convert( write_element, read_element, read_entry->m_Field );
-      write_element += write_stride;
-      read_element += read_stride;
+      write_element += write_size;
+      read_element += read_size;
     }
-    
     write_entry += 1;
   }
 }
@@ -59,26 +60,19 @@ const sbStruct::Entry* sbStruct::FindEntry( uint32_t name ) const
   return NULL;
 }
 
-void sbStruct::FixSizeAndStride()
+static int FixAlign( int value, int alignment )
 {
-  int offset = 0;
-  int max_align = 1;
-  for( int i = 0; i < m_EntryCount; ++i )
-  {
-    int field_stride = m_Entry[ i ].m_Field->GetElementStride();
-    int field_align = m_Entry[ i ].m_Field->GetElementAlign();
-    int count = m_Entry[ i ].m_Count;
-    if( max_align < field_align )
-    {
-      max_align = field_align;
-    }
-    offset += ( -offset ) & ( field_align - 1 );
-    m_Entry[ i ].m_Offset = offset;
-    offset += field_stride * count;
-  }
-  m_ElementSize = offset;
-  m_ElementStride = offset;
-  m_ElementAlign = max_align;
+  return value + ( ( -value ) & ( alignment - 1 ) );
+}
+
+int sbStruct::GetElementSize() const
+{
+  return FixAlign( m_ElementSize, m_ElementAlign );
+}
+
+int sbStruct::GetElementAlign() const
+{
+  return m_ElementAlign;
 }
 
 sbFieldType sbStruct::GetFieldType( int index ) const
@@ -104,11 +98,18 @@ void sbStruct::AddField( uint32_t name, sbFieldType field_type, int count, const
   int index = m_EntryCount++;
   if( index < m_EntryMax )
   {
+    int field_size = field->GetElementSize();
+    int field_align = field->GetElementAlign();
+    int field_offset = FixAlign( m_ElementSize, field_align );
+
     m_Entry[ index ].m_Name = name;
-    m_Entry[ index ].m_Offset = -1; // This will be set later, by a call to FixSizeAndStride
+    m_Entry[ index ].m_Offset = field_offset;
     m_Entry[ index ].m_Type = field_type;
     m_Entry[ index ].m_Count = count;
     m_Entry[ index ].m_Field = field;
+
+    m_ElementSize = field_offset + field_size * count;
+    m_ElementAlign = field_align > m_ElementAlign ? field_align : m_ElementAlign;
   }
 }
 
@@ -175,7 +176,6 @@ const sbField* sbStruct::ReadSchema( sbByteReader* reader )
 
     a->AddField( name, field_type, 1, f );
   }
-  a->FixSizeAndStride();
   return a;
 }
 

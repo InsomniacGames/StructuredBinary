@@ -51,7 +51,6 @@ const char* UnitTestFormatFile::RunTest() const
   org_agg.AddField( sbFnv32( "u16" ), kField_U16 );
   org_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
   org_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
-  org_agg.FixSizeAndStride();
 
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );

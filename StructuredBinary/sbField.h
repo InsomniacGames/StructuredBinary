@@ -30,9 +30,7 @@ public:
     WriteNumber( write_data, n );
   }
 
-  virtual void FixSizeAndStride() {}
   virtual int GetElementSize() const = 0;
-  virtual int GetElementStride() const { return GetElementSize(); }
   virtual int GetElementAlign() const = 0;
 };
 

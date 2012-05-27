@@ -64,7 +64,6 @@ const char* UnitTestScalarConvert::RunTest() const
   src_agg.AddField( sbFnv32( "u16" ), kField_U16 );
   src_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
   src_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
-  src_agg.FixSizeAndStride();
 
   sbStruct dest_agg( 10 );
   dest_agg.AddField( sbFnv32( "u64" ), kField_U64 );
@@ -77,7 +76,6 @@ const char* UnitTestScalarConvert::RunTest() const
   dest_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
   dest_agg.AddField( sbFnv32( "u16" ), kField_U16 );
   dest_agg.AddField( sbFnv32( "i16" ), kField_I16 );
-  dest_agg.FixSizeAndStride();
 
   SourceStruct src;
   src.f64 = 3.14159265358979;

@@ -50,7 +50,6 @@ const char* UnitTestScalarRead::RunTest() const
   agg.AddField( sbFnv32( "u16" ), kField_U16 );
   agg.AddField( sbFnv32( "i8"  ), kField_I8 );
   agg.AddField( sbFnv32( "u8"  ), kField_U8 );
-  agg.FixSizeAndStride();
 
   ReadStruct s;
   s.f64 = 3.14159265358979;

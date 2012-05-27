@@ -18,5 +18,4 @@ public:
   virtual const char* RunTest() const;
 };
 
-
 #endif

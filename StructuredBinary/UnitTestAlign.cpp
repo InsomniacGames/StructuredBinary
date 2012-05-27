@@ -66,7 +66,6 @@ const char* UnitTestAlign::RunTest() const
   src_agg.AddField( sbFnv32( "f32" ), kField_F32 );
   src_agg.AddField( sbFnv32( "u32" ), kField_U32 );
   src_agg.AddField( sbFnv32( "i16" ), kField_I16 );
-  src_agg.FixSizeAndStride();
   
   sbStruct dst_agg( 10 );
   dst_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
@@ -79,7 +78,6 @@ const char* UnitTestAlign::RunTest() const
   dst_agg.AddField( sbFnv32( "i32" ), kField_I32 );
   dst_agg.AddField( sbFnv32( "f32" ), kField_F32 );
   dst_agg.AddField( sbFnv32( "i16" ), kField_I16 );
-  dst_agg.FixSizeAndStride();
 
   SourceStruct src;
   src.f64 = 3.14159265358979;

@@ -59,36 +59,30 @@ const char* UnitTestSubStructConvert::RunTest() const
   sbStruct* src_sub1 = new sbStruct( 2 );
   src_sub1->AddField( sbFnv32( "var1" ), kField_F32 );
   src_sub1->AddField( sbFnv32( "var2" ), kField_F32 );
-  src_sub1->FixSizeAndStride();
 
   sbStruct* src_sub2 = new sbStruct( 2 );
   src_sub2->AddField( sbFnv32( "var1" ), kField_F32 );
   src_sub2->AddField( sbFnv32( "var2" ), kField_F32 );
-  src_sub2->FixSizeAndStride();
 
   sbStruct src_agg( 4 );
   src_agg.AddField( sbFnv32( "var1" ), kField_F32 );
   src_agg.AddField( sbFnv32( "var2" ), kField_F32 );
   src_agg.AddSubStructTemp( sbFnv32( "sub1" ), src_sub1 );
   src_agg.AddSubStructTemp( sbFnv32( "sub2" ), src_sub2 );
-  src_agg.FixSizeAndStride();
 
   sbStruct* dst_sub1 = new sbStruct( 2 );
   dst_sub1->AddField( sbFnv32( "var2" ), kField_F32 );
   dst_sub1->AddField( sbFnv32( "var1" ), kField_F32 );
-  dst_sub1->FixSizeAndStride();
 
   sbStruct* dst_sub2 = new sbStruct( 2 );
   dst_sub2->AddField( sbFnv32( "var1" ), kField_F32 );
   dst_sub2->AddField( sbFnv32( "var2" ), kField_F32 );
-  dst_sub2->FixSizeAndStride();
 
   sbStruct dst_agg( 4 );
   dst_agg.AddField    ( sbFnv32( "var2" ), kField_F32 );
   dst_agg.AddSubStructTemp( sbFnv32( "sub1" ), dst_sub1 );
   dst_agg.AddSubStructTemp( sbFnv32( "sub2" ), dst_sub2 );
   dst_agg.AddField    ( sbFnv32( "var1" ), kField_F32 );
-  dst_agg.FixSizeAndStride();
   
   SourceStruct src;
   src.var1      = 1.0f;
