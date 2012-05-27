@@ -16,9 +16,9 @@
 		BE147C7915682ADE00C8A199 /* UnitTestAlign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE147C7815682ADE00C8A199 /* UnitTestAlign.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
 		BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* UnitTest.cpp */; };
-		BE57CC511560717400FFCB91 /* sbNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* sbNumber.cpp */; };
+		BE57CC511560717400FFCB91 /* sbScalarValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* sbScalarValue.cpp */; };
 		BE57CC53156074B000FFCB91 /* sbFnv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC52156074B000FFCB91 /* sbFnv.cpp */; };
-		BE57CC571560799D00FFCB91 /* sbField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* sbField.cpp */; };
+		BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* sbScalar.cpp */; };
 		BE57CC5915607B3500FFCB91 /* sbStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5815607B3500FFCB91 /* sbStruct.cpp */; };
 		BE57CC5D1560AF6000FFCB91 /* UnitTestNumberConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5C1560AF6000FFCB91 /* UnitTestNumberConvert.cpp */; };
 		BE57CC5F1560B79400FFCB91 /* UnitTestScalarConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC5E1560B79400FFCB91 /* UnitTestScalarConvert.cpp */; };
@@ -61,12 +61,12 @@
 		BE57CC4415605E7900FFCB91 /* sbUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbUtil.h; sourceTree = "<group>"; };
 		BE57CC4615605F1600FFCB91 /* UnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTest.h; sourceTree = "<group>"; };
 		BE57CC4715605F2300FFCB91 /* UnitTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTest.cpp; sourceTree = "<group>"; };
-		BE57CC4F1560713D00FFCB91 /* sbNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbNumber.h; sourceTree = "<group>"; };
-		BE57CC501560717400FFCB91 /* sbNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbNumber.cpp; sourceTree = "<group>"; };
+		BE57CC4F1560713D00FFCB91 /* sbScalarValue.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbScalarValue.h; sourceTree = "<group>"; };
+		BE57CC501560717400FFCB91 /* sbScalarValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalarValue.cpp; sourceTree = "<group>"; };
 		BE57CC52156074B000FFCB91 /* sbFnv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbFnv.cpp; sourceTree = "<group>"; };
 		BE57CC54156074BF00FFCB91 /* sbFnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFnv.h; sourceTree = "<group>"; };
-		BE57CC551560799000FFCB91 /* sbField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbField.h; sourceTree = "<group>"; };
-		BE57CC561560799D00FFCB91 /* sbField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbField.cpp; sourceTree = "<group>"; };
+		BE57CC551560799000FFCB91 /* sbScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbScalar.h; sourceTree = "<group>"; };
+		BE57CC561560799D00FFCB91 /* sbScalar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalar.cpp; sourceTree = "<group>"; };
 		BE57CC5815607B3500FFCB91 /* sbStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbStruct.cpp; sourceTree = "<group>"; };
 		BE57CC5A15607B4200FFCB91 /* sbStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbStruct.h; sourceTree = "<group>"; };
 		BE57CC5B1560AF5500FFCB91 /* UnitTestNumberConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestNumberConvert.h; sourceTree = "<group>"; };
@@ -161,10 +161,10 @@
 				BE147C721564BCBD00C8A199 /* sbChunkFile.cpp */,
 				BE57CC54156074BF00FFCB91 /* sbFnv.h */,
 				BE57CC52156074B000FFCB91 /* sbFnv.cpp */,
-				BE57CC4F1560713D00FFCB91 /* sbNumber.h */,
-				BE57CC501560717400FFCB91 /* sbNumber.cpp */,
-				BE57CC551560799000FFCB91 /* sbField.h */,
-				BE57CC561560799D00FFCB91 /* sbField.cpp */,
+				BE57CC4F1560713D00FFCB91 /* sbScalarValue.h */,
+				BE57CC501560717400FFCB91 /* sbScalarValue.cpp */,
+				BE57CC551560799000FFCB91 /* sbScalar.h */,
+				BE57CC561560799D00FFCB91 /* sbScalar.cpp */,
 				BE57CC5A15607B4200FFCB91 /* sbStruct.h */,
 				BE57CC5815607B3500FFCB91 /* sbStruct.cpp */,
 				BE9275F4156F2130008F1288 /* sbByteReader.h */,
@@ -227,9 +227,9 @@
 			files = (
 				BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */,
 				BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */,
-				BE57CC511560717400FFCB91 /* sbNumber.cpp in Sources */,
+				BE57CC511560717400FFCB91 /* sbScalarValue.cpp in Sources */,
 				BE57CC53156074B000FFCB91 /* sbFnv.cpp in Sources */,
-				BE57CC571560799D00FFCB91 /* sbField.cpp in Sources */,
+				BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */,
 				BE57CC5915607B3500FFCB91 /* sbStruct.cpp in Sources */,
 				BE57CC5D1560AF6000FFCB91 /* UnitTestNumberConvert.cpp in Sources */,
 				BE57CC5F1560B79400FFCB91 /* UnitTestScalarConvert.cpp in Sources */,

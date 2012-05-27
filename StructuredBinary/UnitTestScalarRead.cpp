@@ -15,8 +15,8 @@
 #include <stdint.h>
 
 // Project
-#include "sbNumber.h"
-#include "sbField.h"
+#include "sbScalarValue.h"
+#include "sbScalar.h"
 #include "sbStruct.h"
 
 //--------------------------------------------------------------------------------------------------
@@ -38,18 +38,18 @@ struct ReadStruct
 //--------------------------------------------------------------------------------------------------
 
 const char* UnitTestScalarRead::RunTest() const
-{
-  sbStruct agg( 10 );
-  agg.AddField( sbFnv32( "f64" ), kField_F64 );
-  agg.AddField( sbFnv32( "i64" ), kField_I64 );
-  agg.AddField( sbFnv32( "u64" ), kField_U64 );
-  agg.AddField( sbFnv32( "f32" ), kField_F32 );
-  agg.AddField( sbFnv32( "i32" ), kField_I32 );
-  agg.AddField( sbFnv32( "u32" ), kField_U32 );
-  agg.AddField( sbFnv32( "i16" ), kField_I16 );
-  agg.AddField( sbFnv32( "u16" ), kField_U16 );
-  agg.AddField( sbFnv32( "i8"  ), kField_I8 );
-  agg.AddField( sbFnv32( "u8"  ), kField_U8 );
+{/*
+  sbStruct agg( 100, 100 );
+  agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
+  agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
+  agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
+  agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
+  agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
+  agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
+  agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
+  agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
+  agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8 );
+  agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8 );
 
   ReadStruct s;
   s.f64 = 3.14159265358979;
@@ -64,7 +64,7 @@ const char* UnitTestScalarRead::RunTest() const
   s.u8  = 0x40;
   const char* data = ( const char* )&s;
   
-  sbNumber n;
+  sbScalarValue value;
   n = agg.Read( data, sbFnv32( "f64" ) );
   if( !n.IsFloat() )          return "f64 returned wrong type";
   if( n.AsFloat() != s.f64 )  return "f64 returned wrong value";
@@ -96,7 +96,7 @@ const char* UnitTestScalarRead::RunTest() const
   n = agg.Read( data, sbFnv32( "u8" ) );
   if( !n.IsInt() )            return "u8 returned wrong type";
   if( n.AsFloat() != s.u8 )   return "u8 returned wrong value";
-  
+*/  
   return NULL;
 }
 

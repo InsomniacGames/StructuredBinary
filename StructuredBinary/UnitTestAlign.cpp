@@ -17,8 +17,8 @@
 #include <stdio.h>
 
 // Project
-#include "sbNumber.h"
-#include "sbField.h"
+#include "sbScalarValue.h"
+#include "sbScalar.h"
 #include "sbStruct.h"
 
 //--------------------------------------------------------------------------------------------------
@@ -55,29 +55,29 @@ struct DestStruct
 
 const char* UnitTestAlign::RunTest() const
 {
-  sbStruct src_agg( 10 );
-  src_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
-  src_agg.AddField( sbFnv32( "f64" ), kField_F64 );
-  src_agg.AddField( sbFnv32( "u16" ), kField_U16 );
-  src_agg.AddField( sbFnv32( "i32" ), kField_I32 );
-  src_agg.AddField( sbFnv32( "i64" ), kField_I64 );
-  src_agg.AddField( sbFnv32( "u64" ), kField_U64 );
-  src_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
-  src_agg.AddField( sbFnv32( "f32" ), kField_F32 );
-  src_agg.AddField( sbFnv32( "u32" ), kField_U32 );
-  src_agg.AddField( sbFnv32( "i16" ), kField_I16 );
+  sbStruct src_agg( 100, 100 );
+  src_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8  );
+  src_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
+  src_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
+  src_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
+  src_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
+  src_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
+  src_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8  );
+  src_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
+  src_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
+  src_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
   
-  sbStruct dst_agg( 10 );
-  dst_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
-  dst_agg.AddField( sbFnv32( "u64" ), kField_U64 );
-  dst_agg.AddField( sbFnv32( "i64" ), kField_I64 );
-  dst_agg.AddField( sbFnv32( "u16" ), kField_U16 );
-  dst_agg.AddField( sbFnv32( "f64" ), kField_F64 );
-  dst_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
-  dst_agg.AddField( sbFnv32( "u32" ), kField_U32 );
-  dst_agg.AddField( sbFnv32( "i32" ), kField_I32 );
-  dst_agg.AddField( sbFnv32( "f32" ), kField_F32 );
-  dst_agg.AddField( sbFnv32( "i16" ), kField_I16 );
+  sbStruct dst_agg( 100, 100 );
+  dst_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8  );
+  dst_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
+  dst_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
+  dst_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
+  dst_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
+  dst_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8  );
+  dst_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
+  dst_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
+  dst_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
+  dst_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
 
   SourceStruct src;
   src.f64 = 3.14159265358979;

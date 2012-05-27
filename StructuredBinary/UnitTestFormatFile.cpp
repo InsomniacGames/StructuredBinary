@@ -40,17 +40,18 @@ struct ReadStruct
 
 const char* UnitTestFormatFile::RunTest() const
 {
-  sbStruct org_agg( 10 );
-  org_agg.AddField( sbFnv32( "f64" ), kField_F64 );
-  org_agg.AddField( sbFnv32( "i64" ), kField_I64 );
-  org_agg.AddField( sbFnv32( "u64" ), kField_U64 );
-  org_agg.AddField( sbFnv32( "f32" ), kField_F32 );
-  org_agg.AddField( sbFnv32( "i32" ), kField_I32 );
-  org_agg.AddField( sbFnv32( "u32" ), kField_U32 );
-  org_agg.AddField( sbFnv32( "i16" ), kField_I16 );
-  org_agg.AddField( sbFnv32( "u16" ), kField_U16 );
-  org_agg.AddField( sbFnv32( "i8"  ), kField_I8  );
-  org_agg.AddField( sbFnv32( "u8"  ), kField_U8  );
+/*
+  sbStruct org_agg( 100, 100 );
+  org_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_ScalarF64 );
+  org_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_ScalarI64 );
+  org_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_ScalarU64 );
+  org_agg.AddScalar( sbFnv32( "f32" ), sbFieldType_ScalarF32 );
+  org_agg.AddScalar( sbFnv32( "i32" ), sbFieldType_ScalarI32 );
+  org_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_ScalarU32 );
+  org_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_ScalarI16 );
+  org_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_ScalarU16 );
+  org_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_ScalarI8  );
+  org_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_ScalarU8  );
 
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
@@ -75,7 +76,7 @@ const char* UnitTestFormatFile::RunTest() const
   s.u8  = 0x40;
   const char* data = ( const char* )&s;
   
-  sbNumber n;
+  sbScalarValue value;
   n = src_agg->Read( data, sbFnv32( "f64" ) );
   if( !n.IsFloat() )          return "f64 returned wrong type";
   if( n.AsFloat() != s.f64 )  return "f64 returned wrong value";
@@ -109,5 +110,6 @@ const char* UnitTestFormatFile::RunTest() const
   if( n.AsFloat() != s.u8 )   return "u8 returned wrong value";
 
   delete src_agg;
+*/
   return NULL;
 }

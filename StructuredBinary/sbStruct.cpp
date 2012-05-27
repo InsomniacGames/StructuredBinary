@@ -14,42 +14,75 @@
 #include <assert.h>
 #include <stdio.h>
 // Project
-#include "sbNumber.h"
+#include "sbScalarValue.h"
 #include "sbFnv.h"
-#include "sbField.h"
+#include "sbScalar.h"
 
-void sbStruct::Convert( char* write_data, const char* read_data, const sbField* read_field ) const
+void sbStruct::Convert( char* write_data, const char* read_data, const sbStruct* read_struct ) const
 {
-  const sbStruct* read_struct = ( const sbStruct* )read_field;  // !!! UGH
-  const sbStruct::Entry* write_entry = m_Entry;
-  for( int i = 0; i < m_EntryCount; ++i )
+  // Convert scalars
+  for( int i = 0; i < m_ScalarCount; ++i )
   {
+    const ScalarEntry* write_entry = m_Scalars + i;
     uint32_t name = write_entry->m_Name;
-    const Entry* read_entry = read_struct->FindEntry( name );
-
+    const ScalarEntry* read_entry = read_struct->FindScalarEntry( name );
     // What if not found??? Default!
-
-    char* write_element = write_data + m_Entry[ i ].m_Offset;
+    char* write_element = write_data + write_entry->m_Offset;
     const char* read_element = read_data + read_entry->m_Offset;
 
-    int write_size = write_entry->m_Field->GetElementSize();
-    int read_size = read_entry->m_Field->GetElementSize();
+    int write_size = write_entry->m_Scalar->GetElementSize();
+    int read_size = read_entry->m_Scalar->GetElementSize();
 
-    int count = write_entry->m_Count;
+    int count = m_Scalars[ i ].m_Count;
     for( int j = 0; j < count; ++j )
     {
-      write_entry->m_Field->Convert( write_element, read_element, read_entry->m_Field );
+      write_entry->m_Scalar->Convert( write_element, read_element, read_entry->m_Scalar );
       write_element += write_size;
       read_element += read_size;
     }
-    write_entry += 1;
+  }
+
+  // Convert structs
+  for( int i = 0; i < m_StructCount; ++i )
+  {
+    const StructEntry* write_entry = m_Structs + i;
+    uint32_t name = write_entry->m_Name;
+    const StructEntry* read_entry = read_struct->FindStructEntry( name );
+    // What if not found??? Default!
+    char* write_element = write_data + write_entry->m_Offset;
+    const char* read_element = read_data + read_entry->m_Offset;
+    
+    int write_size = write_entry->m_Struct->GetElementSize();
+    int read_size = read_entry->m_Struct->GetElementSize();
+    
+    int count = write_entry->m_Count;
+    for( int j = 0; j < count; ++j )
+    {
+      write_entry->m_Struct->Convert( write_element, read_element, read_entry->m_Struct );
+      write_element += write_size;
+      read_element += read_size;
+    }
   }
 }
 
-const sbStruct::Entry* sbStruct::FindEntry( uint32_t name ) const
+const sbStruct::StructEntry* sbStruct::FindStructEntry( uint32_t name ) const
 {
-  const sbStruct::Entry* entry = m_Entry;
-  for( int i = 0; i < m_EntryCount; ++i )
+  const StructEntry* entry = m_Structs;
+  for( int i = 0; i < m_StructCount; ++i )
+  {
+    if( entry->m_Name == name )
+    {
+      return entry;
+    }    
+    entry += 1;
+  }
+  return NULL;
+}
+
+const sbStruct::ScalarEntry* sbStruct::FindScalarEntry( uint32_t name ) const
+{
+  const ScalarEntry* entry = m_Scalars;
+  for( int i = 0; i < m_ScalarCount; ++i )
   {
     if( entry->m_Name == name )
     {
@@ -75,133 +108,135 @@ int sbStruct::GetElementAlign() const
   return m_ElementAlign;
 }
 
-sbFieldType sbStruct::GetFieldType( int index ) const
+void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar )
 {
-  assert( index < m_EntryCount );
-  return m_Entry[ index ].m_Type;
-}
-
-const sbField* sbStruct::GetField( int index ) const
-{
-  assert( index < m_EntryCount );
-  return m_Entry[ index ].m_Field;
-}
-
-uint32_t sbStruct::GetFieldName( int index ) const
-{
-  assert( index < m_EntryCount );
-  return m_Entry[ index ].m_Name;
-}
-
-void sbStruct::AddField( uint32_t name, sbFieldType field_type, int count, const sbField* field )
-{
-  int index = m_EntryCount++;
-  if( index < m_EntryMax )
+  int index = m_ScalarCount++;
+  if( index < m_ScalarMax )
   {
-    int field_size = field->GetElementSize();
-    int field_align = field->GetElementAlign();
-    int field_offset = FixAlign( m_ElementSize, field_align );
+    int scalar_size = scalar->GetElementSize();
+    int scalar_align = scalar->GetElementAlign();
+    int scalar_offset = FixAlign( m_ElementSize, scalar_align );
+    
+    ScalarEntry* entry = m_Scalars + index;
 
-    m_Entry[ index ].m_Name = name;
-    m_Entry[ index ].m_Offset = field_offset;
-    m_Entry[ index ].m_Type = field_type;
-    m_Entry[ index ].m_Count = count;
-    m_Entry[ index ].m_Field = field;
+    entry->m_Name   = name;
+    entry->m_Offset = scalar_offset;
+    entry->m_Type   = field_type;
+    entry->m_Count  = count;
+    entry->m_Scalar  = scalar;
+    
+    m_ElementSize = scalar_offset + scalar_size * count;
+    m_ElementAlign = scalar_align > m_ElementAlign ? scalar_align : m_ElementAlign;
+  }
+}
 
-    m_ElementSize = field_offset + field_size * count;
-    m_ElementAlign = field_align > m_ElementAlign ? field_align : m_ElementAlign;
+void sbStruct::AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str )
+{
+  int index = m_StructCount++;
+  if( index < m_StructMax )
+  {
+    int scalar_size = str->GetElementSize();
+    int scalar_align = str->GetElementAlign();
+    int scalar_offset = FixAlign( m_ElementSize, scalar_align );
+
+    StructEntry* entry = m_Structs + index;
+
+    entry->m_Name   = name;
+    entry->m_Offset = scalar_offset;
+    entry->m_Type   = field_type;
+    entry->m_Count  = count;
+    entry->m_Struct = str;
+
+    m_ElementSize = scalar_offset + scalar_size * count;
+    m_ElementAlign = scalar_align > m_ElementAlign ? scalar_align : m_ElementAlign;
   }
 }
 
 
 sbStruct::~sbStruct()
 {
-  for( int i = 0; i < m_EntryCount; ++i )
+  // TO DO: no need to create new scalars - can use statics.
+  for( int i = 0; i < m_ScalarCount; ++i )
   {
-    delete m_Entry[ i ].m_Field;
+    delete m_Scalars[ i ].m_Scalar;
   }
+  delete[] m_Scalars;
 
-  delete[] m_Entry;
+  for( int i = 0; i < m_StructCount; ++i )
+  {
+    delete m_Structs[ i ].m_Struct;
+  }
+  delete[] m_Structs;
 }
 
-static const sbField* NewScalar( sbFieldType field_type )
+static const sbScalar* NewScalar( sbFieldType field_type )
 {
   switch( field_type )
   {
-    case kField_I8:
-      return new sbFieldI8();
-    case kField_U8:
-      return new sbFieldU8();
-    case kField_I16:
-      return new sbFieldI16();
-    case kField_U16:
-      return new sbFieldU16();
-    case kField_I32:
-      return new sbFieldI32();
-    case kField_U32:
-      return new sbFieldU32();
-    case kField_I64:
-      return new sbFieldI64();
-    case kField_U64:
-      return new sbFieldU64();
-    case kField_F32:
-      return new sbFieldF32();
-    case kField_F64:
-      return new sbFieldF64();
-    case kField_Struct:
-      return new sbFieldF64();
+    case sbFieldType_ScalarI8:
+      return new sbScalarI8();
+    case sbFieldType_ScalarU8:
+      return new sbScalarU8();
+    case sbFieldType_ScalarI16:
+      return new sbScalarI16();
+    case sbFieldType_ScalarU16:
+      return new sbScalarU16();
+    case sbFieldType_ScalarI32:
+      return new sbScalarI32();
+    case sbFieldType_ScalarU32:
+      return new sbScalarU32();
+    case sbFieldType_ScalarI64:
+      return new sbScalarI64();
+    case sbFieldType_ScalarU64:
+      return new sbScalarU64();
+    case sbFieldType_ScalarF32:
+      return new sbScalarF32();
+    case sbFieldType_ScalarF64:
+      return new sbScalarF64();
+    case sbFieldType_Struct:
+      return new sbScalarF64();
     default:
       assert( false );
   }
 }
 
-const sbField* sbStruct::ReadSchema( sbByteReader* reader )
+const sbStruct* sbStruct::ReadSchema( sbByteReader* reader )
 {
-  sbStruct* a = new sbStruct( 100 );
+  sbStruct* a = new sbStruct( 100, 100 );
   while( reader->GetRemain() > 0 )
   {
     uint32_t name = reader->Read32();
     sbFieldType field_type = ( sbFieldType )reader->Read8();
-    const sbField* f = NULL;
+    const sbScalar* f = NULL;
 
     switch( field_type )
     {
-      case kField_Struct:
-        f = new sbFieldF64();
+      case sbFieldType_Struct:
+        f = new sbScalarF64();
         break;
       default:
         f = NewScalar( field_type );
         break;
     }
 
-    a->AddField( name, field_type, 1, f );
+    a->AddScalar( name, field_type, 1, f );
   }
   return a;
 }
 
 void sbStruct::WriteSchema( sbByteWriter* writer ) const
 {
-  for( int i = 0; i < GetFieldCount(); ++i )
+  for( int i = 0; i < m_ScalarCount; ++i )
   {
-    writer->Write32( GetFieldName( i ) );
-    writer->Write8( GetFieldType( i ) );
+    ScalarEntry* entry = m_Scalars + i;
+
+    writer->Write32( entry->m_Name );
+    writer->Write8( ( uint8_t )entry->m_Type );
   }
 }
 
-void sbStruct::AddField( uint32_t name, sbFieldType field_type, int count )
+void sbStruct::AddScalar( uint32_t name, sbFieldType field_type, int count )
 {
-  const sbField* f = NewScalar( field_type );
-  AddField( name, field_type, count, f );
+  const sbScalar* f = NewScalar( field_type );
+  AddScalar( name, field_type, count, f );
 }
-
-sbNumber sbStruct::Read( const char* read_data, uint32_t name ) const
-{
-  const Entry* read_entry = FindEntry( name );
-  if( read_entry )
-  {
-    return read_entry->m_Field->ReadNumber( read_data + read_entry->m_Offset );
-  }
-  return sbNumber::Null();
-}
-
-
