@@ -53,7 +53,7 @@ struct DestStruct
 
 const char* UnitTestScalarConvert::RunTest() const
 {
-  sbStruct src_agg( 100, 100 );
+  sbStruct src_agg;
   src_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
   src_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
   src_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
@@ -65,7 +65,7 @@ const char* UnitTestScalarConvert::RunTest() const
   src_agg.AddScalar( sbFnv32( "i8"  ), sbFieldType_I8  );
   src_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8  );
 
-  sbStruct dest_agg( 100, 100 );
+  sbStruct dest_agg;
   dest_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
   dest_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
   dest_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );

@@ -16,11 +16,14 @@
 // Project
 #include "sbScalarValue.h"
 #include "sbFnv.h"
+#include "sbField.h"
 
-class sbScalar
+class sbScalar : public sbField
 {
 public:
   virtual ~sbScalar() {}
+  virtual const sbScalar* AsScalar() const { return this; }
+
   virtual sbScalarValue ReadValue( const char* data ) const { return sbScalarValue::Null(); }
   virtual void WriteValue( char* data, const sbScalarValue& number ) const {}
 

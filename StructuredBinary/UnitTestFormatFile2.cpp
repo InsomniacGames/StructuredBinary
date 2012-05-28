@@ -57,15 +57,15 @@ struct DestStruct
 
 const char* UnitTestFormatFile2::RunTest() const
 {
-  sbStruct* src_sub1 = new sbStruct( 100, 100 );
+  sbStruct* src_sub1 = new sbStruct;
   src_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
   src_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   
-  sbStruct* src_sub2 = new sbStruct( 100, 100 );
+  sbStruct* src_sub2 = new sbStruct;
   src_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
   src_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   
-  sbStruct org_agg( 100, 100 );
+  sbStruct org_agg;
   org_agg.AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
   org_agg.AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   org_agg.AddStruct( sbFnv32( "sub1" ), src_sub1 );
@@ -76,19 +76,19 @@ const char* UnitTestFormatFile2::RunTest() const
   org_agg.WriteSchema( &w );
   
   int write_size = w.GetSize();
-  printf( "size = %d\n", write_size );
+//  printf( "size = %d\n", write_size );
   sbByteReader r( format_buffer, format_buffer + write_size );
   const sbStruct* src_agg = ( const sbStruct* )sbStruct::NewFromSchema( &r );
 
-  sbStruct* dst_sub1 = new sbStruct( 100, 100 );
+  sbStruct* dst_sub1 = new sbStruct;
   dst_sub1->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   dst_sub1->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
   
-  sbStruct* dst_sub2 = new sbStruct( 100, 100 );
+  sbStruct* dst_sub2 = new sbStruct;
   dst_sub2->AddScalar( sbFnv32( "var1" ), sbFieldType_F32 );
   dst_sub2->AddScalar( sbFnv32( "var2" ), sbFieldType_F32 );
   
-  sbStruct dst_agg( 100, 100 );
+  sbStruct dst_agg;
   dst_agg.AddScalar    ( sbFnv32( "var2" ), sbFieldType_F32 );
   dst_agg.AddStruct( sbFnv32( "sub1" ), dst_sub1 );
   dst_agg.AddStruct( sbFnv32( "sub2" ), dst_sub2 );

@@ -19,6 +19,7 @@
 #include "sbScalar.h"
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
+#include "sbField.h"
 
 enum sbFieldType
 {
@@ -34,38 +35,32 @@ enum sbFieldType
   sbFieldType_F32,
   sbFieldType_F64,
   sbFieldType_Struct,
+  sbFieldType_Pointer,
   sbFieldType_Count
 };
 
-class sbStruct
+class sbStruct : public sbField
 {
+  static const int s_InitialEntryMax = 50;
+
 public:
-  sbStruct( int scalar_max, int struct_max )
+  sbStruct()
   : m_Size( 0 )
   , m_Align( 1 )
-  , m_ScalarMax( scalar_max )
-  , m_StructMax( struct_max )
-  , m_ScalarCount( 0 )
-  , m_StructCount( 0 )
-  , m_Scalars( new ScalarEntry[ scalar_max ] )
-  , m_Structs( new StructEntry[ struct_max ] )
+  , m_EntryMax( s_InitialEntryMax )
+  , m_EntryCount( 0 )
+  , m_Entries( new Entry[ s_InitialEntryMax ] )
   {}
 
-  ~sbStruct();
-
-  int GetScalarCount() const { return m_ScalarCount; }
-  int GetStructCount() const { return m_StructCount; }
+  virtual ~sbStruct();
+  virtual const sbStruct* AsStruct() const { return this; }
 
   void Convert( char* write_data, const char* read_data, const sbStruct* read_struct ) const;
 
   int GetSize() const;
   int GetAlign() const;
-/*
-  sbFieldType GetScalarType( int index ) const;
-  const sbScalar* GetScalar( int index ) const;
-  uint32_t GetScalarName( int index ) const;
-*/
-  virtual void WriteSchema( sbByteWriter* writer ) const;
+
+  void WriteSchema( sbByteWriter* writer ) const;
   static const sbStruct* NewFromSchema( sbByteReader* reader );
 
   void AddScalar( uint32_t name, sbFieldType field_type, int count = 1 );
@@ -76,44 +71,27 @@ public:
 
 private:
 
-  void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar, int offset );
-  void AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str, int offset );
-
+  void AddField( uint32_t name, sbFieldType field_type, int count, const sbField* field, int offset );
   void AddScalar( uint32_t name, sbFieldType field_type, int count, const sbScalar* scalar );
   void AddStruct( uint32_t name, sbFieldType field_type, int count, const sbStruct* str );
 
-  struct ScalarEntry
+  struct Entry
   {
-    sbFieldType      m_Type;
-    uint32_t          m_Name;
-    int               m_Offset;
-    int               m_Count;
-    const sbScalar*    m_Scalar;
-  };
-  
-  struct StructEntry
-  {
-    sbFieldType      m_Type;
-    uint32_t          m_Name;
-    int               m_Offset;
-    int               m_Count;
-    const sbStruct*   m_Struct;
+    sbFieldType     m_Type;
+    uint32_t        m_Name;
+    int             m_Offset;
+    int             m_Count;
+    const sbField*  m_Field;
   };
   
   int           m_Size;    // Stored UNALIGNED!!! GetSize() will returned this value aligned.
   int           m_Align;
 
-  int           m_ScalarMax;
-  int           m_StructMax;
+  int           m_EntryMax;
+  int           m_EntryCount;
+  Entry*        m_Entries;
 
-  int           m_ScalarCount;
-  int           m_StructCount;
-
-  ScalarEntry*   m_Scalars;
-  StructEntry*  m_Structs;
-
-  const ScalarEntry* FindScalarEntry( uint32_t name ) const;
-  const StructEntry* FindStructEntry( uint32_t name ) const;
+  const Entry* FindEntry( uint32_t name ) const;
 };
 
 #endif

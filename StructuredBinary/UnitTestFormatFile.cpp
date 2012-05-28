@@ -53,7 +53,7 @@ struct DestStruct
 
 const char* UnitTestFormatFile::RunTest() const
 {
-  sbStruct org_agg( 100, 100 );
+  sbStruct org_agg;
   org_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
   org_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
   org_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
@@ -70,11 +70,11 @@ const char* UnitTestFormatFile::RunTest() const
   org_agg.WriteSchema( &w );
   
   int write_size = w.GetSize();
-  printf( "size = %d\n", write_size );
+//  printf( "size = %d\n", write_size );
   sbByteReader r( format_buffer, format_buffer + write_size );
   const sbStruct* src_agg = ( const sbStruct* )sbStruct::NewFromSchema( &r );
 
-  sbStruct dest_agg( 100, 100 );
+  sbStruct dest_agg;
   dest_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
   dest_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );
   dest_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );

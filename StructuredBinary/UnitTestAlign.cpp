@@ -55,7 +55,7 @@ struct DestStruct
 
 const char* UnitTestAlign::RunTest() const
 {
-  sbStruct src_agg( 100, 100 );
+  sbStruct src_agg;
   src_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8  );
   src_agg.AddScalar( sbFnv32( "f64" ), sbFieldType_F64 );
   src_agg.AddScalar( sbFnv32( "u16" ), sbFieldType_U16 );
@@ -67,7 +67,7 @@ const char* UnitTestAlign::RunTest() const
   src_agg.AddScalar( sbFnv32( "u32" ), sbFieldType_U32 );
   src_agg.AddScalar( sbFnv32( "i16" ), sbFieldType_I16 );
   
-  sbStruct dst_agg( 100, 100 );
+  sbStruct dst_agg;
   dst_agg.AddScalar( sbFnv32( "u8"  ), sbFieldType_U8  );
   dst_agg.AddScalar( sbFnv32( "u64" ), sbFieldType_U64 );
   dst_agg.AddScalar( sbFnv32( "i64" ), sbFieldType_I64 );

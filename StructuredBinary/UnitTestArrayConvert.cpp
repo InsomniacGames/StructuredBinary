@@ -37,11 +37,11 @@ struct DestStruct
 
 const char* UnitTestArrayConvert::RunTest() const
 {
-  sbStruct src_agg( 100, 100 );
+  sbStruct src_agg;
   src_agg.AddScalar( sbFnv32( "array1" ), sbFieldType_U8, 3 );
   src_agg.AddScalar( sbFnv32( "array2" ), sbFieldType_U8, 3 );
 
-  sbStruct dst_agg( 100, 100 );
+  sbStruct dst_agg;
   dst_agg.AddScalar( sbFnv32( "array2" ), sbFieldType_U8, 3 );
   dst_agg.AddScalar( sbFnv32( "array1" ), sbFieldType_U8, 3 );
   
