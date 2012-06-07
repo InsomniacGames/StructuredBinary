@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <new>
 
+#include "UnitTestResult.h"
+
 struct AllocationRecord
 {
   void*   m_Pointer;
@@ -95,20 +97,19 @@ static int CountRemainingAllocations()
 }
 
 
-const char* UnitTest::Run() const
+UnitTestResult UnitTest::Run() const
 {
   AllocationCount = 0;
-  const char* s = RunTest();
-  if( !s )
+  UnitTestResult result = RunTest();
+  if( result.IsSuccess() )
   {
     int count = CountRemainingAllocations();
     if( count > 0 )
     {
-      printf( "Leak count: %d\n", count );
-      s = "Leaking memory";
+      return UnitTestResult::Error( "Leak count: %d\n", count );
     }
   }
-  return s;
+  return result;
 }
 
 void* operator new( size_t size ) throw( std::bad_alloc );

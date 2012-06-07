@@ -9,12 +9,14 @@
 #ifndef StructuredBinary_UnitTest_h
 #define StructuredBinary_UnitTest_h
 
+#include "UnitTestResult.h"
+
 class UnitTest
 {
 public:
-  virtual const char* GetName() const = 0;
-  virtual const char* RunTest() const = 0;
-  const char* Run() const;
+  virtual const char*    GetName() const = 0;
+  virtual UnitTestResult RunTest() const = 0;
+  UnitTestResult Run() const;
 };
 
 #endif

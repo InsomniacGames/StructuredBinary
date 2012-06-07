@@ -2,43 +2,61 @@
 //  sbSchema.cpp
 //  StructuredBinary
 //
-//  Created by Ronald Pieket-Weeserik on 5/27/12.
+//  Created by Ronald Pieket-Weeserik on 6/2/12.
 //  Copyright 2012 It Should Just Work!™. All rights reserved.
 //
 
-#include <assert.h>
-
 #include "sbSchema.h"
 
-sbSchema::~sbSchema()
+#include <cstring>
+
+#include "sbNode.h"
+#include "sbPath.h"
+#include "sbScalarValue.h"
+
+const sbNode* sbSchema::FindNode( const char* name ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    delete m_Entries[ i ].m_Struct;
-  }
-  delete[] m_Entries;
-}
-
-void sbSchema::AddStruct( uint32_t name, const sbStruct* str )
-{
-  assert( m_EntryCount < m_EntryMax );
-  int index = m_EntryCount++;
-
-  m_Entries[ index ].m_Name = name;
-  m_Entries[ index ].m_Struct = str;
-}
-
-const sbStruct* sbSchema::FindStruct( uint32_t name ) const
-{
-  for( int i = 0; i < m_EntryCount; ++i )
-  {
-    const Entry* entry = m_Entries + i;
-    if( entry->m_Name == name )
+    if( 0 == strcmp( m_Entries[ i ].m_Name, name ) )
     {
-      return entry->m_Struct;
+      return m_Entries[ i ].m_Node;
     }
   }
   return NULL;
 }
 
+sbNode* sbSchema::FindNode( const char* name )
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    if( 0 == strcmp( m_Entries[ i ].m_Name, name ) )
+    {
+      return m_Entries[ i ].m_Node;
+    }
+  }
+  return NULL;
+}
 
+void sbSchema::AddNode( const char* name, sbNode* node )
+{
+  Entry* entry = m_Entries + m_EntryCount++;
+  entry->m_Name = name;
+  entry->m_Node = node;
+}
+
+void sbSchema::PrintNode( const char* node_name, const char* data ) const
+{
+  sbPath path( NULL );
+  path.m_Name = node_name;
+  const sbNode* node = FindNode( node_name );
+  node->PrintNode( data, &path );
+}
+
+void sbSchema::FixUp()
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    m_Entries[ i ].m_Node->FixUp( this );
+  }
+}

@@ -12,33 +12,12 @@
 
 // Project
 #include "sbUtil.h"
-#include "UnitTestNumberConvert.h"
-#include "UnitTestScalarConvert.h"
-#include "UnitTestSubStructConvert.h"
-#include "UnitTestScalarRead.h"
-#include "UnitTestChunk.h"
-#include "UnitTestChunkFile.h"
-#include "UnitTestAlign.h"
-#include "UnitTestFormatFile.h"
-#include "UnitTestFormatFile2.h"
-#include "UnitTestArrayConvert.h"
-#include "UnitTestPointer.h"
+#include "TestNodeRead.h"
 
 const UnitTest* AllTests[] =
 {
-  new UnitTestScalarRead(),
-  new UnitTestAlign(),
-  new UnitTestNumberConvert(),
-  new UnitTestScalarConvert(),
-  new UnitTestSubStructConvert(),
-  new UnitTestChunk(),
-  new UnitTestChunkFile(),
-  new UnitTestFormatFile(),
-  new UnitTestFormatFile2(),
-  new UnitTestArrayConvert(),
-  new UnitTestPointer(),
+  new TestNodeRead(),
 };
-
 
 int main (int argc, const char * argv[])
 {
@@ -52,10 +31,10 @@ int main (int argc, const char * argv[])
   {
     const UnitTest* test = test_array[ i ];
     printf( "[%2d] Testing %s\n", i, test->GetName() );
-    const char* error_message = test->Run();
-    if( error_message )
+    UnitTestResult result = test->Run();
+    if( !result.IsSuccess() )
     {
-      printf( "** FAIL: %s\n", error_message );
+      printf( "** FAIL: %s\n", result.GetMessage() );
       fail_count += 1;
     }
   }

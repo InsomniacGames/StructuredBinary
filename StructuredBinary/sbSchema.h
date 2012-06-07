@@ -2,45 +2,43 @@
 //  sbSchema.h
 //  StructuredBinary
 //
-//  Created by Ronald Pieket-Weeserik on 5/27/12.
+//  Created by Ronald Pieket-Weeserik on 6/2/12.
 //  Copyright 2012 It Should Just Work!™. All rights reserved.
 //
 
 #ifndef StructuredBinary_sbSchema_h
 #define StructuredBinary_sbSchema_h
 
-// Libraries
-#include <cstring>
-#include <stdint.h>
-// Project
-#include "sbStruct.h"
+class sbNode;
+class sbScalarValue;
 
 class sbSchema
 {
-  static const int s_InitialEntryMax = 50;
-
 public:
-
+  
   sbSchema()
-  : m_EntryMax( s_InitialEntryMax )
-  , m_EntryCount( 0 )
-  , m_Entries( new Entry[ s_InitialEntryMax ] )
+  : m_EntryCount( 0 )
   {}
-  ~sbSchema();
 
-  void AddStruct( uint32_t name, const sbStruct* str );
-  const sbStruct* FindStruct( uint32_t name ) const;
+  const sbNode* FindNode( const char* name ) const;
+  sbNode* FindNode( const char* name );
+  void AddNode( const char* name, sbNode* node );
+  
+  void PrintNode( const char* node_name, const char* data ) const;
+
+  void FixUp();
 
 private:
+
   struct Entry
   {
-    uint32_t        m_Name;
-    const sbStruct* m_Struct;
+    const char* m_Name;
+    sbNode*     m_Node;
   };
-  
-  int     m_EntryMax;
-  int     m_EntryCount;
-  Entry*  m_Entries;
+
+  static const int  kMaxEntries = 100;
+  int               m_EntryCount;
+  Entry             m_Entries[ kMaxEntries ];
 };
 
 #endif
