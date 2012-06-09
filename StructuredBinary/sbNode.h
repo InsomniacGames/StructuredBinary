@@ -11,9 +11,10 @@
 
 #include <stddef.h>
 
+#include "sbScalarValue.h"
+
 class sbSchema;
 class sbScalar;
-class sbScalarValue;
 class sbPath;
 
 enum sbScalarType
@@ -52,6 +53,7 @@ public:
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
   void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
+  void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
 
   void PrintNode( const char* data, const sbPath* parent ) const;
 
@@ -69,17 +71,20 @@ private:
     {
       kType_Scalar,
       kType_Pointer,
+      kType_String,
       kType_Instance,
     };
 
     const char*   m_Name;
     const char*   m_LinkName;
     const char*   m_CountName;
+    const char*   m_TerminatorName;
     Type          m_Type;
     size_t        m_Offset;     // Offset from the start of the node
     int           m_Count;      // For arrays
     const sbScalar* m_Scalar;
     sbNode*       m_Node;
+    sbScalarValue m_Terminator;
   };
 
   Child             m_Children[ kMaxChildren ];
@@ -89,6 +94,8 @@ private:
   size_t            m_Alignment;
   
   const Child* FindChild( const char* name ) const;
+  
+  bool IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const;
 };
 
 #endif

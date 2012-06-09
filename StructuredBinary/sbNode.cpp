@@ -67,7 +67,7 @@ void sbNode::AddInstance( const char* name, int count, const char* link_name )
 void sbNode::AddPointer( const char* name, int count, const char* link_name, const char* count_name )
 {
   Child* child = m_Children + m_ChildCount++;
-  
+
   child->m_Name   = name;
   child->m_LinkName = link_name;
   child->m_CountName = count_name;
@@ -78,6 +78,20 @@ void sbNode::AddPointer( const char* name, int count, const char* link_name, con
   child->m_Node   = NULL;
 }
 
+void sbNode::AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name )
+{
+  Child* child = m_Children + m_ChildCount++;
+
+  child->m_Name   = name;
+  child->m_LinkName = link_name;
+  child->m_Type   = Child::kType_String;
+  child->m_Offset = 0;          // To be determined in second pass
+  child->m_Count  = count;
+  child->m_Scalar = NULL;
+  child->m_Node   = NULL;
+  child->m_Terminator = terminator;
+  child->m_TerminatorName = terminator_name;
+}
 
 static sbScalarU8 s_ScalarU8;
 static sbScalarI8  s_ScalarI8;
@@ -94,17 +108,17 @@ const sbScalar* FindScalar( sbScalarType scalar_type )
 {
   switch( scalar_type )
   {
-    case kScalar_U8:   return &s_ScalarU8;
-    case kScalar_I8:   return &s_ScalarI8;
-    case kScalar_U16:  return &s_ScalarU16;
-    case kScalar_I16:  return &s_ScalarI16;
-    case kScalar_U32:  return &s_ScalarU32;
-    case kScalar_I32:  return &s_ScalarI32;
-    case kScalar_U64:  return &s_ScalarU64;
-    case kScalar_I64:  return &s_ScalarI64;
-    case kScalar_F32:  return &s_ScalarF32;
-    case kScalar_F64:  return &s_ScalarF64;
-    default:      return NULL;
+    case kScalar_U8:  return &s_ScalarU8;
+    case kScalar_I8:  return &s_ScalarI8;
+    case kScalar_U16: return &s_ScalarU16;
+    case kScalar_I16: return &s_ScalarI16;
+    case kScalar_U32: return &s_ScalarU32;
+    case kScalar_I32: return &s_ScalarI32;
+    case kScalar_U64: return &s_ScalarU64;
+    case kScalar_I64: return &s_ScalarI64;
+    case kScalar_F32: return &s_ScalarF32;
+    case kScalar_F64: return &s_ScalarF64;
+    default:          return NULL;
   }
 }
 
@@ -123,6 +137,16 @@ static void PrintPath( const sbPath* path, const char* description, size_t offse
   printf( "%s offset:%d value:%lld\n", description, (int)offset, value );
 }
 
+bool sbNode::IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const
+{
+  const Child* child = FindChild( terminator_name );
+  assert( child );
+  assert( child->m_Type == Child::kType_Scalar );
+
+  sbScalarValue value = child->m_Scalar->ReadValue( data );
+  return value == terminator_value;
+}
+
 void sbNode::PrintNode( const char* data, const sbPath* parent ) const
 {
   sbPath path( parent );
@@ -130,37 +154,56 @@ void sbNode::PrintNode( const char* data, const sbPath* parent ) const
   for( int i = 0; i < m_ChildCount; ++i )
   {
     const Child* child = m_Children + i;
-    const char* child_data = data + child->m_Offset;
     path.m_Name = child->m_Name;
-    switch( child->m_Type )
+    const char* child_data = data + child->m_Offset;
+    for( int j = 0; j < child->m_Count; ++j )
     {
-      case Child::kType_Scalar:
+      switch( child->m_Type )
       {
-        sbScalarValue value = child->m_Scalar->ReadValue( child_data );
-        PrintPath( &path, child->m_Scalar->GetDescription(), child->m_Offset, value.AsInt() );
-        break;
-      }
-      case Child::kType_Pointer:
-      {
-        const char* p = *( const char** )( child_data );
-        int pointer_count = 1;
-        if( child->m_CountName )
+        case Child::kType_Scalar:
         {
-          const Child* count_child = FindChild( child->m_CountName );
-          const char* count_child_data = data + count_child->m_Offset;
-          pointer_count = ( int )count_child->m_Scalar->ReadValue( count_child_data ).AsInt();
+          sbScalarValue value = child->m_Scalar->ReadValue( child_data );
+          PrintPath( &path, child->m_Scalar->GetDescription(), child->m_Offset, value.AsInt() );
+          child_data += child->m_Scalar->GetSize();
+          break;
         }
-        for( int j = 0; j < pointer_count; ++j )
+        case Child::kType_Pointer:
         {
-          child->m_Node->PrintNode( p, &path );
-          p += child->m_Node->GetSize();
+          const char* p = *( const char** )( child_data );
+          int pointer_count = 1;
+          if( child->m_CountName )
+          {
+            const Child* count_child = FindChild( child->m_CountName );
+            const char* count_child_data = data + count_child->m_Offset;
+            pointer_count = ( int )count_child->m_Scalar->ReadValue( count_child_data ).AsInt();
+          }
+          for( int j = 0; j < pointer_count; ++j )
+          {
+            child->m_Node->PrintNode( p, &path );
+            p += child->m_Node->GetSize();
+          }
+          child_data += child->m_Node->GetSize();
+          break;
         }
-        break;
-      }
-      case Child::kType_Instance:
-      {
-        child->m_Node->PrintNode( child_data, &path );
-        break;
+        case Child::kType_String:
+        {
+          const char* p = *( const char** )( child_data );
+          bool terminated = false;
+          while( !terminated )
+          {
+            child->m_Node->PrintNode( p, &path );
+            terminated = child->m_Node->IsTerminal( p, child->m_Terminator, child->m_TerminatorName );
+            p += child->m_Node->GetSize();
+          }
+          child_data += child->m_Node->GetSize();
+          break;
+        }
+        case Child::kType_Instance:
+        {
+          child->m_Node->PrintNode( child_data, &path );
+          child_data += child->m_Node->GetSize();
+          break;
+        }
       }
     }
   }
@@ -190,19 +233,31 @@ void sbNode::FixUp( sbSchema* schema )
         size_t child_alignment = child->m_Scalar->GetAlignment();
         offset = FixAlignment( offset, child_alignment );
         child->m_Offset = offset;
-        offset += child_size;
+        offset += child_size * child->m_Count;
         alignment = child_alignment > alignment ? child_alignment : alignment;
         break;
       }
       case Child::kType_Pointer:
       {
         child->m_Node = schema->FindNode( child->m_LinkName );
-
+        
         size_t child_size = sizeof( void* );
         size_t child_alignment = __alignof( void* );
         offset = FixAlignment( offset, child_alignment );
         child->m_Offset = offset;
-        offset += child_size;
+        offset += child_size * child->m_Count;
+        alignment = child_alignment > alignment ? child_alignment : alignment;
+        break;
+      }
+      case Child::kType_String:
+      {
+        child->m_Node = schema->FindNode( child->m_LinkName );
+        
+        size_t child_size = sizeof( void* );
+        size_t child_alignment = __alignof( void* );
+        offset = FixAlignment( offset, child_alignment );
+        child->m_Offset = offset;
+        offset += child_size * child->m_Count;
         alignment = child_alignment > alignment ? child_alignment : alignment;
         break;
       }
@@ -215,7 +270,7 @@ void sbNode::FixUp( sbSchema* schema )
         size_t child_alignment = child->m_Node->GetAlignment();
         offset = FixAlignment( offset, child_alignment );
         child->m_Offset = offset;
-        offset += child_size;
+        offset += child_size * child->m_Count;
         alignment = child_alignment > alignment ? child_alignment : alignment;
         break;
       }

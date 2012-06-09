@@ -22,9 +22,14 @@ namespace Src
     uint8_t   q;
   };
   
+  struct Flt
+  {
+    float     f;
+  };
+  
   struct Node1
   {
-    uint8_t   a;
+    uint8_t   a[3];
     uint8_t   count;
     Node0*    ptr;
     Node0*    ptr_array;
@@ -36,6 +41,7 @@ namespace Src
     uint32_t  x;
     uint8_t   y;
     Node1     node1;
+    Flt*      str;
     uint32_t  z;
   };
 };
@@ -47,9 +53,12 @@ UnitTestResult TestNodeRead::RunTest() const
   sbNode node0;
   node0.AddScalar( "P", 1, kScalar_U8 );
   node0.AddScalar( "Q", 1, kScalar_U8 );
+  
+  sbNode f;
+  f.AddScalar( "*", 1, kScalar_F32 );
 
   sbNode node1;
-  node1.AddScalar( "A", 1, kScalar_U8 );
+  node1.AddScalar( "A", 3, kScalar_U8 );
   node1.AddScalar( "COUNT", 1, kScalar_U8 );
   node1.AddPointer( "ptr", 1, "node0", NULL );
   node1.AddPointer( "ptr_array", 1, "node0", "COUNT" );
@@ -59,14 +68,24 @@ UnitTestResult TestNodeRead::RunTest() const
   node2.AddScalar( "X", 1, kScalar_U32 );
   node2.AddScalar( "Y", 1, kScalar_U8 );
   node2.AddInstance( "inst", 1, "node1" );
+  node2.AddString( "str", 1, "flt", sbScalarValue::Float( 0.0f ), "*" );
   node2.AddScalar( "Z", 1, kScalar_U32 );
 
   schema.AddNode( "node0", &node0 );
   schema.AddNode( "node1", &node1 );
   schema.AddNode( "node2", &node2 );
+  schema.AddNode( "flt", &f );
 
   schema.FixUp();
   
+  Src::Flt flt[] =
+  {
+    100.0f,
+    200.0f,
+    300.0f,
+    0.0f,
+  };
+
   Src::Node0 n0 =
   {
     11,
@@ -98,12 +117,13 @@ UnitTestResult TestNodeRead::RunTest() const
     1,
     2,
     {
-      3,
+      {30,31,32},
       4,
       &n0,
       array0,
       5.0f
     },
+    flt,
     6
   };
 
