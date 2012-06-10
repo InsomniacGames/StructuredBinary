@@ -28,6 +28,8 @@ public:
 
   void FixUp();
 
+  void Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const;
+
 private:
 
   struct Entry

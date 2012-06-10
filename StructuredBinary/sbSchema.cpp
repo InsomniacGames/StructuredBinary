@@ -60,3 +60,11 @@ void sbSchema::FixUp()
     m_Entries[ i ].m_Node->FixUp( this );
   }
 }
+
+void sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const
+{
+  const sbNode* src_node = src_schema->FindNode( name );
+  const sbNode* dst_node =             FindNode( name );
+
+  dst_node->Convert( dst_data, src_data, src_node );
+}

@@ -47,39 +47,37 @@ UnitTest::Result TestChunk::RunTest() const
   child->AddChild( new sbChunk( sour_id, sour_data, sour_size ) );
   child->AddChild( new sbChunk( bitter_id, bitter_data, bitter_size ) );
   child->AddChild( new sbChunk( umami_id, umami_data, umami_size ) );
-/*
+
   const sbChunk* c = root;
-  if( c->GetChildCount() != 3 )         return "Top chunk wrong child count";
-  if( c->GetDataSize() != 0 )           return "Top chunk wrong data size";
+  if( c->GetChildCount() != 3 )         return Error( "Top chunk wrong child count" );
+  if( c->GetDataSize() != 0 )           return Error( "Top chunk wrong data size" );
   c = c->GetChild();
-  if( c->GetChildCount() != 0 )         return "First child wrong child count";
-  if( c->GetDataSize() != sweet_size )  return "First child wrong data size";
-  if( 0 != strcmp( ( const char* )c->GetData(), sweet_data ) )  return "First child wrong data";
+  if( c->GetChildCount() != 0 )         return Error( "First child wrong child count" );
+  if( c->GetDataSize() != sweet_size )  return Error( "First child wrong data size" );
+  if( 0 != strcmp( ( const char* )c->GetData(), sweet_data ) )  return Error( "First child wrong data" );
   c = c->GetSibling();
-  if( c->GetChildCount() != 0 )         return "Second child wrong child count";
-  if( c->GetDataSize() != salt_size )   return "Second child wrong data size";
-  if( 0 != strcmp( ( const char* )c->GetData(), salt_data ) )  return "Second child wrong data";
+  if( c->GetChildCount() != 0 )         return Error( "Second child wrong child count" );
+  if( c->GetDataSize() != salt_size )   return Error( "Second child wrong data size" );
+  if( 0 != strcmp( ( const char* )c->GetData(), salt_data ) )  return Error( "Second child wrong data" );
   c = c->GetSibling();
-  if( c->GetChildCount() != 3 )         return "Third child wrong child count";
-  if( c->GetDataSize() != 0 )           return "Third child wrong data size";
+  if( c->GetChildCount() != 3 )         return Error( "Third child wrong child count" );
+  if( c->GetDataSize() != 0 )           return Error( "Third child wrong data size" );
   const sbChunk* temp = c->GetSibling();
-  if( temp != NULL )                    return "Child list not properly terminated";
+  if( temp != NULL )                    return Error( "Child list not properly terminated" );
 
   c = c->GetChild();
-  if( c->GetChildCount() != 0 )         return "First grand child wrong child count";
-  if( c->GetDataSize() != sour_size )   return "First grand child wrong data size";
+  if( c->GetChildCount() != 0 )         return Error( "First grand child wrong child count" );
+  if( c->GetDataSize() != sour_size )   return Error( "First grand child wrong data size" );
   c = c->GetSibling();
-  if( c->GetChildCount() != 0 )         return "Second grand child wrong child count";
-  if( c->GetDataSize() != bitter_size ) return "Second grand child wrong data size";
+  if( c->GetChildCount() != 0 )         return Error( "Second grand child wrong child count" );
+  if( c->GetDataSize() != bitter_size ) return Error( "Second grand child wrong data size" );
   c = c->GetSibling();
-  if( c->GetChildCount() != 0 )         return "Third grand child wrong child count";
-  if( c->GetDataSize() != umami_size )  return "Third grand child wrong data size";
+  if( c->GetChildCount() != 0 )         return Error( "Third grand child wrong child count" );
+  if( c->GetDataSize() != umami_size )  return Error( "Third grand child wrong data size" );
   temp = c->GetSibling();
-  if( temp != NULL )                    return "Grand child list not properly terminated";
+  if( temp != NULL )                    return Error( "Grand child list not properly terminated" );
 
   delete root;
 
-  return NULL;
-*/  
   return Ok();
 }

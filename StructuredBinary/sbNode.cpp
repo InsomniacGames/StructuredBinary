@@ -34,6 +34,33 @@ const sbNode::Child* sbNode::FindChild( const char* name ) const
 
 void sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const
 {
+  for( int i = 0; i < m_ChildCount; ++i )
+  {
+    const Child* dst_child = m_Children + i;
+    const Child* src_child = src_node->FindChild( dst_child->m_Name );
+
+    for( int index = 0; index < dst_child->m_Count; ++index )
+    {
+            char* dst_child_data = dst_data + dst_child->m_Offset + index * dst_child->m_ElementSize;
+      const char* src_child_data = src_data + src_child->m_Offset + index * src_child->m_ElementSize;
+      
+      switch( dst_child->m_Type )
+      {
+        case Child::kType_Scalar:
+        {
+          sbScalarValue src_value = src_child->m_Scalar->ReadValue( src_child_data );
+          dst_child->m_Scalar->WriteValue( dst_child_data, src_value );
+          break;
+        }
+        case Child::kType_Pointer:
+        case Child::kType_String:
+        case Child::kType_Instance:
+        {
+          break;
+        }
+      }
+    }
+  }
 }
 
 void sbNode::AddScalar( const char* name, int count, sbScalarType scalar_type )
@@ -176,7 +203,7 @@ int sbNode::GetStringCount( const Child* child, const char* child_data ) const
 void sbNode::PrintNode( const char* node_data, const sbPath* parent ) const
 {
   sbPath path( parent );
-  
+
   for( int i = 0; i < m_ChildCount; ++i )
   {
     const Child* child = m_Children + i;

@@ -13,6 +13,7 @@
 		BE3108CF158429BC003D607C /* TestChunkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108C8158429BC003D607C /* TestChunkFile.cpp */; };
 		BE3108D0158429BC003D607C /* TestFormatFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108CA158429BC003D607C /* TestFormatFile.cpp */; };
 		BE3108D1158429BC003D607C /* TestFormatFile2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108CC158429BC003D607C /* TestFormatFile2.cpp */; };
+		BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108D4158433C7003D607C /* TestConvertFlat.cpp */; };
 		BE3EF91F157BC43C00A7DFB3 /* TestNodeRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */; };
 		BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF921157BC59900A7DFB3 /* UnitTestResult.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
@@ -51,6 +52,8 @@
 		BE3108CB158429BC003D607C /* TestFormatFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFormatFile.h; sourceTree = "<group>"; };
 		BE3108CC158429BC003D607C /* TestFormatFile2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestFormatFile2.cpp; sourceTree = "<group>"; };
 		BE3108CD158429BC003D607C /* TestFormatFile2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFormatFile2.h; sourceTree = "<group>"; };
+		BE3108D3158433A7003D607C /* TestConvertFlat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConvertFlat.h; sourceTree = "<group>"; };
+		BE3108D4158433C7003D607C /* TestConvertFlat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertFlat.cpp; sourceTree = "<group>"; };
 		BE3EF91C157BC3F800A7DFB3 /* TestNodeRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNodeRead.h; sourceTree = "<group>"; };
 		BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNodeRead.cpp; sourceTree = "<group>"; };
 		BE3EF920157BC4C700A7DFB3 /* UnitTestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestResult.h; sourceTree = "<group>"; };
@@ -101,6 +104,8 @@
 				BE3108CD158429BC003D607C /* TestFormatFile2.h */,
 				BE3EF91C157BC3F800A7DFB3 /* TestNodeRead.h */,
 				BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */,
+				BE3108D3158433A7003D607C /* TestConvertFlat.h */,
+				BE3108D4158433C7003D607C /* TestConvertFlat.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 				BE3108CF158429BC003D607C /* TestChunkFile.cpp in Sources */,
 				BE3108D0158429BC003D607C /* TestFormatFile.cpp in Sources */,
 				BE3108D1158429BC003D607C /* TestFormatFile2.cpp in Sources */,
+				BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

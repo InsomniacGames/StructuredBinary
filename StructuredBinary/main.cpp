@@ -12,13 +12,21 @@
 
 // Project
 #include "sbUtil.h"
-#include "TestNodeRead.h"
+#include "TestChunk.h"
 #include "TestChunkFile.h"
+#include "TestFormatFile.h"
+#include "TestFormatFile2.h"
+//#include "TestNodeRead.h"
+#include "TestConvertFlat.h"
 
 const UnitTest* AllTests[] =
 {
+  new TestChunk(),
   new TestChunkFile(),
-  new TestNodeRead(),
+  new TestFormatFile(),
+  new TestFormatFile2(),
+//  new TestNodeRead(),
+  new TestConvertFlat(),
 };
 
 int main (int argc, const char * argv[])
