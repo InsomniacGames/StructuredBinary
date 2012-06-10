@@ -14,8 +14,8 @@
 class TestNodeRead : public UnitTest
 {
 public:
-  virtual const char*    GetName() const { return "TestNodeRead"; }
-  virtual UnitTestResult RunTest() const;
+  virtual const char* GetName() const { return "TestNodeRead"; }
+  virtual Result      RunTest() const;
 };
 
 #endif

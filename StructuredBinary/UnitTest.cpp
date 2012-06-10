@@ -10,6 +10,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <cstdio>
 #include <new>
 
 #include "UnitTestResult.h"
@@ -97,16 +100,16 @@ static int CountRemainingAllocations()
 }
 
 
-UnitTestResult UnitTest::Run() const
+UnitTest::Result UnitTest::Run() const
 {
   AllocationCount = 0;
-  UnitTestResult result = RunTest();
+  Result result = RunTest();
   if( result.IsSuccess() )
   {
     int count = CountRemainingAllocations();
     if( count > 0 )
     {
-      return UnitTestResult::Error( "Leak count: %d\n", count );
+      return Error( "Leak count: %d\n", count );
     }
   }
   return result;
@@ -139,4 +142,67 @@ void operator delete[]( void* p ) throw()
 {
   FreeAllocation( p );
   free( p );
+}
+
+
+
+UnitTest::Result UnitTest::Error( const char* message, ... )
+{
+  char buffer[ 1000 ];
+  va_list vlist;
+  
+  va_start( vlist, message );
+  vsnprintf( buffer, sizeof( buffer ) - 1, message, vlist );
+  buffer[ sizeof( buffer ) - 1 ] = '\0';
+  va_end( vlist );
+  
+  return Result( false, buffer );
+}
+
+UnitTest::Result UnitTest::Ok()
+{
+  return Result( true, NULL );
+}
+
+UnitTest::Result::Result( bool success, const char* text )
+{
+  m_String = NULL;
+  if( text )
+  {
+    m_String = new char[ strlen( text ) + 1 ];
+    strcpy( m_String, text );
+  }
+  m_Success = success;
+}
+
+UnitTest::Result::~Result()
+{
+  delete[] m_String;
+}
+
+UnitTest::Result::Result( const UnitTest::Result& other )
+{
+  m_String = NULL;
+  m_Success = other.m_Success;
+  if( other.m_String )
+  {
+    m_String = new char[ strlen( other.m_String ) + 1 ];
+    strcpy( m_String, other.m_String );
+  }
+}
+
+UnitTest::Result& UnitTest::Result::operator=( const UnitTest::Result& other )
+{
+  if (this != &other )
+  {
+    delete[] m_String;
+    m_String = NULL;
+    m_Success = other.m_Success;
+    if( other.m_String )
+    {
+      m_String = new char[ strlen( other.m_String ) + 1 ];
+      strcpy( m_String, other.m_String );
+    }
+  }
+  return *this;
 }

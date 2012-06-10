@@ -147,7 +147,33 @@ bool sbNode::IsTerminal( const char* data, const sbScalarValue& terminator_value
   return value == terminator_value;
 }
 
-void sbNode::PrintNode( const char* data, const sbPath* parent ) const
+int sbNode::GetPointerCount( const Child* child, const char* node_data ) const
+{
+  int pointer_count = 1;
+  if( child->m_CountName )
+  {
+    const Child* count_child = FindChild( child->m_CountName );
+    const char* count_child_data = node_data + count_child->m_Offset;
+    pointer_count = ( int )count_child->m_Scalar->ReadValue( count_child_data ).AsInt();
+  }
+  return pointer_count;
+}
+
+int sbNode::GetStringCount( const Child* child, const char* child_data ) const
+{
+  int string_count = 0;
+  const char* p = *( const char** )( child_data );
+  bool terminated = false;
+  while( !terminated )
+  {
+    string_count += 1;
+    terminated = child->m_Node->IsTerminal( p, child->m_Terminator, child->m_TerminatorName );
+    p += child->m_Node->GetSize();
+  }
+  return string_count;
+}
+
+void sbNode::PrintNode( const char* node_data, const sbPath* parent ) const
 {
   sbPath path( parent );
   
@@ -155,53 +181,45 @@ void sbNode::PrintNode( const char* data, const sbPath* parent ) const
   {
     const Child* child = m_Children + i;
     path.m_Name = child->m_Name;
-    const char* child_data = data + child->m_Offset;
-    for( int j = 0; j < child->m_Count; ++j )
+    for( int index = 0; index < child->m_Count; ++index )
     {
+      const char* child_data = node_data + child->m_Offset + index * child->m_ElementSize;
+
       switch( child->m_Type )
       {
         case Child::kType_Scalar:
         {
           sbScalarValue value = child->m_Scalar->ReadValue( child_data );
           PrintPath( &path, child->m_Scalar->GetDescription(), child->m_Offset, value.AsInt() );
-          child_data += child->m_Scalar->GetSize();
           break;
         }
         case Child::kType_Pointer:
         {
+          int pointer_count = GetPointerCount( child, node_data );
+
           const char* p = *( const char** )( child_data );
-          int pointer_count = 1;
-          if( child->m_CountName )
-          {
-            const Child* count_child = FindChild( child->m_CountName );
-            const char* count_child_data = data + count_child->m_Offset;
-            pointer_count = ( int )count_child->m_Scalar->ReadValue( count_child_data ).AsInt();
-          }
           for( int j = 0; j < pointer_count; ++j )
           {
             child->m_Node->PrintNode( p, &path );
             p += child->m_Node->GetSize();
           }
-          child_data += child->m_Node->GetSize();
           break;
         }
         case Child::kType_String:
         {
+          int string_count = GetStringCount( child, child_data );
+
           const char* p = *( const char** )( child_data );
-          bool terminated = false;
-          while( !terminated )
+          for( int j = 0; j < string_count; ++j )
           {
             child->m_Node->PrintNode( p, &path );
-            terminated = child->m_Node->IsTerminal( p, child->m_Terminator, child->m_TerminatorName );
             p += child->m_Node->GetSize();
           }
-          child_data += child->m_Node->GetSize();
           break;
         }
         case Child::kType_Instance:
         {
           child->m_Node->PrintNode( child_data, &path );
-          child_data += child->m_Node->GetSize();
           break;
         }
       }
@@ -225,59 +243,43 @@ void sbNode::FixUp( sbSchema* schema )
   for( int i = 0; i < m_ChildCount; ++i )
   {
     Child* child = m_Children + i;
+    size_t child_size = 0;
+    size_t child_alignment = 0;
     switch( child->m_Type )
     {
       case Child::kType_Scalar:
       {
-        size_t child_size = child->m_Scalar->GetSize();
-        size_t child_alignment = child->m_Scalar->GetAlignment();
-        offset = FixAlignment( offset, child_alignment );
-        child->m_Offset = offset;
-        offset += child_size * child->m_Count;
-        alignment = child_alignment > alignment ? child_alignment : alignment;
+        child_size = child->m_Scalar->GetSize();
+        child_alignment = child->m_Scalar->GetAlignment();
         break;
       }
       case Child::kType_Pointer:
-      {
-        child->m_Node = schema->FindNode( child->m_LinkName );
-        
-        size_t child_size = sizeof( void* );
-        size_t child_alignment = __alignof( void* );
-        offset = FixAlignment( offset, child_alignment );
-        child->m_Offset = offset;
-        offset += child_size * child->m_Count;
-        alignment = child_alignment > alignment ? child_alignment : alignment;
-        break;
-      }
       case Child::kType_String:
       {
         child->m_Node = schema->FindNode( child->m_LinkName );
         
-        size_t child_size = sizeof( void* );
-        size_t child_alignment = __alignof( void* );
-        offset = FixAlignment( offset, child_alignment );
-        child->m_Offset = offset;
-        offset += child_size * child->m_Count;
-        alignment = child_alignment > alignment ? child_alignment : alignment;
+        child_size = sizeof( void* );
+        child_alignment = __alignof( void* );
         break;
       }
       case Child::kType_Instance:
       {
         child->m_Node = schema->FindNode( child->m_LinkName );
         child->m_Node->FixUp( schema );
-
-        size_t child_size = child->m_Node->GetSize();
-        size_t child_alignment = child->m_Node->GetAlignment();
-        offset = FixAlignment( offset, child_alignment );
-        child->m_Offset = offset;
-        offset += child_size * child->m_Count;
-        alignment = child_alignment > alignment ? child_alignment : alignment;
+        child_size = child->m_Node->GetSize();
+        child_alignment = child->m_Node->GetAlignment();
         break;
       }
       default:
         assert( 0 );
         break;
     }
+
+    offset = FixAlignment( offset, child_alignment );
+    child->m_Offset = offset;
+    offset += child_size * child->m_Count;
+    alignment = child_alignment > alignment ? child_alignment : alignment;
+    child->m_ElementSize = child_size;
   }
 
   m_Size = FixAlignment( offset, alignment );

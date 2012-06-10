@@ -13,9 +13,11 @@
 // Project
 #include "sbUtil.h"
 #include "TestNodeRead.h"
+#include "TestChunkFile.h"
 
 const UnitTest* AllTests[] =
 {
+  new TestChunkFile(),
   new TestNodeRead(),
 };
 
@@ -31,7 +33,7 @@ int main (int argc, const char * argv[])
   {
     const UnitTest* test = test_array[ i ];
     printf( "[%2d] Testing %s\n", i, test->GetName() );
-    UnitTestResult result = test->Run();
+    UnitTest::Result result = test->Run();
     if( !result.IsSuccess() )
     {
       printf( "** FAIL: %s\n", result.GetMessage() );

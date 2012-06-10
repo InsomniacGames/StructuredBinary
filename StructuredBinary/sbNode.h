@@ -81,6 +81,7 @@ private:
     const char*   m_TerminatorName;
     Type          m_Type;
     size_t        m_Offset;     // Offset from the start of the node
+    size_t        m_ElementSize;
     int           m_Count;      // For arrays
     const sbScalar* m_Scalar;
     sbNode*       m_Node;
@@ -94,7 +95,9 @@ private:
   size_t            m_Alignment;
   
   const Child* FindChild( const char* name ) const;
-  
+  int GetPointerCount( const Child* child, const char* data ) const;
+  int GetStringCount( const Child* child, const char* data ) const;
+
   bool IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const;
 };
 

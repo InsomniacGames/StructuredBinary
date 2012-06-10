@@ -46,7 +46,7 @@ namespace Src
   };
 };
 
-UnitTestResult TestNodeRead::RunTest() const
+UnitTest::Result TestNodeRead::RunTest() const
 {
   sbSchema schema;
   
@@ -130,5 +130,5 @@ UnitTestResult TestNodeRead::RunTest() const
   printf( "n0=%p\n", &n0 );
   schema.PrintNode( "node2", ( const char* )&n2 );
 
-  return UnitTestResult::Ok();
+  return Ok();
 }
