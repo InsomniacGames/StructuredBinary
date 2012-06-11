@@ -13,6 +13,7 @@
 
 #include "sbScalarValue.h"
 #include "sbStatus.h"
+#include "sbAllocator.h"
 
 class sbSchema;
 class sbScalar;
@@ -49,7 +50,7 @@ public:
   , m_State( kState_Defined )
   {}
 
-  sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const;
+  sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node, sbAllocator* alloc ) const;
 
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
@@ -83,6 +84,7 @@ private:
     Type          m_Type;
     size_t        m_Offset;     // Offset from the start of the node
     size_t        m_ElementSize;
+    size_t        m_ElementAlignment;
     int           m_Count;      // For arrays
     const sbScalar* m_Scalar;
     sbNode*       m_Node;

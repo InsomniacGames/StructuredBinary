@@ -66,7 +66,7 @@ sbStatus sbSchema::FixUp()
   return status;
 }
 
-sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const
+sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
 
@@ -79,7 +79,7 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
   }
   else
   {
-    status = dst_node->Convert( dst_data, src_data, src_node );
+    status = dst_node->Convert( dst_data, src_data, src_node, alloc );
   }
   return status;
 }

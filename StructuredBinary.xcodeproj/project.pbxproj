@@ -15,6 +15,7 @@
 		BE3108D1158429BC003D607C /* TestFormatFile2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108CC158429BC003D607C /* TestFormatFile2.cpp */; };
 		BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108D4158433C7003D607C /* TestConvertFlat.cpp */; };
 		BE3108D9158557F0003D607C /* TestConvertDeep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108D8158557F0003D607C /* TestConvertDeep.cpp */; };
+		BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108DB1585A029003D607C /* sbAllocator.cpp */; };
 		BE3EF91F157BC43C00A7DFB3 /* TestNodeRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */; };
 		BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF921157BC59900A7DFB3 /* UnitTestResult.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
@@ -58,6 +59,8 @@
 		BE3108D615844978003D607C /* sbStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbStatus.h; sourceTree = "<group>"; };
 		BE3108D7158557E4003D607C /* TestConvertDeep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConvertDeep.h; sourceTree = "<group>"; };
 		BE3108D8158557F0003D607C /* TestConvertDeep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertDeep.cpp; sourceTree = "<group>"; };
+		BE3108DA15859F59003D607C /* sbAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbAllocator.h; sourceTree = "<group>"; };
+		BE3108DB1585A029003D607C /* sbAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbAllocator.cpp; sourceTree = "<group>"; };
 		BE3EF91C157BC3F800A7DFB3 /* TestNodeRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNodeRead.h; sourceTree = "<group>"; };
 		BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNodeRead.cpp; sourceTree = "<group>"; };
 		BE3EF920157BC4C700A7DFB3 /* UnitTestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestResult.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				BE610466157B38060089A922 /* sbSchema.h */,
 				BE610467157B38170089A922 /* sbSchema.cpp */,
 				BE3108D615844978003D607C /* sbStatus.h */,
+				BE3108DA15859F59003D607C /* sbAllocator.h */,
+				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 			);
 			name = StructuredBinary;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 				BE3108D1158429BC003D607C /* TestFormatFile2.cpp in Sources */,
 				BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */,
 				BE3108D9158557F0003D607C /* TestConvertDeep.cpp in Sources */,
+				BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

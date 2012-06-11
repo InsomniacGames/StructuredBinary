@@ -93,7 +93,7 @@ UnitTest::Result TestConvertFlat::RunTest() const
 
   Dst::Struct dst_struct;
 
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct" );
+  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", NULL );
 
   if( dst_struct.u8   != 200 )                  return Error( "u8 wrong value" );
   if( dst_struct.f32  != 3.141f )               return Error( "f32 wrong value" );

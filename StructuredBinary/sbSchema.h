@@ -13,6 +13,7 @@
 
 class sbNode;
 class sbScalarValue;
+class sbAllocator;
 
 class sbSchema
 {
@@ -29,7 +30,7 @@ public:
   void PrintNode( const char* node_name, const char* data ) const;
 
   sbStatus FixUp();
-  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const;
+  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name, sbAllocator* alloc ) const;
 
 private:
 

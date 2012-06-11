@@ -13,6 +13,7 @@
 
 #include "sbSchema.h"
 #include "sbNode.h"
+#include "sbAllocator.h"
 
 namespace Src
 {
@@ -140,8 +141,10 @@ UnitTest::Result TestConvertDeep::RunTest() const
   src_schema.FixUp();
   
   Dst::Struct dst_struct;
-  
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct" );
+  char buffer[ 1000 ];
+  sbAllocator alloc( buffer, sizeof( buffer ) );
+
+  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 
   if( dst_struct.array_count   != 2 )           return Error( "array_count wrong value" );
   if( dst_struct.array == NULL )                return Error( "array is NULL" );

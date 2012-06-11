@@ -33,7 +33,7 @@ const sbNode::Child* sbNode::FindChild( const char* name ) const
   return NULL;
 }
 
-sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const
+sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_node, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
   for( int i = 0; i < m_ChildCount; ++i )
@@ -61,12 +61,12 @@ sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* sr
           size_t src_size = src_child->m_Node->GetSize();
 
           const char* src_p = *( const char** )( src_child_data );
-                char* dst_p = new char[ dst_size * pointer_count ];
+                char* dst_p = alloc->Alloc( dst_size * pointer_count, dst_child->m_ElementAlignment, src_child_data );
           *( char** )( dst_child_data ) = dst_p;
           
           for( int j = 0; j < pointer_count; ++j )
           {
-            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node );
+            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node, alloc );
             src_p += src_size;
             dst_p += dst_size;
           }
@@ -79,12 +79,12 @@ sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* sr
           size_t src_size = src_child->m_Node->GetSize();
           
           const char* src_p = *( const char** )( src_child_data );
-          char* dst_p = new char[ dst_size * string_count ];
+          char* dst_p = alloc->Alloc( dst_size * string_count, dst_child->m_ElementAlignment, src_child_data );
           *( char** )( dst_child_data ) = dst_p;
           
           for( int j = 0; j < string_count; ++j )
           {
-            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node );
+            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node, alloc );
             src_p += src_size;
             dst_p += dst_size;
           }
@@ -93,7 +93,7 @@ sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* sr
         }
         case Child::kType_Instance:
         {
-          dst_child->m_Node->Convert( dst_child_data, src_child_data, src_child->m_Node );
+          dst_child->m_Node->Convert( dst_child_data, src_child_data, src_child->m_Node, alloc );
           break;
         }
       }
@@ -373,6 +373,7 @@ sbStatus sbNode::FixUp( sbSchema* schema )
       offset += child_size * child->m_Count;
       alignment = child_alignment > alignment ? child_alignment : alignment;
       child->m_ElementSize = child_size;
+      child->m_ElementAlignment = child_alignment;
     }
   }
 
