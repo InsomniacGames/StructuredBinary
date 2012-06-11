@@ -17,6 +17,7 @@
 #include "sbScalar.h"
 #include "sbScalarValue.h"
 #include "sbPath.h"
+#include "sbStatus.h"
 
 const sbScalar* FindScalar( sbScalarType scalar_type );
 
@@ -32,8 +33,9 @@ const sbNode::Child* sbNode::FindChild( const char* name ) const
   return NULL;
 }
 
-void sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const
+sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const
 {
+  sbStatus status = sbStatus_Ok;
   for( int i = 0; i < m_ChildCount; ++i )
   {
     const Child* dst_child = m_Children + i;
@@ -53,14 +55,51 @@ void sbNode::Convert( char* dst_data, const char* src_data, const sbNode* src_no
           break;
         }
         case Child::kType_Pointer:
+        {
+          int pointer_count = src_node->GetPointerCount( src_child, src_data );
+          size_t dst_size = dst_child->m_Node->GetSize();
+          size_t src_size = src_child->m_Node->GetSize();
+
+          const char* src_p = *( const char** )( src_child_data );
+                char* dst_p = new char[ dst_size * pointer_count ];
+          *( char** )( dst_child_data ) = dst_p;
+          
+          for( int j = 0; j < pointer_count; ++j )
+          {
+            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node );
+            src_p += src_size;
+            dst_p += dst_size;
+          }
+          break;
+        }
         case Child::kType_String:
+        {
+          int string_count = src_node->GetStringCount( src_child, src_child_data );
+          size_t dst_size = dst_child->m_Node->GetSize();
+          size_t src_size = src_child->m_Node->GetSize();
+          
+          const char* src_p = *( const char** )( src_child_data );
+          char* dst_p = new char[ dst_size * string_count ];
+          *( char** )( dst_child_data ) = dst_p;
+          
+          for( int j = 0; j < string_count; ++j )
+          {
+            dst_child->m_Node->Convert( dst_p, src_p, src_child->m_Node );
+            src_p += src_size;
+            dst_p += dst_size;
+          }
+          break;
+
+        }
         case Child::kType_Instance:
         {
+          dst_child->m_Node->Convert( dst_child_data, src_child_data, src_child->m_Node );
           break;
         }
       }
     }
   }
+  return status;
 }
 
 void sbNode::AddScalar( const char* name, int count, sbScalarType scalar_type )
@@ -259,9 +298,11 @@ static size_t FixAlignment( size_t value, size_t alignment )
   return value + ( -( value ) & ( alignment - 1 ) );
 }
 
-void sbNode::FixUp( sbSchema* schema )
+sbStatus sbNode::FixUp( sbSchema* schema )
 {
-  if( m_State == kState_Ready ) return;
+  sbStatus status = sbStatus_Ok;
+
+  if( m_State == kState_Ready ) return status;
   assert( m_State == kState_Defined );
 
   size_t offset = 0;
@@ -283,18 +324,37 @@ void sbNode::FixUp( sbSchema* schema )
       case Child::kType_Pointer:
       case Child::kType_String:
       {
-        child->m_Node = schema->FindNode( child->m_LinkName );
-        
-        child_size = sizeof( void* );
-        child_alignment = __alignof( void* );
+        sbNode* node = schema->FindNode( child->m_LinkName );
+        if( !node )
+        {
+          status = sbStatus_ErrorNodeNotFound;
+        }
+        if( status == sbStatus_Ok )
+        {
+          child->m_Node = node;
+          child_size = sizeof( void* );
+          child_alignment = __alignof( void* );
+        }
         break;
       }
       case Child::kType_Instance:
       {
-        child->m_Node = schema->FindNode( child->m_LinkName );
-        child->m_Node->FixUp( schema );
-        child_size = child->m_Node->GetSize();
-        child_alignment = child->m_Node->GetAlignment();
+        sbNode* node = schema->FindNode( child->m_LinkName );
+        if( !node )
+        {
+          status = sbStatus_ErrorNodeNotFound;
+        }
+
+        if( status == sbStatus_Ok )
+        {
+          child->m_Node = node;
+          status = child->m_Node->FixUp( schema );
+        }
+        if( status == sbStatus_Ok )
+        {
+          child_size = child->m_Node->GetSize();
+          child_alignment = child->m_Node->GetAlignment();
+        }
         break;
       }
       default:
@@ -302,15 +362,24 @@ void sbNode::FixUp( sbSchema* schema )
         break;
     }
 
-    offset = FixAlignment( offset, child_alignment );
-    child->m_Offset = offset;
-    offset += child_size * child->m_Count;
-    alignment = child_alignment > alignment ? child_alignment : alignment;
-    child->m_ElementSize = child_size;
+    if( status != sbStatus_Ok )
+    {
+      break;
+    }
+    else
+    {
+      offset = FixAlignment( offset, child_alignment );
+      child->m_Offset = offset;
+      offset += child_size * child->m_Count;
+      alignment = child_alignment > alignment ? child_alignment : alignment;
+      child->m_ElementSize = child_size;
+    }
   }
 
   m_Size = FixAlignment( offset, alignment );
   m_Alignment = alignment;
+  
+  return status;
 }
 
 

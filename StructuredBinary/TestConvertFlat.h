@@ -18,5 +18,4 @@ public:
   virtual Result      RunTest() const;
 };
 
-
 #endif

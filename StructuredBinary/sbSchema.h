@@ -9,6 +9,8 @@
 #ifndef StructuredBinary_sbSchema_h
 #define StructuredBinary_sbSchema_h
 
+#include "sbStatus.h"
+
 class sbNode;
 class sbScalarValue;
 
@@ -26,9 +28,8 @@ public:
   
   void PrintNode( const char* node_name, const char* data ) const;
 
-  void FixUp();
-
-  void Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const;
+  sbStatus FixUp();
+  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const;
 
 private:
 

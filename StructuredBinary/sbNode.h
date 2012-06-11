@@ -12,6 +12,7 @@
 #include <stddef.h>
 
 #include "sbScalarValue.h"
+#include "sbStatus.h"
 
 class sbSchema;
 class sbScalar;
@@ -48,7 +49,7 @@ public:
   , m_State( kState_Defined )
   {}
 
-  void Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const;
+  sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node ) const;
 
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
@@ -57,7 +58,7 @@ public:
 
   void PrintNode( const char* data, const sbPath* parent ) const;
 
-  void FixUp( sbSchema* schema );
+  sbStatus FixUp( sbSchema* schema );
 
   size_t GetSize() const { return m_Size; }
   size_t GetAlignment() const { return m_Alignment; }

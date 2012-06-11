@@ -18,6 +18,7 @@
 #include "TestFormatFile2.h"
 //#include "TestNodeRead.h"
 #include "TestConvertFlat.h"
+#include "TestConvertDeep.h"
 
 const UnitTest* AllTests[] =
 {
@@ -27,6 +28,7 @@ const UnitTest* AllTests[] =
   new TestFormatFile2(),
 //  new TestNodeRead(),
   new TestConvertFlat(),
+  new TestConvertDeep(),
 };
 
 int main (int argc, const char * argv[])

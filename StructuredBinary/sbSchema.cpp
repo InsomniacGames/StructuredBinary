@@ -13,6 +13,7 @@
 #include "sbNode.h"
 #include "sbPath.h"
 #include "sbScalarValue.h"
+#include "sbStatus.h"
 
 const sbNode* sbSchema::FindNode( const char* name ) const
 {
@@ -53,18 +54,32 @@ void sbSchema::PrintNode( const char* node_name, const char* data ) const
   node->PrintNode( data, &path );
 }
 
-void sbSchema::FixUp()
+sbStatus sbSchema::FixUp()
 {
+  sbStatus status = sbStatus_Ok;
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    m_Entries[ i ].m_Node->FixUp( this );
+    status = m_Entries[ i ].m_Node->FixUp( this );
+    if( status != sbStatus_Ok )
+      break;
   }
+  return status;
 }
 
-void sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const
+sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name ) const
 {
+  sbStatus status = sbStatus_Ok;
+
   const sbNode* src_node = src_schema->FindNode( name );
   const sbNode* dst_node =             FindNode( name );
-
-  dst_node->Convert( dst_data, src_data, src_node );
+  
+  if( !src_node || !dst_node )
+  {
+    status = sbStatus_ErrorNodeNotFound;
+  }
+  else
+  {
+    status = dst_node->Convert( dst_data, src_data, src_node );
+  }
+  return status;
 }
