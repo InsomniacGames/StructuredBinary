@@ -19,6 +19,7 @@
 //#include "TestNodeRead.h"
 #include "TestConvertFlat.h"
 #include "TestConvertDeep.h"
+#include "TestAliasedPointer.h"
 
 const UnitTest* AllTests[] =
 {
@@ -29,6 +30,7 @@ const UnitTest* AllTests[] =
 //  new TestNodeRead(),
   new TestConvertFlat(),
   new TestConvertDeep(),
+  new TestAliasedPointer(),
 };
 
 int main (int argc, const char * argv[])

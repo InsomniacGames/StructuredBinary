@@ -17,7 +17,6 @@
 
 class sbSchema;
 class sbScalar;
-class sbPath;
 
 enum sbScalarType
 {
@@ -50,19 +49,17 @@ public:
   , m_State( kState_Defined )
   {}
 
-  sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node, sbAllocator* alloc ) const;
+  sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node, sbAllocator* alloc ) const;   // Virtual
 
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
   void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
   void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
 
-  void PrintNode( const char* data, const sbPath* parent ) const;
+  sbStatus FixUp( sbSchema* schema );                           // Virtual
 
-  sbStatus FixUp( sbSchema* schema );
-
-  size_t GetSize() const { return m_Size; }
-  size_t GetAlignment() const { return m_Alignment; }
+  size_t GetSize() const { return m_Size; }                     // Virtual
+  size_t GetAlignment() const { return m_Alignment; }           // Virtual
 
 private:
   static const int  kMaxChildren = 100;
@@ -97,11 +94,11 @@ private:
   size_t            m_Size;
   size_t            m_Alignment;
   
-  const Child* FindChild( const char* name ) const;
-  int GetPointerCount( const Child* child, const char* data ) const;
-  int GetStringCount( const Child* child, const char* data ) const;
+  const Child* FindChild( const char* name ) const;                       // Virtual
+  int GetPointerCount( const Child* child, const char* data ) const;      // Virtual
+  int GetStringCount( const Child* child, const char* data ) const;       // Virtual
 
-  bool IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const;
+  bool IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const;  // Virtual
 };
 
 #endif

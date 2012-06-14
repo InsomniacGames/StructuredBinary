@@ -26,8 +26,6 @@ public:
   const sbNode* FindNode( const char* name ) const;
   sbNode* FindNode( const char* name );
   void AddNode( const char* name, sbNode* node );
-  
-  void PrintNode( const char* node_name, const char* data ) const;
 
   sbStatus FixUp();
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name, sbAllocator* alloc ) const;

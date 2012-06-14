@@ -11,7 +11,6 @@
 #include <cstring>
 
 #include "sbNode.h"
-#include "sbPath.h"
 #include "sbScalarValue.h"
 #include "sbStatus.h"
 
@@ -44,14 +43,6 @@ void sbSchema::AddNode( const char* name, sbNode* node )
   Entry* entry = m_Entries + m_EntryCount++;
   entry->m_Name = name;
   entry->m_Node = node;
-}
-
-void sbSchema::PrintNode( const char* node_name, const char* data ) const
-{
-  sbPath path( NULL );
-  path.m_Name = node_name;
-  const sbNode* node = FindNode( node_name );
-  node->PrintNode( data, &path );
 }
 
 sbStatus sbSchema::FixUp()

@@ -16,7 +16,7 @@
 		BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108D4158433C7003D607C /* TestConvertFlat.cpp */; };
 		BE3108D9158557F0003D607C /* TestConvertDeep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108D8158557F0003D607C /* TestConvertDeep.cpp */; };
 		BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108DB1585A029003D607C /* sbAllocator.cpp */; };
-		BE3EF91F157BC43C00A7DFB3 /* TestNodeRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */; };
+		BE3108DF15898594003D607C /* TestAliasedPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3108DE15898594003D607C /* TestAliasedPointer.cpp */; };
 		BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF921157BC59900A7DFB3 /* UnitTestResult.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
 		BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* UnitTest.cpp */; };
@@ -61,8 +61,8 @@
 		BE3108D8158557F0003D607C /* TestConvertDeep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertDeep.cpp; sourceTree = "<group>"; };
 		BE3108DA15859F59003D607C /* sbAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbAllocator.h; sourceTree = "<group>"; };
 		BE3108DB1585A029003D607C /* sbAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbAllocator.cpp; sourceTree = "<group>"; };
-		BE3EF91C157BC3F800A7DFB3 /* TestNodeRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNodeRead.h; sourceTree = "<group>"; };
-		BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNodeRead.cpp; sourceTree = "<group>"; };
+		BE3108DD15898584003D607C /* TestAliasedPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAliasedPointer.h; sourceTree = "<group>"; };
+		BE3108DE15898594003D607C /* TestAliasedPointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestAliasedPointer.cpp; sourceTree = "<group>"; };
 		BE3EF920157BC4C700A7DFB3 /* UnitTestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTestResult.h; sourceTree = "<group>"; };
 		BE3EF921157BC59900A7DFB3 /* UnitTestResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTestResult.cpp; sourceTree = "<group>"; };
 		BE57CC3715605DEC00FFCB91 /* StructuredBinary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StructuredBinary; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,7 +76,6 @@
 		BE57CC54156074BF00FFCB91 /* sbFnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFnv.h; sourceTree = "<group>"; };
 		BE57CC551560799000FFCB91 /* sbScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbScalar.h; sourceTree = "<group>"; };
 		BE57CC561560799D00FFCB91 /* sbScalar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalar.cpp; sourceTree = "<group>"; };
-		BE610462157B115E0089A922 /* sbPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPath.h; sourceTree = "<group>"; };
 		BE610463157B14430089A922 /* sbNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbNode.h; sourceTree = "<group>"; };
 		BE610464157B1B750089A922 /* sbNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbNode.cpp; sourceTree = "<group>"; };
 		BE610466157B38060089A922 /* sbSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbSchema.h; sourceTree = "<group>"; };
@@ -109,12 +108,12 @@
 				BE3108CB158429BC003D607C /* TestFormatFile.h */,
 				BE3108CC158429BC003D607C /* TestFormatFile2.cpp */,
 				BE3108CD158429BC003D607C /* TestFormatFile2.h */,
-				BE3EF91C157BC3F800A7DFB3 /* TestNodeRead.h */,
-				BE3EF91E157BC43C00A7DFB3 /* TestNodeRead.cpp */,
 				BE3108D3158433A7003D607C /* TestConvertFlat.h */,
 				BE3108D4158433C7003D607C /* TestConvertFlat.cpp */,
 				BE3108D7158557E4003D607C /* TestConvertDeep.h */,
 				BE3108D8158557F0003D607C /* TestConvertDeep.cpp */,
+				BE3108DD15898584003D607C /* TestAliasedPointer.h */,
+				BE3108DE15898594003D607C /* TestAliasedPointer.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -167,7 +166,6 @@
 				BE9275FA156F2164008F1288 /* sbByteWriter.h */,
 				BE9275F6156F213E008F1288 /* sbByteReader.cpp */,
 				BE9275F8156F215A008F1288 /* sbByteWriter.cpp */,
-				BE610462157B115E0089A922 /* sbPath.h */,
 				BE610463157B14430089A922 /* sbNode.h */,
 				BE610464157B1B750089A922 /* sbNode.cpp */,
 				BE610466157B38060089A922 /* sbSchema.h */,
@@ -240,7 +238,6 @@
 				BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */,
 				BE610465157B1B750089A922 /* sbNode.cpp in Sources */,
 				BE610468157B38170089A922 /* sbSchema.cpp in Sources */,
-				BE3EF91F157BC43C00A7DFB3 /* TestNodeRead.cpp in Sources */,
 				BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */,
 				BE3108CE158429BC003D607C /* TestChunk.cpp in Sources */,
 				BE3108CF158429BC003D607C /* TestChunkFile.cpp in Sources */,
@@ -249,6 +246,7 @@
 				BE3108D5158433C7003D607C /* TestConvertFlat.cpp in Sources */,
 				BE3108D9158557F0003D607C /* TestConvertDeep.cpp in Sources */,
 				BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */,
+				BE3108DF15898594003D607C /* TestAliasedPointer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

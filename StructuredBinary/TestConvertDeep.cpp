@@ -139,11 +139,14 @@ UnitTest::Result TestConvertDeep::RunTest() const
   src_schema.AddNode( "StringElem", &src_string_elem_node );
   src_schema.AddNode( "Struct", &src_struct_node );
   src_schema.FixUp();
-  
+
+  sbAllocator alloc( NULL, 0 );
+  dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  printf( "Memory needed %lu\n", alloc.GetSize() );
+
   Dst::Struct dst_struct;
   char buffer[ 1000 ];
-  sbAllocator alloc( buffer, sizeof( buffer ) );
-
+  alloc = sbAllocator( buffer, sizeof( buffer ) );
   dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 
   if( dst_struct.array_count   != 2 )           return Error( "array_count wrong value" );
