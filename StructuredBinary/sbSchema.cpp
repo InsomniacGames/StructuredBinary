@@ -15,6 +15,24 @@
 #include "sbScalarValue.h"
 #include "sbStatus.h"
 
+static const char* GetNameForScalar( sbScalarType t )
+{
+  switch( t )
+  {
+    case kScalar_Null:  return "null";
+    case kScalar_U8:    return "u8";
+    case kScalar_I8:    return "i8";
+    case kScalar_U16:   return "u16";
+    case kScalar_I16:   return "i16";
+    case kScalar_U32:   return "u32";
+    case kScalar_I32:   return "i32";
+    case kScalar_U64:   return "u64";
+    case kScalar_I64:   return "i64";
+    case kScalar_F32:   return "f32";
+    case kScalar_F64:   return "f64";
+  }
+}
+
 const sbNode* sbSchema::FindNode( const char* name ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
@@ -105,16 +123,59 @@ void sbSchema::AddPointer( const char* name, int count, const char* link_name, c
   m_CurrentNode->AddPointer( name, count, link_name, count_name );
 }
 
-void sbSchema::AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name )
+void sbSchema::AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value )
 {
   assert( m_CurrentNode );
-  m_CurrentNode->AddString( name, count, link_name, terminator, terminator_name );
+  m_CurrentNode->AddString( name, count, link_name, terminator_name, terminator_value );
 }
+
+void sbSchema::AddPointer( const char* name, int count, sbScalarType t, const char* count_name )
+{
+  AddPointer( name, count, GetNameForScalar( t ), count_name );
+}
+
+void sbSchema::AddString( const char* name, int count, sbScalarType t, const sbScalarValue& terminator_value )
+{
+  AddString( name, count, GetNameForScalar( t ), "value", terminator_value );
+}
+
 
 void sbSchema::Begin()
 {
   assert( m_State == kState_New );
   m_State = kState_Building;
+
+  // This hack must go away!
+  BeginNode( "i8" );
+  AddScalar( "value", 1, kScalar_I8  );
+  EndNode();
+  BeginNode( "u8" );
+  AddScalar( "value", 1, kScalar_U8  );
+  EndNode();
+  BeginNode( "i16" );
+  AddScalar( "value", 1, kScalar_I16 );
+  EndNode();
+  BeginNode( "u16" );
+  AddScalar( "value", 1, kScalar_U16 );
+  EndNode();
+  BeginNode( "i32" );
+  AddScalar( "value", 1, kScalar_I32 );
+  EndNode();
+  BeginNode( "u32" );
+  AddScalar( "value", 1, kScalar_U32 );
+  EndNode();
+  BeginNode( "i64" );
+  AddScalar( "value", 1, kScalar_I64 );
+  EndNode();
+  BeginNode( "u64" );
+  AddScalar( "value", 1, kScalar_U64 );
+  EndNode();
+  BeginNode( "f64" );
+  AddScalar( "value", 1, kScalar_F64 );
+  EndNode();
+  BeginNode( "f32" );
+  AddScalar( "value", 1, kScalar_F32 );
+  EndNode();
 }
 
 void sbSchema::End()
@@ -123,7 +184,6 @@ void sbSchema::End()
   FixUp();
   m_State = kState_Ready;
 }
-
 
 sbSchema::~sbSchema()
 {

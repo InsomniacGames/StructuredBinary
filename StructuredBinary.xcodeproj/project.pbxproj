@@ -100,14 +100,14 @@
 		BE147C6B15649E8C00C8A199 /* UnitTest */ = {
 			isa = PBXGroup;
 			children = (
-				BE3108C6158429BC003D607C /* TestChunk.cpp */,
 				BE3108C7158429BC003D607C /* TestChunk.h */,
-				BE3108C8158429BC003D607C /* TestChunkFile.cpp */,
+				BE3108C6158429BC003D607C /* TestChunk.cpp */,
 				BE3108C9158429BC003D607C /* TestChunkFile.h */,
-				BE3108CA158429BC003D607C /* TestFormatFile.cpp */,
+				BE3108C8158429BC003D607C /* TestChunkFile.cpp */,
 				BE3108CB158429BC003D607C /* TestFormatFile.h */,
-				BE3108CC158429BC003D607C /* TestFormatFile2.cpp */,
+				BE3108CA158429BC003D607C /* TestFormatFile.cpp */,
 				BE3108CD158429BC003D607C /* TestFormatFile2.h */,
+				BE3108CC158429BC003D607C /* TestFormatFile2.cpp */,
 				BE3108D3158433A7003D607C /* TestConvertFlat.h */,
 				BE3108D4158433C7003D607C /* TestConvertFlat.cpp */,
 				BE3108D7158557E4003D607C /* TestConvertDeep.h */,

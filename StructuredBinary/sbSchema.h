@@ -45,8 +45,11 @@ public:
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
   void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
-  void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
+  void AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value );
 
+  void AddPointer( const char* name, int count, sbScalarType t, const char* count_name );
+  void AddString( const char* name, int count, sbScalarType t, const sbScalarValue& terminator_value );
+  
 private:
   
   enum State

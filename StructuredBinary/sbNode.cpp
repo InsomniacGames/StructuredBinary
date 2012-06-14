@@ -147,7 +147,7 @@ int sbNode::GetStringCount( const Child* child, const char* child_data ) const
   while( !terminated )
   {
     string_count += 1;
-    terminated = child->m_Node->IsTerminal( p, child->m_Terminator, child->m_TerminatorName );
+    terminated = child->m_Node->IsTerminal( p, child->m_TerminatorValue, child->m_TerminatorName );
     p += child->m_Node->GetSize();
   }
   return string_count;
@@ -287,7 +287,7 @@ void sbNode::AddPointer( const char* name, int count, const char* link_name, con
   child->m_Node   = NULL;
 }
 
-void sbNode::AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name )
+void sbNode::AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value )
 {
   Child* child = m_Children + m_ChildCount++;
   
@@ -298,7 +298,7 @@ void sbNode::AddString( const char* name, int count, const char* link_name, cons
   child->m_Count  = count;
   child->m_Scalar = NULL;
   child->m_Node   = NULL;
-  child->m_Terminator = terminator;
+  child->m_TerminatorValue = terminator_value;
   child->m_TerminatorName = terminator_name;
 }
 

@@ -45,7 +45,7 @@ private:
   void AddScalar( const char* name, int count, sbScalarType scalar_type );
   void AddInstance( const char* name, int count, const char* link_name );
   void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
-  void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
+  void AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value );
   sbStatus FixUp( sbSchema* schema );                           // Virtual
   friend class sbSchema;  // TEMP
 
@@ -72,7 +72,7 @@ private:
     int           m_Count;      // For arrays
     const sbScalar* m_Scalar;
     sbNode*       m_Node;
-    sbScalarValue m_Terminator;
+    sbScalarValue m_TerminatorValue;
   };
 
   Child             m_Children[ kMaxChildren ];
