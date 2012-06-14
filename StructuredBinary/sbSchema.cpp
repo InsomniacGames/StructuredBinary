@@ -9,6 +9,7 @@
 #include "sbSchema.h"
 
 #include <cstring>
+#include <assert.h>
 
 #include "sbNode.h"
 #include "sbScalarValue.h"
@@ -36,13 +37,6 @@ sbNode* sbSchema::FindNode( const char* name )
     }
   }
   return NULL;
-}
-
-void sbSchema::AddNode( const char* name, sbNode* node )
-{
-  Entry* entry = m_Entries + m_EntryCount++;
-  entry->m_Name = name;
-  entry->m_Node = node;
 }
 
 sbStatus sbSchema::FixUp()
@@ -74,3 +68,68 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
   }
   return status;
 }
+
+void sbSchema::BeginNode( const char* name )
+{
+  assert( !m_CurrentNode );
+  
+  m_CurrentName = name;
+  m_CurrentNode = new sbNode();
+}
+
+void sbSchema::EndNode()
+{
+  Entry* entry = m_Entries + m_EntryCount++;
+  entry->m_Name = m_CurrentName;
+  entry->m_Node = m_CurrentNode;
+
+  m_CurrentName = NULL;
+  m_CurrentNode = NULL;
+}
+
+void sbSchema::AddScalar( const char* name, int count, sbScalarType scalar_type )
+{
+  assert( m_CurrentNode );
+  m_CurrentNode->AddScalar( name, count, scalar_type );
+}
+
+void sbSchema::AddInstance( const char* name, int count, const char* link_name )
+{
+  assert( m_CurrentNode );
+  m_CurrentNode->AddInstance( name, count, link_name );
+}
+
+void sbSchema::AddPointer( const char* name, int count, const char* link_name, const char* count_name )
+{
+  assert( m_CurrentNode );
+  m_CurrentNode->AddPointer( name, count, link_name, count_name );
+}
+
+void sbSchema::AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name )
+{
+  assert( m_CurrentNode );
+  m_CurrentNode->AddString( name, count, link_name, terminator, terminator_name );
+}
+
+void sbSchema::Begin()
+{
+  assert( m_State == kState_New );
+  m_State = kState_Building;
+}
+
+void sbSchema::End()
+{
+  assert( m_State == kState_Building );
+  FixUp();
+  m_State = kState_Ready;
+}
+
+
+sbSchema::~sbSchema()
+{
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    delete m_Entries[ i ].m_Node;
+  }
+}
+

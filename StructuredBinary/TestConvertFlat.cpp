@@ -49,35 +49,41 @@ namespace Dst
 
 UnitTest::Result TestConvertFlat::RunTest() const
 {
-  sbNode src_node;
-  src_node.AddScalar( "u8" , 1, kScalar_U8  );
-  src_node.AddScalar( "f32", 1, kScalar_F32 );
-  src_node.AddScalar( "u16", 1, kScalar_U16 );
-  src_node.AddScalar( "u32", 1, kScalar_U32 );
-  src_node.AddScalar( "u64", 1, kScalar_U64 );
-  src_node.AddScalar( "i8" , 1, kScalar_I8  );
-  src_node.AddScalar( "f64", 1, kScalar_F64 );
-  src_node.AddScalar( "i16", 1, kScalar_I16 );
-  src_node.AddScalar( "i32", 1, kScalar_I32 );
-  src_node.AddScalar( "i64", 1, kScalar_I64 );
   sbSchema src_schema;
-  src_schema.AddNode( "Struct", &src_node );
-  src_schema.FixUp();
+  src_schema.Begin();
 
-  sbNode dst_node;
-  dst_node.AddScalar( "i8" , 1, kScalar_I8  );
-  dst_node.AddScalar( "f64", 1, kScalar_F64 );
-  dst_node.AddScalar( "i16", 1, kScalar_I16 );
-  dst_node.AddScalar( "i32", 1, kScalar_I32 );
-  dst_node.AddScalar( "i64", 1, kScalar_I64 );
-  dst_node.AddScalar( "u8" , 1, kScalar_U8  );
-  dst_node.AddScalar( "f32", 1, kScalar_F32 );
-  dst_node.AddScalar( "u16", 1, kScalar_U16 );
-  dst_node.AddScalar( "u32", 1, kScalar_U32 );
-  dst_node.AddScalar( "u64", 1, kScalar_U64 );
+  src_schema.BeginNode( "Struct" );
+  src_schema.AddScalar( "u8" , 1, kScalar_U8  );
+  src_schema.AddScalar( "f32", 1, kScalar_F32 );
+  src_schema.AddScalar( "u16", 1, kScalar_U16 );
+  src_schema.AddScalar( "u32", 1, kScalar_U32 );
+  src_schema.AddScalar( "u64", 1, kScalar_U64 );
+  src_schema.AddScalar( "i8" , 1, kScalar_I8  );
+  src_schema.AddScalar( "f64", 1, kScalar_F64 );
+  src_schema.AddScalar( "i16", 1, kScalar_I16 );
+  src_schema.AddScalar( "i32", 1, kScalar_I32 );
+  src_schema.AddScalar( "i64", 1, kScalar_I64 );
+  src_schema.EndNode();
+
+  src_schema.End();
+
   sbSchema dst_schema;
-  dst_schema.AddNode( "Struct", &dst_node );
-  dst_schema.FixUp();
+  dst_schema.Begin();
+
+  dst_schema.BeginNode( "Struct" );
+  dst_schema.AddScalar( "i8" , 1, kScalar_I8  );
+  dst_schema.AddScalar( "f64", 1, kScalar_F64 );
+  dst_schema.AddScalar( "i16", 1, kScalar_I16 );
+  dst_schema.AddScalar( "i32", 1, kScalar_I32 );
+  dst_schema.AddScalar( "i64", 1, kScalar_I64 );
+  dst_schema.AddScalar( "u8" , 1, kScalar_U8  );
+  dst_schema.AddScalar( "f32", 1, kScalar_F32 );
+  dst_schema.AddScalar( "u16", 1, kScalar_U16 );
+  dst_schema.AddScalar( "u32", 1, kScalar_U32 );
+  dst_schema.AddScalar( "u64", 1, kScalar_U64 );
+  dst_schema.EndNode();
+
+  dst_schema.End();
 
   Src::Struct src_struct;
   src_struct.u8   = 200;

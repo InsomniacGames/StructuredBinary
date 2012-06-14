@@ -18,6 +18,21 @@
 #include "sbFnv.h"
 
 //const sbScalar* FindScalar( sbFieldType field_type );
+enum sbScalarType
+{
+  kScalar_Null,
+  kScalar_U8,
+  kScalar_I8,
+  kScalar_U16,
+  kScalar_I16,
+  kScalar_U32,
+  kScalar_I32,
+  kScalar_U64,
+  kScalar_I64,
+  kScalar_F32,
+  kScalar_F64,
+};
+
 
 class sbScalar
 {

@@ -60,33 +60,37 @@ UnitTest::Result TestAliasedPointer::RunTest() const
     src_stringB,  // StringElem* string4;
   };
   
-  sbNode dst_string_elem_node;
-  dst_string_elem_node.AddScalar( "c", 1, kScalar_I8  );
-  
-  sbNode dst_struct_node;
-  dst_struct_node.AddString  ( "string1", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  dst_struct_node.AddString  ( "string2", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  dst_struct_node.AddString  ( "string3", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  dst_struct_node.AddString  ( "string4", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  
   sbSchema dst_schema;
-  dst_schema.AddNode( "StringElem", &dst_string_elem_node );
-  dst_schema.AddNode( "Struct", &dst_struct_node );
-  dst_schema.FixUp();
-  
-  sbNode src_string_elem_node;
-  src_string_elem_node.AddScalar( "c", 1, kScalar_I8  );
-  
-  sbNode src_struct_node;
-  src_struct_node.AddString  ( "string3", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  src_struct_node.AddString  ( "string4", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  src_struct_node.AddString  ( "string1", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  src_struct_node.AddString  ( "string2", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.Begin();
 
+  dst_schema.BeginNode( "StringElem" );
+  dst_schema.AddScalar( "c", 1, kScalar_I8  );
+  dst_schema.EndNode();
+
+  dst_schema.BeginNode( "Struct" );
+  dst_schema.AddString( "string1", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.AddString( "string2", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.AddString( "string3", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.AddString( "string4", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.EndNode();
+  
+  dst_schema.End();
+  
   sbSchema src_schema;
-  src_schema.AddNode( "StringElem", &src_string_elem_node );
-  src_schema.AddNode( "Struct", &src_struct_node );
-  src_schema.FixUp();
+  src_schema.Begin();
+
+  src_schema.BeginNode( "StringElem" );
+  src_schema.AddScalar( "c", 1, kScalar_I8  );
+  src_schema.EndNode();
+  
+  src_schema.BeginNode( "Struct" );
+  src_schema.AddString( "string3", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  src_schema.AddString( "string4", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  src_schema.AddString( "string1", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  src_schema.AddString( "string2", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  src_schema.EndNode();
+
+  src_schema.End();
   
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );

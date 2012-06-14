@@ -11,27 +11,13 @@
 
 #include <stddef.h>
 
+#include "sbScalar.h"
 #include "sbScalarValue.h"
 #include "sbStatus.h"
 #include "sbAllocator.h"
 
 class sbSchema;
 class sbScalar;
-
-enum sbScalarType
-{
-  kScalar_Null,
-  kScalar_U8,
-  kScalar_I8,
-  kScalar_U16,
-  kScalar_I16,
-  kScalar_U32,
-  kScalar_I32,
-  kScalar_U64,
-  kScalar_I64,
-  kScalar_F32,
-  kScalar_F64,
-};
 
 class sbNode
 {
@@ -51,17 +37,18 @@ public:
 
   sbStatus Convert( char* dst_data, const char* src_data, const sbNode* src_node, sbAllocator* alloc ) const;   // Virtual
 
-  void AddScalar( const char* name, int count, sbScalarType scalar_type );
-  void AddInstance( const char* name, int count, const char* link_name );
-  void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
-  void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
-
-  sbStatus FixUp( sbSchema* schema );                           // Virtual
 
   size_t GetSize() const { return m_Size; }                     // Virtual
   size_t GetAlignment() const { return m_Alignment; }           // Virtual
 
 private:
+  void AddScalar( const char* name, int count, sbScalarType scalar_type );
+  void AddInstance( const char* name, int count, const char* link_name );
+  void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
+  void AddString( const char* name, int count, const char* link_name, const sbScalarValue& terminator, const char* terminator_name );
+  sbStatus FixUp( sbSchema* schema );                           // Virtual
+  friend class sbSchema;  // TEMP
+
   static const int  kMaxChildren = 100;
 
   struct Child

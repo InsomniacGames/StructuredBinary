@@ -92,53 +92,57 @@ UnitTest::Result TestConvertDeep::RunTest() const
     src_string  // StringElem* string;
   };
 
-  sbNode dst_inst_elem_node;
-  dst_inst_elem_node.AddScalar( "val", 1, kScalar_I32  );
-  
-  sbNode dst_array_elem_node;
-  dst_array_elem_node.AddScalar( "z", 1, kScalar_I32  );
-  dst_array_elem_node.AddScalar( "x", 1, kScalar_I32  );
-  dst_array_elem_node.AddScalar( "y", 1, kScalar_I32  );
-  
-  sbNode dst_string_elem_node;
-  dst_string_elem_node.AddScalar( "c", 1, kScalar_I8  );
-  
-  sbNode dst_struct_node;
-  dst_struct_node.AddScalar  ( "array_count", 1, kScalar_I32 );
-  dst_struct_node.AddString  ( "string", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  dst_struct_node.AddPointer ( "array", 1, "ArrayElem", "array_count" );
-  dst_struct_node.AddInstance( "inst", 2, "InstElem" );
-  
   sbSchema dst_schema;
-  dst_schema.AddNode( "InstElem", &dst_inst_elem_node );
-  dst_schema.AddNode( "ArrayElem", &dst_array_elem_node );
-  dst_schema.AddNode( "StringElem", &dst_string_elem_node );
-  dst_schema.AddNode( "Struct", &dst_struct_node );
-  dst_schema.FixUp();
+  dst_schema.Begin();
 
-  sbNode src_inst_elem_node;
-  src_inst_elem_node.AddScalar( "val", 1, kScalar_I32  );
+  dst_schema.BeginNode( "InstElem" );
+  dst_schema.AddScalar( "val", 1, kScalar_I32  );
+  dst_schema.EndNode();
+
+  dst_schema.BeginNode( "ArrayElem" );
+  dst_schema.AddScalar( "z", 1, kScalar_I32  );
+  dst_schema.AddScalar( "x", 1, kScalar_I32  );
+  dst_schema.AddScalar( "y", 1, kScalar_I32  );
+  dst_schema.EndNode();
   
-  sbNode src_array_elem_node;
-  src_array_elem_node.AddScalar( "x", 1, kScalar_I32  );
-  src_array_elem_node.AddScalar( "y", 1, kScalar_I32  );
-  src_array_elem_node.AddScalar( "z", 1, kScalar_I32  );
+  dst_schema.BeginNode( "StringElem" );
+  dst_schema.AddScalar( "c", 1, kScalar_I8  );
+  dst_schema.EndNode();
   
-  sbNode src_string_elem_node;
-  src_string_elem_node.AddScalar( "c", 1, kScalar_I8  );
-  
-  sbNode src_struct_node;
-  src_struct_node.AddInstance( "inst", 2, "InstElem" );
-  src_struct_node.AddScalar  ( "array_count", 1, kScalar_I32 );
-  src_struct_node.AddPointer ( "array", 1, "ArrayElem", "array_count" );
-  src_struct_node.AddString  ( "string", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
-  
+  dst_schema.BeginNode( "Struct" );
+  dst_schema.AddScalar  ( "array_count", 1, kScalar_I32 );
+  dst_schema.AddString  ( "string", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  dst_schema.AddPointer ( "array", 1, "ArrayElem", "array_count" );
+  dst_schema.AddInstance( "inst", 2, "InstElem" );
+  dst_schema.EndNode();
+
+  dst_schema.End();
+
   sbSchema src_schema;
-  src_schema.AddNode( "InstElem", &src_inst_elem_node );
-  src_schema.AddNode( "ArrayElem", &src_array_elem_node );
-  src_schema.AddNode( "StringElem", &src_string_elem_node );
-  src_schema.AddNode( "Struct", &src_struct_node );
-  src_schema.FixUp();
+  src_schema.Begin();
+
+  src_schema.BeginNode( "InstElem" );
+  src_schema.AddScalar( "val", 1, kScalar_I32  );
+  src_schema.EndNode();
+  
+  src_schema.BeginNode( "ArrayElem" );
+  src_schema.AddScalar( "x", 1, kScalar_I32  );
+  src_schema.AddScalar( "y", 1, kScalar_I32  );
+  src_schema.AddScalar( "z", 1, kScalar_I32  );
+  src_schema.EndNode();
+  
+  src_schema.BeginNode( "StringElem" );
+  src_schema.AddScalar( "c", 1, kScalar_I8  );
+  src_schema.EndNode();
+  
+  src_schema.BeginNode( "Struct" );
+  src_schema.AddInstance( "inst", 2, "InstElem" );
+  src_schema.AddScalar  ( "array_count", 1, kScalar_I32 );
+  src_schema.AddPointer ( "array", 1, "ArrayElem", "array_count" );
+  src_schema.AddString  ( "string", 1, "StringElem", sbScalarValue::Int( 0 ), "c" );
+  src_schema.EndNode();
+  
+  src_schema.End();
 
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
