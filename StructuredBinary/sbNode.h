@@ -15,6 +15,7 @@
 #include "sbScalarValue.h"
 #include "sbStatus.h"
 #include "sbAllocator.h"
+#include "sbFnv.h"
 
 class sbSchema;
 class sbScalar;
@@ -42,10 +43,10 @@ public:
   size_t GetAlignment() const { return m_Alignment; }           // Virtual
 
 private:
-  void AddScalar( const char* name, int count, sbScalarType scalar_type );
-  void AddInstance( const char* name, int count, const char* link_name );
-  void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
-  void AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value );
+  void AddScalar( sbHash name, int count, sbScalarType scalar_type );
+  void AddInstance( sbHash name, int count, sbHash link_name );
+  void AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name );
+  void AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value );
   sbStatus FixUp( sbSchema* schema );                           // Virtual
   friend class sbSchema;  // TEMP
 
@@ -61,15 +62,15 @@ private:
       kType_Instance,
     };
 
-    const char*   m_Name;
-    const char*   m_LinkName;
-    const char*   m_CountName;
-    const char*   m_TerminatorName;
-    Type          m_Type;
-    size_t        m_Offset;     // Offset from the start of the node
-    size_t        m_ElementSize;
-    size_t        m_ElementAlignment;
-    int           m_Count;      // For arrays
+    sbHash   m_Name;
+    sbHash   m_LinkName;
+    sbHash   m_CountName;
+    sbHash   m_TerminatorName;
+    Type     m_Type;
+    size_t   m_Offset;     // Offset from the start of the node
+    size_t   m_ElementSize;
+    size_t   m_ElementAlignment;
+    int      m_Count;      // For arrays
     const sbScalar* m_Scalar;
     sbNode*       m_Node;
     sbScalarValue m_TerminatorValue;
@@ -81,11 +82,11 @@ private:
   size_t            m_Size;
   size_t            m_Alignment;
   
-  const Child* FindChild( const char* name ) const;                       // Virtual
+  const Child* FindChild( sbHash name ) const;                       // Virtual
   int GetPointerCount( const Child* child, const char* data ) const;      // Virtual
   int GetStringCount( const Child* child, const char* data ) const;       // Virtual
 
-  bool IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const;  // Virtual
+  bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;  // Virtual
 };
 
 #endif

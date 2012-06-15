@@ -33,11 +33,11 @@ static const char* GetNameForScalar( sbScalarType t )
   }
 }
 
-const sbNode* sbSchema::FindNode( const char* name ) const
+const sbNode* sbSchema::FindNode( sbHash name ) const
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    if( 0 == strcmp( m_Entries[ i ].m_Name, name ) )
+    if( m_Entries[ i ].m_Name == name )
     {
       return m_Entries[ i ].m_Node;
     }
@@ -45,11 +45,11 @@ const sbNode* sbSchema::FindNode( const char* name ) const
   return NULL;
 }
 
-sbNode* sbSchema::FindNode( const char* name )
+sbNode* sbSchema::FindNode( sbHash name )
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
-    if( 0 == strcmp( m_Entries[ i ].m_Name, name ) )
+    if( m_Entries[ i ].m_Name == name )
     {
       return m_Entries[ i ].m_Node;
     }
@@ -69,7 +69,7 @@ sbStatus sbSchema::FixUp()
   return status;
 }
 
-sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name, sbAllocator* alloc ) const
+sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
 
@@ -87,7 +87,7 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
   return status;
 }
 
-void sbSchema::BeginNode( const char* name )
+void sbSchema::BeginNode( sbHash name )
 {
   assert( !m_CurrentNode );
   
@@ -101,40 +101,40 @@ void sbSchema::EndNode()
   entry->m_Name = m_CurrentName;
   entry->m_Node = m_CurrentNode;
 
-  m_CurrentName = NULL;
+  m_CurrentName = 0U;
   m_CurrentNode = NULL;
 }
 
-void sbSchema::AddScalar( const char* name, int count, sbScalarType scalar_type )
+void sbSchema::AddScalar( sbHash name, int count, sbScalarType scalar_type )
 {
   assert( m_CurrentNode );
   m_CurrentNode->AddScalar( name, count, scalar_type );
 }
 
-void sbSchema::AddInstance( const char* name, int count, const char* link_name )
+void sbSchema::AddInstance( sbHash name, int count, sbHash link_name )
 {
   assert( m_CurrentNode );
   m_CurrentNode->AddInstance( name, count, link_name );
 }
 
-void sbSchema::AddPointer( const char* name, int count, const char* link_name, const char* count_name )
+void sbSchema::AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name )
 {
   assert( m_CurrentNode );
   m_CurrentNode->AddPointer( name, count, link_name, count_name );
 }
 
-void sbSchema::AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value )
+void sbSchema::AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 {
   assert( m_CurrentNode );
   m_CurrentNode->AddString( name, count, link_name, terminator_name, terminator_value );
 }
 
-void sbSchema::AddPointer( const char* name, int count, sbScalarType t, const char* count_name )
+void sbSchema::AddPointer( sbHash name, int count, sbScalarType t, sbHash count_name )
 {
   AddPointer( name, count, GetNameForScalar( t ), count_name );
 }
 
-void sbSchema::AddString( const char* name, int count, sbScalarType t, const sbScalarValue& terminator_value )
+void sbSchema::AddString( sbHash name, int count, sbScalarType t, const sbScalarValue& terminator_value )
 {
   AddString( name, count, GetNameForScalar( t ), "value", terminator_value );
 }

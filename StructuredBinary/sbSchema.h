@@ -13,6 +13,7 @@
 
 #include "sbStatus.h"
 #include "sbScalar.h"
+#include "sbFnv.h"
 
 class sbNode;
 class sbScalarValue;
@@ -25,31 +26,30 @@ public:
   sbSchema()
   : m_State( kState_New )
   , m_CurrentNode( NULL)
-  , m_CurrentName( NULL )
   , m_EntryCount( 0 )
   {}
 
   ~sbSchema();
 
-  const sbNode* FindNode( const char* name ) const;
-  sbNode* FindNode( const char* name );
+  const sbNode* FindNode( sbHash name ) const;
+  sbNode* FindNode( sbHash name );
 
   void Begin();
   void End();
 
-  void BeginNode( const char* name );
+  void BeginNode( sbHash name );
   void EndNode();
 
-  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, const char* name, sbAllocator* alloc ) const;
+  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
-  void AddScalar( const char* name, int count, sbScalarType scalar_type );
-  void AddInstance( const char* name, int count, const char* link_name );
-  void AddPointer( const char* name, int count, const char* link_name, const char* count_name );
-  void AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value );
+  void AddScalar( sbHash name, int count, sbScalarType scalar_type );
+  void AddInstance( sbHash name, int count, sbHash link_name );
+  void AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name );
+  void AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value );
 
-  void AddPointer( const char* name, int count, sbScalarType t, const char* count_name );
-  void AddString( const char* name, int count, sbScalarType t, const sbScalarValue& terminator_value );
-  
+  void AddPointer( sbHash name, int count, sbScalarType t, sbHash count_name );
+  void AddString( sbHash name, int count, sbScalarType t, const sbScalarValue& terminator_value );
+
 private:
   
   enum State
@@ -65,12 +65,12 @@ private:
 
   struct Entry
   {
-    const char* m_Name;
-    sbNode*     m_Node;
+    sbHash  m_Name;
+    sbNode* m_Node;
   };
 
   sbNode* m_CurrentNode;
-  const char* m_CurrentName;
+  sbHash m_CurrentName;
 
   static const int  kMaxEntries = 100;
   int               m_EntryCount;

@@ -19,4 +19,33 @@ uint64_t sbFnv64( const char* s, int count );
 typedef const char* ( sbHashLookupCallback32 )( uint32_t, char* );
 typedef const char* ( sbHashLookupCallback64 )( uint64_t, char* );
 
+class sbHash
+{
+public:
+  sbHash( const char* text )
+  : m_Value( sbFnv32( text ) )
+  {}
+
+  sbHash( uint32_t value )
+  : m_Value( value )
+  {}
+
+  sbHash()
+  : m_Value( 0 )
+  {}
+
+  operator const uint32_t() const
+  {
+    return m_Value;
+  }
+  
+  bool operator== ( const sbHash& other ) const
+  {
+    return other.m_Value == m_Value;
+  }
+
+private:
+  uint32_t  m_Value;
+};
+
 #endif

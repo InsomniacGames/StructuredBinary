@@ -21,6 +21,8 @@
 #include "TestConvertDeep.h"
 #include "TestAliasedPointer.h"
 
+#include "sbFnv.h"
+
 const UnitTest* AllTests[] =
 {
   new TestChunk(),

@@ -20,11 +20,11 @@
 
 const sbScalar* FindScalar( sbScalarType scalar_type );
 
-const sbNode::Child* sbNode::FindChild( const char* name ) const
+const sbNode::Child* sbNode::FindChild( sbHash name ) const
 {
   for( int i = 0; i < m_ChildCount; ++i )
   {
-    if( 0 == strcmp( m_Children[ i ].m_Name, name ) )
+    if( m_Children[ i ].m_Name == name )
     {
       return m_Children + i;
     }
@@ -117,7 +117,7 @@ sbStatus sbNode::Convert( char* dst_data, const char* src_data, const sbNode* sr
   return status;
 }
 
-bool sbNode::IsTerminal( const char* data, const sbScalarValue& terminator_value, const char* terminator_name ) const
+bool sbNode::IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const
 {
   const Child* child = FindChild( terminator_name );
   assert( child );
@@ -245,14 +245,13 @@ sbStatus sbNode::FixUp( sbSchema* schema )
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-void sbNode::AddScalar( const char* name, int count, sbScalarType scalar_type )
+void sbNode::AddScalar( sbHash name, int count, sbScalarType scalar_type )
 {
   const sbScalar* scalar = FindScalar( scalar_type );
   assert( scalar );
   Child* child = m_Children + m_ChildCount++;
   
   child->m_Name   = name;
-  child->m_LinkName = NULL;
   child->m_Type   = Child::kType_Scalar;
   child->m_Offset = 0;          // To be determined in second pass
   child->m_Count  = count;
@@ -260,7 +259,7 @@ void sbNode::AddScalar( const char* name, int count, sbScalarType scalar_type )
   child->m_Node   = NULL;
 }
 
-void sbNode::AddInstance( const char* name, int count, const char* link_name )
+void sbNode::AddInstance( sbHash name, int count, sbHash link_name )
 {
   Child* child = m_Children + m_ChildCount++;
   
@@ -273,7 +272,7 @@ void sbNode::AddInstance( const char* name, int count, const char* link_name )
   child->m_Node   = NULL;
 }
 
-void sbNode::AddPointer( const char* name, int count, const char* link_name, const char* count_name )
+void sbNode::AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name )
 {
   Child* child = m_Children + m_ChildCount++;
   
@@ -287,7 +286,7 @@ void sbNode::AddPointer( const char* name, int count, const char* link_name, con
   child->m_Node   = NULL;
 }
 
-void sbNode::AddString( const char* name, int count, const char* link_name, const char* terminator_name, const sbScalarValue& terminator_value )
+void sbNode::AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 {
   Child* child = m_Children + m_ChildCount++;
   
