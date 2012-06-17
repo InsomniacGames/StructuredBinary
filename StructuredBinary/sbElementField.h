@@ -18,7 +18,7 @@ class Allocator;
 class sbElementField : public sbField
 {
 public:
-  sbElementField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name );
+  sbElementField( const sbAggregate* aggregate, int count, sbHash element_name );
   virtual size_t GetSize() const;
   virtual size_t GetAlignment() const;
   virtual int GetPointerCount( const char* aggregate_data, int index ) const;

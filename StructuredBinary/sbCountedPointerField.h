@@ -16,7 +16,7 @@ class sbCountedPointerField : public sbPointerField
   sbHash   m_CountName;
   
 public:
-  sbCountedPointerField( const sbAggregate* parent, sbHash name, int count, sbHash element_name, sbHash count_name );
+  sbCountedPointerField( const sbAggregate* parent, int count, sbHash element_name, sbHash count_name );
   virtual int GetPointerCount( const char* parent_data, int index ) const;
 };
 

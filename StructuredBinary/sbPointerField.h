@@ -20,7 +20,7 @@ class sbAllocator;
 class sbPointerField : public sbField
 {  
 public:
-  sbPointerField( const sbAggregate* parent, sbHash field_name, int count, sbHash element_name );
+  sbPointerField( const sbAggregate* parent, int count, sbHash element_name );
   virtual size_t GetSize() const;
   virtual size_t GetAlignment() const;
   virtual void Convert( char* dst_aggregate_data, const char* src_aggregate_data, const sbField* src_field, sbAllocator* alloc ) const;

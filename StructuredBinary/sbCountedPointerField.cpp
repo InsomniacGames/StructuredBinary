@@ -10,8 +10,8 @@
 
 #include "sbAggregate.h"
 
-sbCountedPointerField::sbCountedPointerField( const sbAggregate* parent, sbHash field_name, int count, sbHash element_name, sbHash count_name )
-: sbPointerField( parent, field_name, count, element_name )
+sbCountedPointerField::sbCountedPointerField( const sbAggregate* parent, int count, sbHash element_name, sbHash count_name )
+: sbPointerField( parent, count, element_name )
 {
   m_CountName = count_name;
 }

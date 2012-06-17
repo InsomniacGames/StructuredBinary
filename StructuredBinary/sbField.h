@@ -23,7 +23,7 @@ class sbSchema;
 class sbField
 {
 public:
-  sbField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name );
+  sbField( const sbAggregate* aggregate, int count, sbHash element_name );
   virtual ~sbField();
   
   char* GetDataPtr( char* aggregate_data, int index ) const;
@@ -37,16 +37,13 @@ public:
   virtual sbStatus FixUp( sbSchema* schema, const sbField* previous_field ) = 0;
   virtual void Convert( char* dst_aggregate_data, const char* src_aggregate_data, const sbField* src_field, sbAllocator* alloc ) const = 0;
 
-  sbHash GetName() const { return m_FieldName; }
-  sbField* GetNext() const { return m_Next; }
+  size_t GetOffset() const { return m_Offset; }
 
 //private:
-  sbHash   m_FieldName;
   sbHash   m_ElementName;
   size_t   m_Offset;     // Offset from the start of the node
   int      m_Count;      // For arrays
   const sbElement*  m_Element;
-  sbField*   m_Next;
   const sbAggregate*   m_Aggregate;
 };
 

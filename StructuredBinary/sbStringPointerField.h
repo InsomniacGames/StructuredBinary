@@ -22,7 +22,7 @@ class sbStringPointerField : public sbPointerField
   sbHash   m_TerminatorName;
   
 public:
-  sbStringPointerField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
+  sbStringPointerField( const sbAggregate* aggregate, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
   virtual int GetPointerCount( const char* aggregate_data, int index ) const;
 };
 

@@ -11,15 +11,13 @@
 #include "sbElement.h"
 #include "sbValue.h"
 
-sbField::sbField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name )
+sbField::sbField( const sbAggregate* aggregate, int count, sbHash element_name )
 {
   m_Aggregate = aggregate;
   m_Offset = 0;          // To be determined in second pass
   m_Element   = NULL;
-  m_FieldName   = field_name;
   m_ElementName = element_name;
   m_Count  = count;
-  m_Next = NULL;
 }
 
 sbField::~sbField()

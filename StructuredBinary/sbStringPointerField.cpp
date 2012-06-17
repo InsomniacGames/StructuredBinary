@@ -10,8 +10,8 @@
 
 #include "sbElement.h"
 
-sbStringPointerField::sbStringPointerField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
-: sbPointerField( aggregate, field_name, count, element_name )
+sbStringPointerField::sbStringPointerField( const sbAggregate* aggregate, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
+: sbPointerField( aggregate, count, element_name )
 {
   m_TerminatorValue = terminator_value;
   m_TerminatorName = terminator_name;

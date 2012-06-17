@@ -19,78 +19,24 @@
 #include "sbFloatScalar.h"
 #include "sbIntScalar.h"
 
-
-static sbIntScalar<  uint8_t >  s_ScalarU8;
-static sbIntScalar<   int8_t >  s_ScalarI8;
-static sbIntScalar< uint16_t >  s_ScalarU16;
-static sbIntScalar<  int16_t >  s_ScalarI16;
-static sbIntScalar< uint32_t >  s_ScalarU32;
-static sbIntScalar<  int32_t >  s_ScalarI32;
-static sbIntScalar< uint64_t >  s_ScalarU64;
-static sbIntScalar<  int64_t >  s_ScalarI64;
-static sbFloatScalar<  float >  s_ScalarF32;
-static sbFloatScalar< double >  s_ScalarF64;
-
-const sbSchema::Entry sbSchema::s_ScalarEntries[] =
-{
-  Entry( "uint8_t",   &s_ScalarU8  ),
-  Entry( "int8_t",    &s_ScalarI8  ),
-  Entry( "uint16_t",  &s_ScalarU16 ),
-  Entry( "int16_t",   &s_ScalarI16 ),
-  Entry( "uint32_t",  &s_ScalarU32 ),
-  Entry( "int32_t",   &s_ScalarI32 ),
-  Entry( "uint64_t",  &s_ScalarU64 ),
-  Entry( "int64_t",   &s_ScalarI64 ),
-  Entry( "float",     &s_ScalarF32 ),
-  Entry( "double",    &s_ScalarF64 ),
-};
+#include "sbDictionary.h"
 
 const sbElement* sbSchema::FindElement( sbHash name ) const
 {
-  for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
-  {
-    if( s_ScalarEntries[ i ].m_Name == name )
-    {
-      return s_ScalarEntries[ i ].m_Node;
-    }
-  }
-
-  for( int i = 0; i < m_EntryCount; ++i )
-  {
-    if( m_Entries[ i ].m_Name == name )
-    {
-      return m_Entries[ i ].m_Node;
-    }
-  }
-  return NULL;
+  return m_Dictionary.FindByName( name );
 }
 
 sbElement* sbSchema::FindElement( sbHash name )
 {
-  for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
-  {
-    if( s_ScalarEntries[ i ].m_Name == name )
-    {
-      return s_ScalarEntries[ i ].m_Node;
-    }
-  }
-  
-  for( int i = 0; i < m_EntryCount; ++i )
-  {
-    if( m_Entries[ i ].m_Name == name )
-    {
-      return m_Entries[ i ].m_Node;
-    }
-  }
-  return NULL;
+  return m_Dictionary.FindByName( name );
 }
 
 sbStatus sbSchema::FixUp()
 {
   sbStatus status = sbStatus_Ok;
-  for( int i = 0; i < m_EntryCount; ++i )
+  for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
-    status = m_Entries[ i ].m_Node->FixUp( this );
+    status = m_Dictionary.GetByIndex( i )->FixUp( this );
     if( status != sbStatus_Ok )
       break;
   }
@@ -100,13 +46,14 @@ sbStatus sbSchema::FixUp()
 sbStatus sbSchema::FixUp( sbHash element_name )
 {
   sbStatus status = sbStatus_Ok;
-  for( int i = 0; i < m_EntryCount; ++i )
+  sbElement* element = m_Dictionary.FindByName( element_name );
+  if( !element_name )
   {
-    if( m_Entries[ i ].m_Name == element_name )
-    {
-      status = m_Entries[ i ].m_Node->FixUp( this );
-      break;
-    }
+    status = sbStatus_ErrorNodeNotFound;
+  }
+  else
+  {
+    status = element->FixUp( this );
   }
   return status;
 }
@@ -139,10 +86,7 @@ void sbSchema::BeginElement( sbHash element_name )
 
 void sbSchema::EndElement()
 {
-  Entry* entry = m_Entries + m_EntryCount++;
-  entry->m_Name = m_CurrentName;
-  entry->m_Node = m_CurrentAggregate;
-
+  m_Dictionary.Add( m_CurrentName, m_CurrentAggregate );
   m_CurrentName = 0U;
   m_CurrentAggregate = NULL;
 }
@@ -169,6 +113,17 @@ void sbSchema::Begin()
 {
   assert( m_State == kState_New );
   m_State = kState_Building;
+
+  m_Dictionary.Add( "uint8_t",   new sbIntScalar<  uint8_t > );
+  m_Dictionary.Add( "int8_t",    new sbIntScalar<   int8_t > );
+  m_Dictionary.Add( "uint16_t",  new sbIntScalar< uint16_t > );
+  m_Dictionary.Add( "int16_t",   new sbIntScalar<  int16_t > );
+  m_Dictionary.Add( "uint32_t",  new sbIntScalar< uint32_t > );
+  m_Dictionary.Add( "int32_t",   new sbIntScalar<  int32_t > );
+  m_Dictionary.Add( "uint64_t",  new sbIntScalar< uint64_t > );
+  m_Dictionary.Add( "int64_t",   new sbIntScalar<  int64_t > );
+  m_Dictionary.Add( "float",     new sbFloatScalar<  float > );
+  m_Dictionary.Add( "double",    new sbFloatScalar< double > );
 }
 
 void sbSchema::End()
@@ -180,16 +135,16 @@ void sbSchema::End()
 
 sbSchema::~sbSchema()
 {
-  for( int i = 0; i < m_EntryCount; ++i )
+  for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
-    delete m_Entries[ i ].m_Node;
+    delete m_Dictionary.GetByIndex( i );
   }
 }
 
 sbSchema::sbSchema()
 : m_State( kState_New )
 , m_CurrentAggregate( NULL)
-, m_EntryCount( 0 )
+, m_Dictionary( 16, NULL )
 {}
 
 

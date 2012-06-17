@@ -17,6 +17,8 @@
 #include "sbAllocator.h"
 #include "sbHash.h"
 
+#include "sbDictionary.h"
+
 class sbSchema;
 class sbScalar;
 class sbAggregate;
@@ -34,8 +36,7 @@ class sbAggregate : public sbElement
 public:
 
   sbAggregate()
-  : m_FirstField( NULL )
-  , m_LastField( NULL )
+  : m_Dictionary( 16, NULL )
   , m_State( kState_Defined )
   {}
   
@@ -51,15 +52,14 @@ public:
   virtual const sbField* FindField( sbHash field_name ) const;
   virtual sbValue ReadValue( const char* data ) const;
 
-private:
-  void AddInstance( sbHash name, int count, sbHash element_name );
-  void AddPointer( sbHash name, int count, sbHash element_name, sbHash count_name );
-  void AddString( sbHash name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
-  void AddField( sbField* child );
-  friend class sbSchema;
+  void AddInstance( sbHash field_name, int count, sbHash element_name );
+  void AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name );
+  void AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
 
-  sbField*            m_FirstField;
-  sbField*            m_LastField;
+private:
+  void AddField( sbHash field_name, sbField* child );
+  
+  sbDictionary< sbField* >  m_Dictionary;
 
   State             m_State;
   size_t            m_Size;

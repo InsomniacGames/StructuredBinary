@@ -15,8 +15,8 @@
 #include "sbStatus.h"
 #include "sbSchema.h"
 
-sbPointerField::sbPointerField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name )
-: sbField( aggregate, field_name, count, element_name )
+sbPointerField::sbPointerField( const sbAggregate* aggregate, int count, sbHash element_name )
+: sbField( aggregate, count, element_name )
 {}
 
 size_t sbPointerField::GetSize() const

@@ -12,8 +12,8 @@
 #include "sbField.h"
 #include "sbSchema.h"
 
-sbElementField::sbElementField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name )
-: sbField( aggregate, field_name, count, element_name )
+sbElementField::sbElementField( const sbAggregate* aggregate, int count, sbHash element_name )
+: sbField( aggregate, count, element_name )
 {}
 
 

@@ -14,6 +14,7 @@
 #include "sbStatus.h"
 #include "sbScalar.h"
 #include "sbHash.h"
+#include "sbDictionary.h"
 
 class sbValue;
 class sbAllocator;
@@ -56,26 +57,10 @@ private:
 
   sbStatus FixUp();
 
-  struct Entry
-  {
-    Entry() {}
-    Entry( sbHash name, sbElement* field )
-    : m_Name( name )
-    , m_Node( field )
-    {}
-
-    sbHash  m_Name;
-    sbElement* m_Node;
-  };
-
   sbAggregate*  m_CurrentAggregate;
   sbHash        m_CurrentName;
 
-  static const int  kMaxEntries = 100;
-  int               m_EntryCount;
-  Entry             m_Entries[ kMaxEntries ];
-  
-  static const Entry s_ScalarEntries[];
+  sbDictionary< sbElement* > m_Dictionary;
 };
 
 #endif

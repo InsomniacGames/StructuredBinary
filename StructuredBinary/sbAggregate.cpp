@@ -25,27 +25,18 @@
 
 const sbField* sbAggregate::FindField( sbHash field_name ) const
 {
-  const sbField* field = NULL;
-  if( field_name )
-  {
-    field = m_FirstField;
-    while( field && field->GetName() != field_name )
-    {
-      field = field->GetNext();
-    }
-  }
-  return field;
+  return m_Dictionary.FindByName( field_name );
 }
 
 sbStatus sbAggregate::Convert( char* dst_element_data, const char* src_element_data, const sbElement* src_element, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
-  const sbField* dst_field = m_FirstField;
-  while( dst_field )
+  for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
-    const sbField* src_field = src_element->FindField( dst_field->GetName() );
+    const sbField* dst_field = m_Dictionary.GetByIndex( i );
+    sbHash dst_field_name = m_Dictionary.GetNameByIndex( i );
+    const sbField* src_field = src_element->FindField( dst_field_name );
     dst_field->Convert( dst_element_data, src_element_data, src_field, alloc );
-    dst_field = dst_field->GetNext();
   }
   return status;
 }
@@ -66,10 +57,11 @@ sbStatus sbAggregate::FixUp( sbSchema* schema )
   
   m_State = kState_Fixing;
 
+  size_t alignment = 1;
   const sbField* previous_field = NULL;
-  sbField* field = m_FirstField;
-  while( field )
+  for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
+    sbField* field = m_Dictionary.GetByIndex( i );
     status = field->FixUp( schema, previous_field );
 
     if( status != sbStatus_Ok )
@@ -77,23 +69,14 @@ sbStatus sbAggregate::FixUp( sbSchema* schema )
       break;
     }
 
-    previous_field = field;
-    field = field->GetNext();
-  }
-
-  //-----------------------------------------------------------
-  size_t alignment = 1;
-  field = m_FirstField;
-  while( field )
-  {
     size_t field_alignment = 0;
     field_alignment = field->GetAlignment();
     alignment = field_alignment > alignment ? field_alignment : alignment;
 
-    field = field->GetNext();
+    previous_field = field;
   }
-  
-  size_t size = m_LastField->m_Offset + m_LastField->GetTotalSize();
+
+  size_t size = previous_field->GetOffset() + previous_field->GetTotalSize();
 
   m_Size = FIX_ALIGNMENT( size, alignment );
   m_Alignment = alignment;
@@ -105,42 +88,31 @@ sbStatus sbAggregate::FixUp( sbSchema* schema )
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-void sbAggregate::AddField( sbField* child )
+void sbAggregate::AddField( sbHash field_name, sbField* field )
 {
-  if( m_LastField )
-  {
-    m_LastField->m_Next = child;
-  }
-  m_LastField = child;
-  if( !m_FirstField )
-  {
-    m_FirstField = child;
-  }
+  m_Dictionary.Add( field_name, field );
 }
 
-void sbAggregate::AddInstance( sbHash name, int count, sbHash element_name )
+void sbAggregate::AddInstance( sbHash field_name, int count, sbHash element_name )
 {
-  AddField( new sbElementField( this, name, count, element_name ) );
+  AddField( field_name, new sbElementField( this, count, element_name ) );
 }
 
-void sbAggregate::AddPointer( sbHash name, int count, sbHash element_name, sbHash count_name )
+void sbAggregate::AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name )
 {
-  AddField( new sbCountedPointerField( this, name, count, element_name, count_name ) );
+  AddField( field_name, new sbCountedPointerField( this, count, element_name, count_name ) );
 }
 
-void sbAggregate::AddString( sbHash name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbAggregate::AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
 {
-  AddField( new sbStringPointerField( this, name, count, element_name, terminator_name, terminator_value ) );
+  AddField( field_name, new sbStringPointerField( this, count, element_name, terminator_name, terminator_value ) );
 }
 
 sbAggregate::~sbAggregate()
 {
-  const sbField* child = m_FirstField;
-  while( child )
+  for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
-    const sbField* next = child->m_Next;
-    delete child;
-    child = next;
+    delete m_Dictionary.GetByIndex( i );
   }
 }
 
