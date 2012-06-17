@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "sbSchema.h"
-#include "sbNode.h"
+#include "sbAggregate.h"
 #include "sbAllocator.h"
 
 namespace Src
@@ -77,36 +77,36 @@ UnitTest::Result TestConvertDeep::RunTest() const
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginNode( "PointerElem" );
+  dst_schema.BeginElement( "PointerElem" );
   dst_schema.AddInstance( "z", 1, "int32_t" );
   dst_schema.AddInstance( "x", 1, "int32_t" );
   dst_schema.AddInstance( "y", 1, "int32_t" );
-  dst_schema.EndNode();
+  dst_schema.EndElement();
     
-  dst_schema.BeginNode( "Struct" );
+  dst_schema.BeginElement( "Struct" );
   dst_schema.AddInstance  ( "f", 2, "float" );
   dst_schema.AddInstance  ( "count", 1, "int32_t" );
-  dst_schema.AddString  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddString  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
-  dst_schema.EndNode();
+  dst_schema.EndElement();
 
   dst_schema.End();
 
   sbSchema src_schema;
   src_schema.Begin();
   
-  src_schema.BeginNode( "PointerElem" );
+  src_schema.BeginElement( "PointerElem" );
   src_schema.AddInstance( "x", 1, "int32_t" );
   src_schema.AddInstance( "y", 1, "int32_t" );
   src_schema.AddInstance( "z", 1, "int32_t" );
-  src_schema.EndNode();
+  src_schema.EndElement();
 
-  src_schema.BeginNode( "Struct" );
+  src_schema.BeginElement( "Struct" );
   src_schema.AddInstance  ( "count", 1, "int32_t" );
   src_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
-  src_schema.AddString  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddString  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddInstance  ( "f", 2, "float" );
-  src_schema.EndNode();
+  src_schema.EndElement();
   
   src_schema.End();
 

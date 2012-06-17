@@ -12,21 +12,24 @@
 #include <assert.h>
 
 #include "sbUtil.h"
-#include "sbNode.h"
-#include "sbScalarValue.h"
+#include "sbAggregate.h"
+#include "sbValue.h"
 #include "sbStatus.h"
 
+#include "sbFloatScalar.h"
+#include "sbIntScalar.h"
 
-static sbScalarU8   s_ScalarU8;
-static sbScalarI8   s_ScalarI8;
-static sbScalarU16  s_ScalarU16;
-static sbScalarI16  s_ScalarI16;
-static sbScalarU32  s_ScalarU32;
-static sbScalarI32  s_ScalarI32;
-static sbScalarU64  s_ScalarU64;
-static sbScalarI64  s_ScalarI64;
-static sbScalarF32  s_ScalarF32;
-static sbScalarF64  s_ScalarF64;
+
+static sbIntScalar<  uint8_t >  s_ScalarU8;
+static sbIntScalar<   int8_t >  s_ScalarI8;
+static sbIntScalar< uint16_t >  s_ScalarU16;
+static sbIntScalar<  int16_t >  s_ScalarI16;
+static sbIntScalar< uint32_t >  s_ScalarU32;
+static sbIntScalar<  int32_t >  s_ScalarI32;
+static sbIntScalar< uint64_t >  s_ScalarU64;
+static sbIntScalar<  int64_t >  s_ScalarI64;
+static sbFloatScalar<  float >  s_ScalarF32;
+static sbFloatScalar< double >  s_ScalarF64;
 
 const sbSchema::Entry sbSchema::s_ScalarEntries[] =
 {
@@ -42,7 +45,7 @@ const sbSchema::Entry sbSchema::s_ScalarEntries[] =
   Entry( "double",    &s_ScalarF64 ),
 };
 
-const sbField* sbSchema::FindNode( sbHash name ) const
+const sbElement* sbSchema::FindElement( sbHash name ) const
 {
   for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
   {
@@ -62,7 +65,7 @@ const sbField* sbSchema::FindNode( sbHash name ) const
   return NULL;
 }
 
-sbField* sbSchema::FindNode( sbHash name )
+sbElement* sbSchema::FindElement( sbHash name )
 {
   for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
   {
@@ -94,12 +97,26 @@ sbStatus sbSchema::FixUp()
   return status;
 }
 
+sbStatus sbSchema::FixUp( sbHash element_name )
+{
+  sbStatus status = sbStatus_Ok;
+  for( int i = 0; i < m_EntryCount; ++i )
+  {
+    if( m_Entries[ i ].m_Name == element_name )
+    {
+      status = m_Entries[ i ].m_Node->FixUp( this );
+      break;
+    }
+  }
+  return status;
+}
+
 sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
 
-  const sbField* src_node = src_schema->FindNode( name );
-  const sbField* dst_node =             FindNode( name );
+  const sbElement* src_node = src_schema->FindElement( name );
+  const sbElement* dst_node =             FindElement( name );
   
   if( !src_node || !dst_node )
   {
@@ -112,40 +129,40 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
   return status;
 }
 
-void sbSchema::BeginNode( sbHash name )
+void sbSchema::BeginElement( sbHash element_name )
 {
-  assert( !m_CurrentNode );
+  assert( !m_CurrentAggregate );
   
-  m_CurrentName = name;
-  m_CurrentNode = new sbNode();
+  m_CurrentName = element_name;
+  m_CurrentAggregate = new sbAggregate();
 }
 
-void sbSchema::EndNode()
+void sbSchema::EndElement()
 {
   Entry* entry = m_Entries + m_EntryCount++;
   entry->m_Name = m_CurrentName;
-  entry->m_Node = m_CurrentNode;
+  entry->m_Node = m_CurrentAggregate;
 
   m_CurrentName = 0U;
-  m_CurrentNode = NULL;
+  m_CurrentAggregate = NULL;
 }
 
-void sbSchema::AddInstance( sbHash name, int count, sbHash link_name )
+void sbSchema::AddInstance( sbHash field_name, int count, sbHash element_name )
 {
-  assert( m_CurrentNode );
-  m_CurrentNode->AddInstance( name, count, link_name );
+  assert( m_CurrentAggregate );
+  m_CurrentAggregate->AddInstance( field_name, count, element_name );
 }
 
-void sbSchema::AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name )
+void sbSchema::AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name )
 {
-  assert( m_CurrentNode );
-  m_CurrentNode->AddPointer( name, count, link_name, count_name );
+  assert( m_CurrentAggregate );
+  m_CurrentAggregate->AddPointer( field_name, count, element_name, count_name );
 }
 
-void sbSchema::AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value )
+void sbSchema::AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
 {
-  assert( m_CurrentNode );
-  m_CurrentNode->AddString( name, count, link_name, terminator_name, terminator_value );
+  assert( m_CurrentAggregate );
+  m_CurrentAggregate->AddString( field_name, count, element_name, terminator_name, terminator_value );
 }
 
 void sbSchema::Begin()
@@ -168,4 +185,11 @@ sbSchema::~sbSchema()
     delete m_Entries[ i ].m_Node;
   }
 }
+
+sbSchema::sbSchema()
+: m_State( kState_New )
+, m_CurrentAggregate( NULL)
+, m_EntryCount( 0 )
+{}
+
 

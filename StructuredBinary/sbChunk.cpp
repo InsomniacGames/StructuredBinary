@@ -19,7 +19,7 @@ sbChunk::~sbChunk()
   }
 }
 
-sbChunk* sbChunk::AddChild( sbChunk* chunk )
+sbChunk* sbChunk::AddField( sbChunk* chunk )
 {
   if( !m_Child )
   {

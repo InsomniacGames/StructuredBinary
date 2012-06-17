@@ -20,8 +20,9 @@
 #include "TestConvertFlat.h"
 #include "TestConvertDeep.h"
 #include "TestAliasedPointer.h"
+#include "TestScalarTypes.h"
 
-#include "sbFnv.h"
+#include "sbHash.h"
 
 const UnitTest* AllTests[] =
 {
@@ -33,6 +34,7 @@ const UnitTest* AllTests[] =
   new TestConvertFlat(),
   new TestConvertDeep(),
   new TestAliasedPointer(),
+  new TestScalarTypes(),
 };
 
 const char* names[] =

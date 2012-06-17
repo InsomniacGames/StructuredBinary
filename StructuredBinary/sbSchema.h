@@ -13,38 +13,35 @@
 
 #include "sbStatus.h"
 #include "sbScalar.h"
-#include "sbFnv.h"
+#include "sbHash.h"
 
-class sbScalarValue;
+class sbValue;
 class sbAllocator;
-class sbNode;
+class sbAggregate;
 
 class sbSchema
 {
 public:
   
-  sbSchema()
-  : m_State( kState_New )
-  , m_CurrentNode( NULL)
-  , m_EntryCount( 0 )
-  {}
-
+  sbSchema();
   ~sbSchema();
 
-  const sbField* FindNode( sbHash name ) const;
-  sbField* FindNode( sbHash name );
+  const sbElement* FindElement( sbHash name ) const;
+  sbElement* FindElement( sbHash name );
 
   void Begin();
   void End();
 
-  void BeginNode( sbHash name );
-  void EndNode();
+  void BeginElement( sbHash element_name );
+  void EndElement();
 
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
-  void AddInstance( sbHash name, int count, sbHash link_name );
-  void AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name );
-  void AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value );
+  void AddInstance( sbHash field_name, int count, sbHash element_name );
+  void AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name );
+  void AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
+
+  sbStatus FixUp( sbHash element_name );
 
 private:
   
@@ -62,17 +59,17 @@ private:
   struct Entry
   {
     Entry() {}
-    Entry( sbHash name, sbField* field )
+    Entry( sbHash name, sbElement* field )
     : m_Name( name )
     , m_Node( field )
     {}
 
     sbHash  m_Name;
-    sbField* m_Node;
+    sbElement* m_Node;
   };
 
-  sbNode* m_CurrentNode;
-  sbHash m_CurrentName;
+  sbAggregate*  m_CurrentAggregate;
+  sbHash        m_CurrentName;
 
   static const int  kMaxEntries = 100;
   int               m_EntryCount;

@@ -53,13 +53,13 @@ UnitTest::Result TestChunkFile::RunTest() const
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
   sbChunk* write_root = new sbChunk( top_id );
-  write_root->AddChild( new sbChunk( sweet_id, sweet_data, sweet_size ) );
-  write_root->AddChild( new sbChunk( salt_id, salt_data, salt_size ) );
+  write_root->AddField( new sbChunk( sweet_id, sweet_data, sweet_size ) );
+  write_root->AddField( new sbChunk( salt_id, salt_data, salt_size ) );
   
-  sbChunk* child = write_root->AddChild( new sbChunk( child_id ) );
-  child->AddChild( new sbChunk( sour_id, sour_data, sour_size ) );
-  child->AddChild( new sbChunk( bitter_id, bitter_data, bitter_size ) );
-  child->AddChild( new sbChunk( umami_id, umami_data, umami_size ) );
+  sbChunk* child = write_root->AddField( new sbChunk( child_id ) );
+  child->AddField( new sbChunk( sour_id, sour_data, sour_size ) );
+  child->AddField( new sbChunk( bitter_id, bitter_data, bitter_size ) );
+  child->AddField( new sbChunk( umami_id, umami_data, umami_size ) );
 
   int file_size = sbChunkWrite( s_FileName, write_root );
   if( file_size == 0 ) return Error( "Could not write file" );

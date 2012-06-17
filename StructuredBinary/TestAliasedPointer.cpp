@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "sbSchema.h"
-#include "sbNode.h"
+#include "sbAggregate.h"
 #include "sbAllocator.h"
 
 namespace Src
@@ -53,28 +53,28 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginNode( "Struct" );
-  dst_schema.AddString( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  dst_schema.EndNode();
+  dst_schema.BeginElement( "Struct" );
+  dst_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.EndElement();
   
   dst_schema.End();
   
   sbSchema src_schema;
   src_schema.Begin();
 
-  src_schema.BeginNode( "StringElem" );
+  src_schema.BeginElement( "StringElem" );
   src_schema.AddInstance( "c", 1, "int8_t" );
-  src_schema.EndNode();
+  src_schema.EndElement();
   
-  src_schema.BeginNode( "Struct" );
-  src_schema.AddString( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
-  src_schema.EndNode();
+  src_schema.BeginElement( "Struct" );
+  src_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.EndElement();
 
   src_schema.End();
   

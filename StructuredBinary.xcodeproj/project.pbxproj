@@ -20,13 +20,19 @@
 		BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3EF921157BC59900A7DFB3 /* UnitTestResult.cpp */; };
 		BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC3B15605DEC00FFCB91 /* main.cpp */; };
 		BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* UnitTest.cpp */; };
-		BE57CC511560717400FFCB91 /* sbScalarValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* sbScalarValue.cpp */; };
-		BE57CC53156074B000FFCB91 /* sbFnv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC52156074B000FFCB91 /* sbFnv.cpp */; };
+		BE57CC511560717400FFCB91 /* sbValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* sbValue.cpp */; };
+		BE57CC53156074B000FFCB91 /* sbHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC52156074B000FFCB91 /* sbHash.cpp */; };
 		BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* sbScalar.cpp */; };
-		BE610465157B1B750089A922 /* sbNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610464157B1B750089A922 /* sbNode.cpp */; };
+		BE610465157B1B750089A922 /* sbAggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610464157B1B750089A922 /* sbAggregate.cpp */; };
 		BE610468157B38170089A922 /* sbSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610467157B38170089A922 /* sbSchema.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
+		BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */; };
+		BE9B1CD1158E3CA400453617 /* sbElementField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD0158E3CA400453617 /* sbElementField.cpp */; };
+		BE9B1CD4158E3FA600453617 /* sbPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */; };
+		BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */; };
+		BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */; };
+		BE9B1CDC158E428300453617 /* sbField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CDB158E428300453617 /* sbField.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,13 +48,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BE147C6E1564BA7C00C8A199 /* sbChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbChunk.h; sourceTree = "<group>"; };
-		BE147C6F1564BA8B00C8A199 /* sbChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbChunk.cpp; sourceTree = "<group>"; };
+		BE147C6E1564BA7C00C8A199 /* sbChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = sbChunk.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BE147C6F1564BA8B00C8A199 /* sbChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = sbChunk.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		BE147C711564BCAA00C8A199 /* sbChunkFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbChunkFile.h; sourceTree = "<group>"; };
-		BE147C721564BCBD00C8A199 /* sbChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbChunkFile.cpp; sourceTree = "<group>"; };
-		BE3108C6158429BC003D607C /* TestChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestChunk.cpp; sourceTree = "<group>"; };
+		BE147C721564BCBD00C8A199 /* sbChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = sbChunkFile.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		BE3108C6158429BC003D607C /* TestChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = TestChunk.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		BE3108C7158429BC003D607C /* TestChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestChunk.h; sourceTree = "<group>"; };
-		BE3108C8158429BC003D607C /* TestChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestChunkFile.cpp; sourceTree = "<group>"; };
+		BE3108C8158429BC003D607C /* TestChunkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = TestChunkFile.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		BE3108C9158429BC003D607C /* TestChunkFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestChunkFile.h; sourceTree = "<group>"; };
 		BE3108CA158429BC003D607C /* TestFormatFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestFormatFile.cpp; sourceTree = "<group>"; };
 		BE3108CB158429BC003D607C /* TestFormatFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFormatFile.h; sourceTree = "<group>"; };
@@ -70,20 +76,35 @@
 		BE57CC4415605E7900FFCB91 /* sbUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbUtil.h; sourceTree = "<group>"; };
 		BE57CC4615605F1600FFCB91 /* UnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTest.h; sourceTree = "<group>"; };
 		BE57CC4715605F2300FFCB91 /* UnitTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTest.cpp; sourceTree = "<group>"; };
-		BE57CC4F1560713D00FFCB91 /* sbScalarValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbScalarValue.h; sourceTree = "<group>"; };
-		BE57CC501560717400FFCB91 /* sbScalarValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalarValue.cpp; sourceTree = "<group>"; };
-		BE57CC52156074B000FFCB91 /* sbFnv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbFnv.cpp; sourceTree = "<group>"; };
-		BE57CC54156074BF00FFCB91 /* sbFnv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFnv.h; sourceTree = "<group>"; };
+		BE57CC4F1560713D00FFCB91 /* sbValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbValue.h; sourceTree = "<group>"; };
+		BE57CC501560717400FFCB91 /* sbValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbValue.cpp; sourceTree = "<group>"; };
+		BE57CC52156074B000FFCB91 /* sbHash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbHash.cpp; sourceTree = "<group>"; };
+		BE57CC54156074BF00FFCB91 /* sbHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbHash.h; sourceTree = "<group>"; };
 		BE57CC551560799000FFCB91 /* sbScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbScalar.h; sourceTree = "<group>"; };
 		BE57CC561560799D00FFCB91 /* sbScalar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalar.cpp; sourceTree = "<group>"; };
-		BE610463157B14430089A922 /* sbNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbNode.h; sourceTree = "<group>"; };
-		BE610464157B1B750089A922 /* sbNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbNode.cpp; sourceTree = "<group>"; };
+		BE610463157B14430089A922 /* sbAggregate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = sbAggregate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BE610464157B1B750089A922 /* sbAggregate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = sbAggregate.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		BE610466157B38060089A922 /* sbSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbSchema.h; sourceTree = "<group>"; };
 		BE610467157B38170089A922 /* sbSchema.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbSchema.cpp; sourceTree = "<group>"; };
 		BE9275F4156F2130008F1288 /* sbByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteReader.h; sourceTree = "<group>"; };
 		BE9275F6156F213E008F1288 /* sbByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteReader.cpp; sourceTree = "<group>"; };
 		BE9275F8156F215A008F1288 /* sbByteWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteWriter.cpp; sourceTree = "<group>"; };
 		BE9275FA156F2164008F1288 /* sbByteWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteWriter.h; sourceTree = "<group>"; };
+		BE9B1CC7158D9EF100453617 /* TestScalarTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScalarTypes.h; sourceTree = "<group>"; };
+		BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScalarTypes.cpp; sourceTree = "<group>"; };
+		BE9B1CCB158E3A4600453617 /* sbElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbElement.h; sourceTree = "<group>"; };
+		BE9B1CCE158E3B0F00453617 /* sbField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbField.h; sourceTree = "<group>"; };
+		BE9B1CCF158E3C2D00453617 /* sbElementField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbElementField.h; sourceTree = "<group>"; };
+		BE9B1CD0158E3CA400453617 /* sbElementField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbElementField.cpp; sourceTree = "<group>"; };
+		BE9B1CD2158E3F9800453617 /* sbPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPointerField.h; sourceTree = "<group>"; };
+		BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerField.cpp; sourceTree = "<group>"; };
+		BE9B1CD5158E407100453617 /* sbCountedPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbCountedPointerField.h; sourceTree = "<group>"; };
+		BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbCountedPointerField.cpp; sourceTree = "<group>"; };
+		BE9B1CD8158E409700453617 /* sbStringPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbStringPointerField.h; sourceTree = "<group>"; };
+		BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbStringPointerField.cpp; sourceTree = "<group>"; };
+		BE9B1CDB158E428300453617 /* sbField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbField.cpp; sourceTree = "<group>"; };
+		BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFloatScalar.h; sourceTree = "<group>"; };
+		BE9B1CDE158E4A9100453617 /* sbIntScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbIntScalar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +135,8 @@
 				BE3108D8158557F0003D607C /* TestConvertDeep.cpp */,
 				BE3108DD15898584003D607C /* TestAliasedPointer.h */,
 				BE3108DE15898594003D607C /* TestAliasedPointer.cpp */,
+				BE9B1CC7158D9EF100453617 /* TestScalarTypes.h */,
+				BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -152,25 +175,38 @@
 			isa = PBXGroup;
 			children = (
 				BE57CC4415605E7900FFCB91 /* sbUtil.h */,
+				BE3108D615844978003D607C /* sbStatus.h */,
+				BE57CC54156074BF00FFCB91 /* sbHash.h */,
+				BE57CC52156074B000FFCB91 /* sbHash.cpp */,
 				BE147C6E1564BA7C00C8A199 /* sbChunk.h */,
 				BE147C6F1564BA8B00C8A199 /* sbChunk.cpp */,
 				BE147C711564BCAA00C8A199 /* sbChunkFile.h */,
 				BE147C721564BCBD00C8A199 /* sbChunkFile.cpp */,
-				BE57CC54156074BF00FFCB91 /* sbFnv.h */,
-				BE57CC52156074B000FFCB91 /* sbFnv.cpp */,
-				BE57CC4F1560713D00FFCB91 /* sbScalarValue.h */,
-				BE57CC501560717400FFCB91 /* sbScalarValue.cpp */,
+				BE57CC4F1560713D00FFCB91 /* sbValue.h */,
+				BE57CC501560717400FFCB91 /* sbValue.cpp */,
+				BE9B1CCB158E3A4600453617 /* sbElement.h */,
 				BE57CC551560799000FFCB91 /* sbScalar.h */,
 				BE57CC561560799D00FFCB91 /* sbScalar.cpp */,
+				BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */,
+				BE9B1CDE158E4A9100453617 /* sbIntScalar.h */,
+				BE9B1CCE158E3B0F00453617 /* sbField.h */,
+				BE9B1CDB158E428300453617 /* sbField.cpp */,
+				BE9B1CD2158E3F9800453617 /* sbPointerField.h */,
+				BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */,
+				BE9B1CD5158E407100453617 /* sbCountedPointerField.h */,
+				BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */,
+				BE9B1CD8158E409700453617 /* sbStringPointerField.h */,
+				BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */,
+				BE9B1CCF158E3C2D00453617 /* sbElementField.h */,
+				BE9B1CD0158E3CA400453617 /* sbElementField.cpp */,
 				BE9275F4156F2130008F1288 /* sbByteReader.h */,
 				BE9275FA156F2164008F1288 /* sbByteWriter.h */,
 				BE9275F6156F213E008F1288 /* sbByteReader.cpp */,
 				BE9275F8156F215A008F1288 /* sbByteWriter.cpp */,
-				BE610463157B14430089A922 /* sbNode.h */,
-				BE610464157B1B750089A922 /* sbNode.cpp */,
+				BE610463157B14430089A922 /* sbAggregate.h */,
+				BE610464157B1B750089A922 /* sbAggregate.cpp */,
 				BE610466157B38060089A922 /* sbSchema.h */,
 				BE610467157B38170089A922 /* sbSchema.cpp */,
-				BE3108D615844978003D607C /* sbStatus.h */,
 				BE3108DA15859F59003D607C /* sbAllocator.h */,
 				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 			);
@@ -229,14 +265,14 @@
 			files = (
 				BE57CC3C15605DEC00FFCB91 /* main.cpp in Sources */,
 				BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */,
-				BE57CC511560717400FFCB91 /* sbScalarValue.cpp in Sources */,
-				BE57CC53156074B000FFCB91 /* sbFnv.cpp in Sources */,
+				BE57CC511560717400FFCB91 /* sbValue.cpp in Sources */,
+				BE57CC53156074B000FFCB91 /* sbHash.cpp in Sources */,
 				BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */,
 				BE147C701564BA8B00C8A199 /* sbChunk.cpp in Sources */,
 				BE147C731564BCBD00C8A199 /* sbChunkFile.cpp in Sources */,
 				BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */,
 				BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */,
-				BE610465157B1B750089A922 /* sbNode.cpp in Sources */,
+				BE610465157B1B750089A922 /* sbAggregate.cpp in Sources */,
 				BE610468157B38170089A922 /* sbSchema.cpp in Sources */,
 				BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */,
 				BE3108CE158429BC003D607C /* TestChunk.cpp in Sources */,
@@ -247,6 +283,12 @@
 				BE3108D9158557F0003D607C /* TestConvertDeep.cpp in Sources */,
 				BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */,
 				BE3108DF15898594003D607C /* TestAliasedPointer.cpp in Sources */,
+				BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */,
+				BE9B1CD1158E3CA400453617 /* sbElementField.cpp in Sources */,
+				BE9B1CD4158E3FA600453617 /* sbPointerField.cpp in Sources */,
+				BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */,
+				BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */,
+				BE9B1CDC158E428300453617 /* sbField.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

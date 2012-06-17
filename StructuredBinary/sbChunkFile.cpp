@@ -7,7 +7,7 @@
 //
 
 #include "sbChunkFile.h"
-#include "sbFnv.h"
+#include "sbHash.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -97,7 +97,7 @@ static sbChunk* GrabChunk( const char** read_ptr, const char* data_end )
     while( *read_ptr < chunk_end )
     {
       sbChunk* child = GrabChunk( read_ptr, chunk_end );
-      chunk->AddChild( child );
+      chunk->AddField( child );
       *read_ptr += ( -( intptr_t )*read_ptr ) & 3;
     }
   }

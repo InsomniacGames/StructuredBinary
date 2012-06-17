@@ -45,15 +45,15 @@ public:
   const sbChunk* GetSibling() const { return m_Sibling; }
   int GetChildCount() const { return m_ChildCount; }
 
-  sbChunk* AddChild( sbChunk* chunk );
+  sbChunk* AddField( sbChunk* chunk );
   
 private:
   
   uint32_t    m_Id;
   uint32_t    m_DataSize;
   const void* m_Data;
-  sbChunk*      m_Sibling;
-  sbChunk*      m_Child;
+  sbChunk*    m_Sibling;
+  sbChunk*    m_Child;
   int         m_ChildCount;
 };
 
