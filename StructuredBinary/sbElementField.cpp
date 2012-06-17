@@ -7,8 +7,10 @@
 //
 
 #include "sbElementField.h"
+#include "sbUtil.h"
 #include "sbElement.h"
 #include "sbField.h"
+#include "sbSchema.h"
 
 sbElementField::sbElementField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name )
 : sbField( aggregate, field_name, count, element_name )
@@ -38,4 +40,27 @@ void sbElementField::Convert( char* dst_aggregate_data, const char* src_aggregat
     const char* src_field_data = src_field->GetDataPtr( src_aggregate_data, index );
     m_Element->Convert( dst_field_data, src_field_data, src_field->m_Element, alloc );
   }
+}
+
+sbStatus sbElementField::FixUp( sbSchema* schema, const sbField* previous_field )
+{
+  sbStatus status = schema->FixUp( m_ElementName );
+
+  if( status == sbStatus_Ok )
+  {
+    m_Element = schema->FindElement( m_ElementName );
+    if( !m_Element )
+    {
+      status = sbStatus_ErrorNodeNotFound;
+    }
+  }
+
+  if( status == sbStatus_Ok )
+  {
+    size_t offset = previous_field ? previous_field->m_Offset + previous_field->GetTotalSize() : 0;
+    offset = FIX_ALIGNMENT( offset, GetAlignment() );
+    m_Offset = offset;
+  }
+
+  return status;
 }

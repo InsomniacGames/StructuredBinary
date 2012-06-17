@@ -33,6 +33,7 @@
 		BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */; };
 		BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */; };
 		BE9B1CDC158E428300453617 /* sbField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CDB158E428300453617 /* sbField.cpp */; };
+		BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -105,6 +106,8 @@
 		BE9B1CDB158E428300453617 /* sbField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbField.cpp; sourceTree = "<group>"; };
 		BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFloatScalar.h; sourceTree = "<group>"; };
 		BE9B1CDE158E4A9100453617 /* sbIntScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbIntScalar.h; sourceTree = "<group>"; };
+		BE9B1CE1158E59F700453617 /* TestConvertRecursion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConvertRecursion.h; sourceTree = "<group>"; };
+		BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertRecursion.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				BE3108DE15898594003D607C /* TestAliasedPointer.cpp */,
 				BE9B1CC7158D9EF100453617 /* TestScalarTypes.h */,
 				BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */,
+				BE9B1CE1158E59F700453617 /* TestConvertRecursion.h */,
+				BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -182,6 +187,12 @@
 				BE147C6F1564BA8B00C8A199 /* sbChunk.cpp */,
 				BE147C711564BCAA00C8A199 /* sbChunkFile.h */,
 				BE147C721564BCBD00C8A199 /* sbChunkFile.cpp */,
+				BE9275F4156F2130008F1288 /* sbByteReader.h */,
+				BE9275F6156F213E008F1288 /* sbByteReader.cpp */,
+				BE9275FA156F2164008F1288 /* sbByteWriter.h */,
+				BE9275F8156F215A008F1288 /* sbByteWriter.cpp */,
+				BE3108DA15859F59003D607C /* sbAllocator.h */,
+				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 				BE57CC4F1560713D00FFCB91 /* sbValue.h */,
 				BE57CC501560717400FFCB91 /* sbValue.cpp */,
 				BE9B1CCB158E3A4600453617 /* sbElement.h */,
@@ -189,6 +200,8 @@
 				BE57CC561560799D00FFCB91 /* sbScalar.cpp */,
 				BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */,
 				BE9B1CDE158E4A9100453617 /* sbIntScalar.h */,
+				BE610463157B14430089A922 /* sbAggregate.h */,
+				BE610464157B1B750089A922 /* sbAggregate.cpp */,
 				BE9B1CCE158E3B0F00453617 /* sbField.h */,
 				BE9B1CDB158E428300453617 /* sbField.cpp */,
 				BE9B1CD2158E3F9800453617 /* sbPointerField.h */,
@@ -199,16 +212,8 @@
 				BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */,
 				BE9B1CCF158E3C2D00453617 /* sbElementField.h */,
 				BE9B1CD0158E3CA400453617 /* sbElementField.cpp */,
-				BE9275F4156F2130008F1288 /* sbByteReader.h */,
-				BE9275FA156F2164008F1288 /* sbByteWriter.h */,
-				BE9275F6156F213E008F1288 /* sbByteReader.cpp */,
-				BE9275F8156F215A008F1288 /* sbByteWriter.cpp */,
-				BE610463157B14430089A922 /* sbAggregate.h */,
-				BE610464157B1B750089A922 /* sbAggregate.cpp */,
 				BE610466157B38060089A922 /* sbSchema.h */,
 				BE610467157B38170089A922 /* sbSchema.cpp */,
-				BE3108DA15859F59003D607C /* sbAllocator.h */,
-				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 			);
 			name = StructuredBinary;
 			sourceTree = "<group>";
@@ -289,6 +294,7 @@
 				BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */,
 				BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */,
 				BE9B1CDC158E428300453617 /* sbField.cpp in Sources */,
+				BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

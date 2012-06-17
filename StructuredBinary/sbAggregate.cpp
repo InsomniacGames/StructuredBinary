@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <cstring>
 
+#include "sbUtil.h"
 #include "sbSchema.h"
 #include "sbScalar.h"
 #include "sbValue.h"
@@ -24,41 +25,36 @@
 
 const sbField* sbAggregate::FindField( sbHash field_name ) const
 {
-  const sbField* child = NULL;
+  const sbField* field = NULL;
   if( field_name )
   {
-    child = m_FirstField;
-    while( child && child->m_FieldName != field_name )
+    field = m_FirstField;
+    while( field && field->GetName() != field_name )
     {
-      child = child->m_Next;
+      field = field->GetNext();
     }
   }
-  return child;
+  return field;
 }
 
 sbStatus sbAggregate::Convert( char* dst_element_data, const char* src_element_data, const sbElement* src_element, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
-  const sbField* child = m_FirstField;
-  while( child )
+  const sbField* dst_field = m_FirstField;
+  while( dst_field )
   {
-    const sbField* src_child = src_element->FindField( child->m_FieldName );
-    child->Convert( dst_element_data, src_element_data, src_child, alloc );
-    child = child->m_Next;
+    const sbField* src_field = src_element->FindField( dst_field->GetName() );
+    dst_field->Convert( dst_element_data, src_element_data, src_field, alloc );
+    dst_field = dst_field->GetNext();
   }
   return status;
 }
 
 bool sbAggregate::IsTerminal( const char* element_data, const sbValue& terminator_value, sbHash terminator_name ) const
 {
-  const sbField* child = FindField( terminator_name );
-  assert( child );
-  return child->m_Element->ReadValue( element_data + child->m_Offset ) == terminator_value;
-}
-
-static size_t FixAlignment( size_t value, size_t alignment )
-{
-  return value + ( -( value ) & ( alignment - 1 ) );
+  const sbField* field = FindField( terminator_name );
+  assert( field );
+  return field->ReadValue( element_data ) == terminator_value;
 }
 
 sbStatus sbAggregate::FixUp( sbSchema* schema )
@@ -67,49 +63,43 @@ sbStatus sbAggregate::FixUp( sbSchema* schema )
 
   if( m_State == kState_Ready ) return status;
   assert( m_State == kState_Defined );
+  
+  m_State = kState_Fixing;
 
-  size_t offset = 0;
-  size_t alignment = 1;
-
-  sbField* child = m_FirstField;
-  while( child )
+  const sbField* previous_field = NULL;
+  sbField* field = m_FirstField;
+  while( field )
   {
-    size_t child_size = 0;
-    size_t child_alignment = 0;
-
-    sbElement* element = schema->FindElement( child->m_ElementName );
-    if( !element )
-    {
-      status = sbStatus_ErrorNodeNotFound;
-    }
-    if( status == sbStatus_Ok )
-    {
-      child->m_Element = element;
-      status = schema->FixUp( child->m_ElementName );
-    }
-    if( status == sbStatus_Ok )
-    {
-      child_size = child->GetSize();
-      child_alignment = child->GetAlignment();
-    }
-    if( status == sbStatus_Ok )
-    {
-      offset = FixAlignment( offset, child_alignment );
-      child->m_Offset = offset;
-      offset += child_size * child->m_Count;
-      alignment = child_alignment > alignment ? child_alignment : alignment;
-    }
+    status = field->FixUp( schema, previous_field );
 
     if( status != sbStatus_Ok )
     {
       break;
     }
-    child = child->m_Next;
+
+    previous_field = field;
+    field = field->GetNext();
   }
 
-  m_Size = FixAlignment( offset, alignment );
-  m_Alignment = alignment;
+  //-----------------------------------------------------------
+  size_t alignment = 1;
+  field = m_FirstField;
+  while( field )
+  {
+    size_t field_alignment = 0;
+    field_alignment = field->GetAlignment();
+    alignment = field_alignment > alignment ? field_alignment : alignment;
+
+    field = field->GetNext();
+  }
   
+  size_t size = m_LastField->m_Offset + m_LastField->GetTotalSize();
+
+  m_Size = FIX_ALIGNMENT( size, alignment );
+  m_Alignment = alignment;
+
+  m_State = kState_Ready;
+
   return status;
 }
 

@@ -23,6 +23,7 @@ public:
   virtual size_t GetAlignment() const;
   virtual int GetPointerCount( const char* aggregate_data, int index ) const;
   virtual void Convert( char* dst_data, const char* src_data, const sbField* src_child, sbAllocator* alloc ) const;
+  virtual sbStatus FixUp( sbSchema* schema, const sbField* previous_field );
 };
 
 

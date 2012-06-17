@@ -21,6 +21,7 @@
 #include "TestConvertDeep.h"
 #include "TestAliasedPointer.h"
 #include "TestScalarTypes.h"
+#include "TestConvertRecursion.h"
 
 #include "sbHash.h"
 
@@ -35,6 +36,7 @@ const UnitTest* AllTests[] =
   new TestConvertDeep(),
   new TestAliasedPointer(),
   new TestScalarTypes(),
+  new TestConvertRecursion(),
 };
 
 const char* names[] =

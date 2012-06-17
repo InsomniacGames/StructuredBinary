@@ -11,4 +11,6 @@
 
 #define ARRAY_SIZE( a ) ( int )( sizeof( a ) / sizeof( *a ) )
 
+#define FIX_ALIGNMENT( value, alignment ) ( ( value ) + ( -( value ) & ( ( alignment ) - 1 ) ) )
+
 #endif

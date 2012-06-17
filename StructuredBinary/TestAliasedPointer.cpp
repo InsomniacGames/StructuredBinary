@@ -39,8 +39,8 @@ namespace Dst
 
 UnitTest::Result TestAliasedPointer::RunTest() const
 {
-  const char* src_stringA = "Aaa";
-  const char* src_stringB = "Bbb";
+  const char* src_stringA = "ABC";
+  const char* src_stringB = "XYZ";
   
   Src::Struct src_struct =
   {
@@ -87,10 +87,8 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   alloc = sbAllocator( buffer, sizeof( buffer ) );
   dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
   
-  if( 0 != strcmp( dst_struct.string1, "Aaa" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string1 );
-  if( 0 != strcmp( dst_struct.string2, "Aaa" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string2 );
-  if( 0 != strcmp( dst_struct.string3, "Bbb" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string3 );
-  if( 0 != strcmp( dst_struct.string4, "Bbb" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string4 );
+  if( 0 != strcmp( dst_struct.string1, "ABC" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string1 );
+  if( 0 != strcmp( dst_struct.string3, "XYZ" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string3 );
 
   if( dst_struct.string1 != dst_struct.string2 ) return Error( "Source aliased pointer is no longer aliased after conversion" );
   if( dst_struct.string3 != dst_struct.string4 ) return Error( "Source aliased pointer is no longer aliased after conversion" );

@@ -8,6 +8,9 @@
 
 #include "sbField.h"
 
+#include "sbElement.h"
+#include "sbValue.h"
+
 sbField::sbField( const sbAggregate* aggregate, sbHash field_name, int count, sbHash element_name )
 {
   m_Aggregate = aggregate;
@@ -29,4 +32,14 @@ char* sbField::GetDataPtr( char* aggregate_data, int index ) const
 const char* sbField::GetDataPtr( const char* aggregate_data, int index ) const
 {
   return aggregate_data ? aggregate_data + m_Offset + index * GetSize() : NULL;
+}
+
+sbValue sbField::ReadValue( const char* aggregate_data ) const
+{
+  return m_Element->ReadValue( aggregate_data + m_Offset );
+}
+
+size_t sbField::GetTotalSize() const
+{
+  return GetSize() * m_Count;
 }
