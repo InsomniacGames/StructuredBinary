@@ -15,9 +15,9 @@
 #include "sbScalar.h"
 #include "sbFnv.h"
 
-class sbNode;
 class sbScalarValue;
 class sbAllocator;
+class sbNode;
 
 class sbSchema
 {
@@ -31,8 +31,8 @@ public:
 
   ~sbSchema();
 
-  const sbNode* FindNode( sbHash name ) const;
-  sbNode* FindNode( sbHash name );
+  const sbField* FindNode( sbHash name ) const;
+  sbField* FindNode( sbHash name );
 
   void Begin();
   void End();
@@ -42,13 +42,9 @@ public:
 
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
-  void AddScalar( sbHash name, int count, sbScalarType scalar_type );
   void AddInstance( sbHash name, int count, sbHash link_name );
   void AddPointer( sbHash name, int count, sbHash link_name, sbHash count_name );
   void AddString( sbHash name, int count, sbHash link_name, sbHash terminator_name, const sbScalarValue& terminator_value );
-
-  void AddPointer( sbHash name, int count, sbScalarType t, sbHash count_name );
-  void AddString( sbHash name, int count, sbScalarType t, const sbScalarValue& terminator_value );
 
 private:
   
@@ -65,8 +61,14 @@ private:
 
   struct Entry
   {
+    Entry() {}
+    Entry( sbHash name, sbField* field )
+    : m_Name( name )
+    , m_Node( field )
+    {}
+
     sbHash  m_Name;
-    sbNode* m_Node;
+    sbField* m_Node;
   };
 
   sbNode* m_CurrentNode;
@@ -75,6 +77,8 @@ private:
   static const int  kMaxEntries = 100;
   int               m_EntryCount;
   Entry             m_Entries[ kMaxEntries ];
+  
+  static const Entry s_ScalarEntries[];
 };
 
 #endif

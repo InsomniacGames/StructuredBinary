@@ -54,10 +54,10 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   dst_schema.Begin();
 
   dst_schema.BeginNode( "Struct" );
-  dst_schema.AddString( "string1", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string2", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string3", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  dst_schema.AddString( "string4", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
+  dst_schema.AddString( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddString( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddString( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddString( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
   dst_schema.EndNode();
   
   dst_schema.End();
@@ -66,21 +66,21 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   src_schema.Begin();
 
   src_schema.BeginNode( "StringElem" );
-  src_schema.AddScalar( "c", 1, kScalar_I8  );
+  src_schema.AddInstance( "c", 1, "int8_t" );
   src_schema.EndNode();
   
   src_schema.BeginNode( "Struct" );
-  src_schema.AddString( "string3", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string4", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string1", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  src_schema.AddString( "string2", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
+  src_schema.AddString( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddString( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddString( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddString( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
   src_schema.EndNode();
 
   src_schema.End();
   
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
-  printf( "Memory needed %lu\n", alloc.GetSize() );
+//  printf( "Memory needed %lu\n", alloc.GetSize() );
   
   Dst::Struct dst_struct;
   char buffer[ 1000 ];

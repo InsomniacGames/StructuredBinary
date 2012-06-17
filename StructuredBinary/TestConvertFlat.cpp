@@ -53,16 +53,16 @@ UnitTest::Result TestConvertFlat::RunTest() const
   src_schema.Begin();
 
   src_schema.BeginNode( "Struct" );
-  src_schema.AddScalar( "u8" , 1, kScalar_U8  );
-  src_schema.AddScalar( "f32", 1, kScalar_F32 );
-  src_schema.AddScalar( "u16", 1, kScalar_U16 );
-  src_schema.AddScalar( "u32", 1, kScalar_U32 );
-  src_schema.AddScalar( "u64", 1, kScalar_U64 );
-  src_schema.AddScalar( "i8" , 1, kScalar_I8  );
-  src_schema.AddScalar( "f64", 1, kScalar_F64 );
-  src_schema.AddScalar( "i16", 1, kScalar_I16 );
-  src_schema.AddScalar( "i32", 1, kScalar_I32 );
-  src_schema.AddScalar( "i64", 1, kScalar_I64 );
+  src_schema.AddInstance( "u8" , 1, "uint8_t");
+  src_schema.AddInstance( "f32", 1, "float" );
+  src_schema.AddInstance( "u16", 1, "uint16_t" );
+  src_schema.AddInstance( "u32", 1, "uint32_t" );
+  src_schema.AddInstance( "u64", 1, "uint64_t" );
+  src_schema.AddInstance( "i8" , 1, "int8_t"  );
+  src_schema.AddInstance( "f64", 1, "double" );
+  src_schema.AddInstance( "i16", 1, "int16_t" );
+  src_schema.AddInstance( "i32", 1, "int32_t" );
+  src_schema.AddInstance( "i64", 1, "int64_t" );
   src_schema.EndNode();
 
   src_schema.End();
@@ -71,16 +71,16 @@ UnitTest::Result TestConvertFlat::RunTest() const
   dst_schema.Begin();
 
   dst_schema.BeginNode( "Struct" );
-  dst_schema.AddScalar( "i8" , 1, kScalar_I8  );
-  dst_schema.AddScalar( "f64", 1, kScalar_F64 );
-  dst_schema.AddScalar( "i16", 1, kScalar_I16 );
-  dst_schema.AddScalar( "i32", 1, kScalar_I32 );
-  dst_schema.AddScalar( "i64", 1, kScalar_I64 );
-  dst_schema.AddScalar( "u8" , 1, kScalar_U8  );
-  dst_schema.AddScalar( "f32", 1, kScalar_F32 );
-  dst_schema.AddScalar( "u16", 1, kScalar_U16 );
-  dst_schema.AddScalar( "u32", 1, kScalar_U32 );
-  dst_schema.AddScalar( "u64", 1, kScalar_U64 );
+  dst_schema.AddInstance( "i8" , 1, "int8_t" );
+  dst_schema.AddInstance( "f64", 1, "double" );
+  dst_schema.AddInstance( "i16", 1, "int16_t" );
+  dst_schema.AddInstance( "i32", 1, "int32_t" );
+  dst_schema.AddInstance( "i64", 1, "int64_t" );
+  dst_schema.AddInstance( "u8" , 1, "uint8_t" );
+  dst_schema.AddInstance( "f32", 1, "float" );
+  dst_schema.AddInstance( "u16", 1, "uint16_t" );
+  dst_schema.AddInstance( "u32", 1, "uint32_t" );
+  dst_schema.AddInstance( "u64", 1, "uint64_t" );
   dst_schema.EndNode();
 
   dst_schema.End();

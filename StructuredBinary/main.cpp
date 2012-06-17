@@ -35,8 +35,28 @@ const UnitTest* AllTests[] =
   new TestAliasedPointer(),
 };
 
+const char* names[] =
+{
+  "uint8_t",
+  "int8_t",
+  "uint16_t",
+  "int16_t",
+  "uint32_t",
+  "int32_t",
+  "uint64_t",
+  "int64_t",
+  "float",
+  "double",
+};
+
 int main (int argc, const char * argv[])
 {
+  for( int i = 0; i < ARRAY_SIZE( names ); ++i )
+  {
+    const char* p = names[ i ];
+    printf( "%8s:%08x\n", p, sbFnv32( p ) );
+  }
+
   int test_count = ARRAY_SIZE( AllTests );
   printf( "test_count = %d\n", test_count );
   const UnitTest** test_array = AllTests;

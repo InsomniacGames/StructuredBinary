@@ -11,30 +11,47 @@
 #include <cstring>
 #include <assert.h>
 
+#include "sbUtil.h"
 #include "sbNode.h"
 #include "sbScalarValue.h"
 #include "sbStatus.h"
 
-static const char* GetNameForScalar( sbScalarType t )
-{
-  switch( t )
-  {
-    case kScalar_Null:  return "null";
-    case kScalar_U8:    return "u8";
-    case kScalar_I8:    return "i8";
-    case kScalar_U16:   return "u16";
-    case kScalar_I16:   return "i16";
-    case kScalar_U32:   return "u32";
-    case kScalar_I32:   return "i32";
-    case kScalar_U64:   return "u64";
-    case kScalar_I64:   return "i64";
-    case kScalar_F32:   return "f32";
-    case kScalar_F64:   return "f64";
-  }
-}
 
-const sbNode* sbSchema::FindNode( sbHash name ) const
+static sbScalarU8   s_ScalarU8;
+static sbScalarI8   s_ScalarI8;
+static sbScalarU16  s_ScalarU16;
+static sbScalarI16  s_ScalarI16;
+static sbScalarU32  s_ScalarU32;
+static sbScalarI32  s_ScalarI32;
+static sbScalarU64  s_ScalarU64;
+static sbScalarI64  s_ScalarI64;
+static sbScalarF32  s_ScalarF32;
+static sbScalarF64  s_ScalarF64;
+
+const sbSchema::Entry sbSchema::s_ScalarEntries[] =
 {
+  Entry( "uint8_t",   &s_ScalarU8  ),
+  Entry( "int8_t",    &s_ScalarI8  ),
+  Entry( "uint16_t",  &s_ScalarU16 ),
+  Entry( "int16_t",   &s_ScalarI16 ),
+  Entry( "uint32_t",  &s_ScalarU32 ),
+  Entry( "int32_t",   &s_ScalarI32 ),
+  Entry( "uint64_t",  &s_ScalarU64 ),
+  Entry( "int64_t",   &s_ScalarI64 ),
+  Entry( "float",     &s_ScalarF32 ),
+  Entry( "double",    &s_ScalarF64 ),
+};
+
+const sbField* sbSchema::FindNode( sbHash name ) const
+{
+  for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
+  {
+    if( s_ScalarEntries[ i ].m_Name == name )
+    {
+      return s_ScalarEntries[ i ].m_Node;
+    }
+  }
+
   for( int i = 0; i < m_EntryCount; ++i )
   {
     if( m_Entries[ i ].m_Name == name )
@@ -45,8 +62,16 @@ const sbNode* sbSchema::FindNode( sbHash name ) const
   return NULL;
 }
 
-sbNode* sbSchema::FindNode( sbHash name )
+sbField* sbSchema::FindNode( sbHash name )
 {
+  for( int i = 0; i < ARRAY_SIZE( s_ScalarEntries ); ++i )
+  {
+    if( s_ScalarEntries[ i ].m_Name == name )
+    {
+      return s_ScalarEntries[ i ].m_Node;
+    }
+  }
+  
   for( int i = 0; i < m_EntryCount; ++i )
   {
     if( m_Entries[ i ].m_Name == name )
@@ -73,8 +98,8 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
 {
   sbStatus status = sbStatus_Ok;
 
-  const sbNode* src_node = src_schema->FindNode( name );
-  const sbNode* dst_node =             FindNode( name );
+  const sbField* src_node = src_schema->FindNode( name );
+  const sbField* dst_node =             FindNode( name );
   
   if( !src_node || !dst_node )
   {
@@ -105,12 +130,6 @@ void sbSchema::EndNode()
   m_CurrentNode = NULL;
 }
 
-void sbSchema::AddScalar( sbHash name, int count, sbScalarType scalar_type )
-{
-  assert( m_CurrentNode );
-  m_CurrentNode->AddScalar( name, count, scalar_type );
-}
-
 void sbSchema::AddInstance( sbHash name, int count, sbHash link_name )
 {
   assert( m_CurrentNode );
@@ -129,53 +148,10 @@ void sbSchema::AddString( sbHash name, int count, sbHash link_name, sbHash termi
   m_CurrentNode->AddString( name, count, link_name, terminator_name, terminator_value );
 }
 
-void sbSchema::AddPointer( sbHash name, int count, sbScalarType t, sbHash count_name )
-{
-  AddPointer( name, count, GetNameForScalar( t ), count_name );
-}
-
-void sbSchema::AddString( sbHash name, int count, sbScalarType t, const sbScalarValue& terminator_value )
-{
-  AddString( name, count, GetNameForScalar( t ), "value", terminator_value );
-}
-
-
 void sbSchema::Begin()
 {
   assert( m_State == kState_New );
   m_State = kState_Building;
-
-  // This hack must go away!
-  BeginNode( "i8" );
-  AddScalar( "value", 1, kScalar_I8  );
-  EndNode();
-  BeginNode( "u8" );
-  AddScalar( "value", 1, kScalar_U8  );
-  EndNode();
-  BeginNode( "i16" );
-  AddScalar( "value", 1, kScalar_I16 );
-  EndNode();
-  BeginNode( "u16" );
-  AddScalar( "value", 1, kScalar_U16 );
-  EndNode();
-  BeginNode( "i32" );
-  AddScalar( "value", 1, kScalar_I32 );
-  EndNode();
-  BeginNode( "u32" );
-  AddScalar( "value", 1, kScalar_U32 );
-  EndNode();
-  BeginNode( "i64" );
-  AddScalar( "value", 1, kScalar_I64 );
-  EndNode();
-  BeginNode( "u64" );
-  AddScalar( "value", 1, kScalar_U64 );
-  EndNode();
-  BeginNode( "f64" );
-  AddScalar( "value", 1, kScalar_F64 );
-  EndNode();
-  BeginNode( "f32" );
-  AddScalar( "value", 1, kScalar_F32 );
-  EndNode();
 }
 
 void sbSchema::End()

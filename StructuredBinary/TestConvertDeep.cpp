@@ -17,7 +17,7 @@
 
 namespace Src
 {
-  struct ArrayElem
+  struct PointerElem
   {
     int32_t x;
     int32_t y;
@@ -26,15 +26,16 @@ namespace Src
 
   struct Struct
   {
-    uint32_t    array_count;
-    ArrayElem*  array;
-    const char* string;
+    uint32_t    count;
+    PointerElem*  pointer;
+    const char* string[3];
+    float f[2];
   };
 };
 
 namespace Dst
 {
-  struct ArrayElem
+  struct PointerElem
   {
     int32_t z;
     int32_t x;
@@ -43,42 +44,50 @@ namespace Dst
   
   struct Struct
   {
-    uint32_t    array_count;
-    const char* string;
-    ArrayElem*  array;
+    float f[2];
+    uint32_t    count;
+    const char* string[3];
+    PointerElem*  pointer;
   };
 };
 
 UnitTest::Result TestConvertDeep::RunTest() const
 {
-  Src::ArrayElem src_array[ 2 ] =
+  Src::PointerElem src_array[ 2 ] =
   {
     { 10, 20, 30 },
     { 40, 50, 60 }
   };
   
-  const char* src_string = "ABC";
-
   Src::Struct src_struct =
   {
-    2,          // uint32_t    array_count;
-    src_array,  // ArrayElem*  array;
-    src_string  // StringElem* string;
+    2,          // uint32_t    count;
+    src_array,  // PointerElem*  pointer;
+    {
+      "zero",
+      "one",
+      "two"
+    },
+    {
+      100.0f,
+      200.0f
+    }
   };
 
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginNode( "ArrayElem" );
-  dst_schema.AddScalar( "z", 1, kScalar_I32  );
-  dst_schema.AddScalar( "x", 1, kScalar_I32  );
-  dst_schema.AddScalar( "y", 1, kScalar_I32  );
+  dst_schema.BeginNode( "PointerElem" );
+  dst_schema.AddInstance( "z", 1, "int32_t" );
+  dst_schema.AddInstance( "x", 1, "int32_t" );
+  dst_schema.AddInstance( "y", 1, "int32_t" );
   dst_schema.EndNode();
     
   dst_schema.BeginNode( "Struct" );
-  dst_schema.AddScalar  ( "array_count", 1, kScalar_I32 );
-  dst_schema.AddString  ( "string", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
-  dst_schema.AddPointer ( "array", 1, "ArrayElem", "array_count" );
+  dst_schema.AddInstance  ( "f", 2, "float" );
+  dst_schema.AddInstance  ( "count", 1, "int32_t" );
+  dst_schema.AddString  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
   dst_schema.EndNode();
 
   dst_schema.End();
@@ -86,39 +95,45 @@ UnitTest::Result TestConvertDeep::RunTest() const
   sbSchema src_schema;
   src_schema.Begin();
   
-  src_schema.BeginNode( "ArrayElem" );
-  src_schema.AddScalar( "x", 1, kScalar_I32  );
-  src_schema.AddScalar( "y", 1, kScalar_I32  );
-  src_schema.AddScalar( "z", 1, kScalar_I32  );
+  src_schema.BeginNode( "PointerElem" );
+  src_schema.AddInstance( "x", 1, "int32_t" );
+  src_schema.AddInstance( "y", 1, "int32_t" );
+  src_schema.AddInstance( "z", 1, "int32_t" );
   src_schema.EndNode();
 
   src_schema.BeginNode( "Struct" );
-  src_schema.AddScalar  ( "array_count", 1, kScalar_I32 );
-  src_schema.AddPointer ( "array", 1, "ArrayElem", "array_count" );
-  src_schema.AddString  ( "string", 1, kScalar_I8, sbScalarValue::Int( 0 ) );
+  src_schema.AddInstance  ( "count", 1, "int32_t" );
+  src_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
+  src_schema.AddString  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddInstance  ( "f", 2, "float" );
   src_schema.EndNode();
   
   src_schema.End();
 
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
-  printf( "Memory needed %lu\n", alloc.GetSize() );
+//  printf( "Memory needed %lu\n", alloc.GetSize() );
 
   Dst::Struct dst_struct;
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
   dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 
-  if( dst_struct.array_count   != 2 )           return Error( "array_count wrong value" );
-  if( dst_struct.array == NULL )                return Error( "array is NULL" );
-  if( dst_struct.array[ 0 ].x  != 10 )          return Error( "array[ 0 ].x wrong value" );
-  if( dst_struct.array[ 0 ].y  != 20 )          return Error( "array[ 0 ].y wrong value" );
-  if( dst_struct.array[ 0 ].z  != 30 )          return Error( "array[ 0 ].z wrong value" );
-  if( dst_struct.array[ 1 ].x  != 40 )          return Error( "array[ 1 ].x wrong value" );
-  if( dst_struct.array[ 1 ].y  != 50 )          return Error( "array[ 1 ].y wrong value" );
-  if( dst_struct.array[ 1 ].z  != 60 )          return Error( "array[ 1 ].z wrong value" );
-  if( dst_struct.string == NULL )               return Error( "string is NULL" );
-  if( 0 != strcmp( ( const char* )dst_struct.string, "ABC" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string );
-  
+  if( dst_struct.count   != 2 )           return Error( "count wrong value" );
+  if( dst_struct.pointer == NULL )        return Error( "pointer is NULL" );
+  if( dst_struct.pointer[ 0 ].x  != 10 )  return Error( "pointer[ 0 ].x wrong value" );
+  if( dst_struct.pointer[ 0 ].y  != 20 )  return Error( "pointer[ 0 ].y wrong value" );
+  if( dst_struct.pointer[ 0 ].z  != 30 )  return Error( "pointer[ 0 ].z wrong value" );
+  if( dst_struct.pointer[ 1 ].x  != 40 )  return Error( "pointer[ 1 ].x wrong value" );
+  if( dst_struct.pointer[ 1 ].y  != 50 )  return Error( "pointer[ 1 ].y wrong value" );
+  if( dst_struct.pointer[ 1 ].z  != 60 )  return Error( "pointer[ 1 ].z wrong value" );
+  if( 0 != strcmp( ( const char* )dst_struct.string[0], "zero" ) ) return Error( "string[0] wrong value: %s", ( const char* )dst_struct.string[0] );
+  if( 0 != strcmp( ( const char* )dst_struct.string[1], "one" ) ) return Error( "string[1] wrong value: %s", ( const char* )dst_struct.string[1] );
+  if( 0 != strcmp( ( const char* )dst_struct.string[2], "two" ) ) return Error( "string[2] wrong value: %s", ( const char* )dst_struct.string[2] );
+  if( dst_struct.f[ 0 ] != 100.0f )       return Error( "f[0] wrong value" );
+  if( dst_struct.f[ 1 ] != 200.0f )       return Error( "f[1] wrong value" );
+
+//  printf( "%s %s %s\n", dst_struct.string[ 0 ], dst_struct.string[ 1 ], dst_struct.string[ 2 ] );
+
   return Ok();
 }
