@@ -46,16 +46,16 @@ UnitTest::Result TestConvertRecursion::RunTest() const
   sbSchema src_schema;
   src_schema.Begin();
   src_schema.BeginType( "Struct" );
-  src_schema.AddString( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddPointer( "next", 1, "Struct", 0U );
+  src_schema.AddStringPointer( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddPointer( "next", 1, "Struct" );
   src_schema.EndType();
   src_schema.End();
   
   sbSchema dst_schema;
   dst_schema.Begin();
   dst_schema.BeginType( "Struct" );
-  dst_schema.AddPointer( "next", 1, "Struct", 0U );
-  dst_schema.AddString( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddPointer( "next", 1, "Struct" );
+  dst_schema.AddStringPointer( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.EndType();
   dst_schema.End();
 

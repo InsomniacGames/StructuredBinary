@@ -39,8 +39,9 @@ public:
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
-  void AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
-  void AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
+  void AddPointer( sbHash member_name, int count, sbHash type_name );
+  void AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
+  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
 
   sbStatus FixUp( sbHash type_name );
 

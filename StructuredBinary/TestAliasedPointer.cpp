@@ -54,10 +54,10 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   dst_schema.Begin();
 
   dst_schema.BeginType( "Struct" );
-  dst_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.EndType();
   
   dst_schema.End();
@@ -70,10 +70,10 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   src_schema.EndType();
   
   src_schema.BeginType( "Struct" );
-  src_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.EndType();
 
   src_schema.End();

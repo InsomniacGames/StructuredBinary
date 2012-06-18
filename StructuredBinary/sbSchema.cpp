@@ -97,16 +97,22 @@ void sbSchema::AddInstance( sbHash member_name, int count, sbHash type_name )
   m_CurrentAggregate->AddInstance( member_name, count, type_name );
 }
 
-void sbSchema::AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
+void sbSchema::AddPointer( sbHash member_name, int count, sbHash type_name )
 {
   assert( m_CurrentAggregate );
-  m_CurrentAggregate->AddPointer( member_name, count, type_name, count_name );
+  m_CurrentAggregate->AddPointer( member_name, count, type_name );
 }
 
-void sbSchema::AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbSchema::AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
 {
   assert( m_CurrentAggregate );
-  m_CurrentAggregate->AddString( member_name, count, type_name, terminator_name, terminator_value );
+  m_CurrentAggregate->AddCountedPointer( member_name, count, type_name, count_name );
+}
+
+void sbSchema::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
+{
+  assert( m_CurrentAggregate );
+  m_CurrentAggregate->AddStringPointer( member_name, count, type_name, terminator_name, terminator_value );
 }
 
 void sbSchema::Begin()

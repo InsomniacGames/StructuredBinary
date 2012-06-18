@@ -53,8 +53,9 @@ public:
   virtual sbValue ReadValue( const char* data ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
-  void AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
-  void AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
+  void AddPointer( sbHash member_name, int count, sbHash type_name );
+  void AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
+  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
 
 private:
   void AddMember( sbHash member_name, sbMember* member );

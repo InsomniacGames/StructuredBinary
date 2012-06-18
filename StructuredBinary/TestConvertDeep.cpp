@@ -86,8 +86,8 @@ UnitTest::Result TestConvertDeep::RunTest() const
   dst_schema.BeginType( "Struct" );
   dst_schema.AddInstance  ( "f", 2, "float" );
   dst_schema.AddInstance  ( "count", 1, "int32_t" );
-  dst_schema.AddString  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
+  dst_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddCountedPointer ( "pointer", 1, "PointerElem", "count" );
   dst_schema.EndType();
 
   dst_schema.End();
@@ -103,8 +103,8 @@ UnitTest::Result TestConvertDeep::RunTest() const
 
   src_schema.BeginType( "Struct" );
   src_schema.AddInstance  ( "count", 1, "int32_t" );
-  src_schema.AddPointer ( "pointer", 1, "PointerElem", "count" );
-  src_schema.AddString  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddCountedPointer ( "pointer", 1, "PointerElem", "count" );
+  src_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddInstance  ( "f", 2, "float" );
   src_schema.EndType();
   

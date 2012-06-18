@@ -98,12 +98,17 @@ void sbAggregateType::AddInstance( sbHash member_name, int count, sbHash type_na
   AddMember( member_name, new sbInstanceMember( this, count, type_name ) );
 }
 
-void sbAggregateType::AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
+void sbAggregateType::AddPointer( sbHash member_name, int count, sbHash type_name )
+{
+  AddMember( member_name, new sbPointerMember( this, count, type_name ) );
+}
+
+void sbAggregateType::AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
 {
   AddMember( member_name, new sbCountedPointerMember( this, count, type_name, count_name ) );
 }
 
-void sbAggregateType::AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbAggregateType::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
 {
   AddMember( member_name, new sbStringPointerMember( this, count, type_name, terminator_name, terminator_value ) );
 }
