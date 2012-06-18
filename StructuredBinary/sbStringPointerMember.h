@@ -15,6 +15,7 @@
 #include "sbHash.h"
 
 class sbAggregateType;
+class sbByteWriter;
 
 class sbStringPointerMember : public sbPointerMember
 {
@@ -24,9 +25,7 @@ class sbStringPointerMember : public sbPointerMember
 public:
   sbStringPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
   virtual int GetPointerCount( const char* scope_data, int index ) const;
+  virtual void Write( sbByteWriter* writer );
 };
-
-
-
 
 #endif

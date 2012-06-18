@@ -12,6 +12,8 @@
 #include "sbMember.h"
 #include "sbSchema.h"
 
+#include "sbByteWriter.h"
+
 sbInstanceMember::sbInstanceMember( const sbAggregateType* scope, int count, sbHash type_name )
 : sbMember( scope, count, type_name )
 {}
@@ -44,4 +46,19 @@ void sbInstanceMember::Convert( char* dst_scope_data, const char* src_scope_data
 sbStatus sbInstanceMember::PreFixUp( sbSchema* schema, sbHash type_name )
 {
   return schema->FixUp( type_name );
+}
+
+void sbInstanceMember::Write( sbByteWriter* writer )
+{
+  if( GetCount() == 1 )
+  {
+    writer->Write8( sbMemberType_Instance );
+    writer->Write32( GetTypeName() );
+  }
+  else
+  {
+    writer->Write8( sbMemberType_InstanceArray );
+    writer->Write32( GetTypeName() );
+    writer->Write16( GetCount() );
+  }
 }

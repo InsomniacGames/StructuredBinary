@@ -9,6 +9,8 @@
 #include "sbStringPointerMember.h"
 
 #include "sbType.h"
+#include "sbValue.h"
+#include "sbByteWriter.h"
 
 sbStringPointerMember::sbStringPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
 : sbPointerMember( scope, count, type_name )
@@ -32,4 +34,23 @@ int sbStringPointerMember::GetPointerCount( const char* scope_data, int index ) 
     p += GetType()->GetSize();
   }
   return string_count;
+}
+
+void sbStringPointerMember::Write( sbByteWriter* writer )
+{
+  if( GetCount() == 1 )
+  {
+    writer->Write8( sbMemberType_StringPointer );
+    writer->Write32( GetTypeName() );
+    writer->Write32( m_TerminatorName );
+    m_TerminatorValue.Write( writer );
+  }
+  else
+  {
+    writer->Write8( sbMemberType_StringPointerArray );
+    writer->Write32( GetTypeName() );
+    writer->Write16( GetCount() );
+    writer->Write32( m_TerminatorName );
+    m_TerminatorValue.Write( writer );
+  }
 }

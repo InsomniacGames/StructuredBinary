@@ -12,6 +12,12 @@
 #include "sbValue.h"
 #include "sbSchema.h"
 #include "sbUtil.h"
+#include "sbByteReader.h"
+
+#include "sbInstanceMember.h"
+#include "sbPointerMember.h"
+#include "sbCountedPointerMember.h"
+#include "sbStringPointerMember.h"
 
 sbMember::sbMember( const sbAggregateType* scope, int count, sbHash type_name )
 {
@@ -66,4 +72,76 @@ sbStatus sbMember::FixUp( sbSchema* schema, const sbMember* previous_member )
   }
   
   return status;
+}
+
+sbMember* sbMember::Read( const sbAggregateType* scope, sbByteReader* reader )
+{
+  sbMember* member;
+  sbMemberType member_type = ( sbMemberType )reader->Read8();
+  switch( member_type )
+  {
+    case sbMemberType_Instance:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = 1;
+      member = new sbInstanceMember( scope, count, type_name );
+      break;
+    }
+    case sbMemberType_InstanceArray:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = reader->Read16();
+      member = new sbInstanceMember( scope, count, type_name );
+      break;
+    }
+    case sbMemberType_Pointer:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = 1;
+      member = new sbPointerMember( scope, count, type_name );
+      break;
+    }
+    case sbMemberType_PointerArray:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = reader->Read16();
+      member = new sbPointerMember( scope, count, type_name );
+      break;
+    }
+    case sbMemberType_CountedPointer:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = 1;
+      sbHash count_name       = reader->Read32();
+      member = new sbCountedPointerMember( scope, count, type_name, count_name );
+      break;
+    }
+    case sbMemberType_CountedPointerArray:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = reader->Read16();
+      sbHash count_name       = reader->Read32();
+      member = new sbCountedPointerMember( scope, count, type_name, count_name );
+      break;
+    }
+    case sbMemberType_StringPointer:
+    {
+      sbHash type_name          = reader->Read32();
+      int count                 = 1;
+      sbHash terminator_name    = reader->Read32();
+      sbValue terminator_value  = sbValue::Read( reader );
+      member = new sbStringPointerMember( scope, count, type_name, terminator_name, terminator_value );
+      break;
+    }
+    case sbMemberType_StringPointerArray:
+    {
+      sbHash type_name        = reader->Read32();
+      int count               = reader->Read16();
+      sbHash terminator_name  = reader->Read32();
+      sbValue terminator_value  = sbValue::Read( reader );
+      member = new sbStringPointerMember( scope, count, type_name, terminator_name, terminator_value );
+      break;
+    }
+  }
+  return member;
 }

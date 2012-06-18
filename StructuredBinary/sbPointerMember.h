@@ -26,6 +26,7 @@ public:
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const;
   virtual int GetPointerCount( const char* scope_data, int index ) const;
   virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name );
+  virtual void Write( sbByteWriter* writer );
 };
 
 #endif

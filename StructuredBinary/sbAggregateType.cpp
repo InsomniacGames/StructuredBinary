@@ -20,8 +20,9 @@
 #include "sbStatus.h"
 
 #include "sbInstanceMember.h"
-#include "sbStringPointerMember.h"
+#include "sbPointerMember.h"
 #include "sbCountedPointerMember.h"
+#include "sbStringPointerMember.h"
 
 const sbMember* sbAggregateType::FindMember( sbHash member_name ) const
 {

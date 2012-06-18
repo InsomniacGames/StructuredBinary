@@ -14,6 +14,8 @@
 
 #include "sbStatus.h"
 
+#include "sbByteWriter.h"
+
 sbPointerMember::sbPointerMember( const sbAggregateType* scope, int count, sbHash type_name )
 : sbMember( scope, count, type_name )
 {}
@@ -67,4 +69,19 @@ int sbPointerMember::GetPointerCount( const char* scope_data, int index ) const
 sbStatus sbPointerMember::PreFixUp( sbSchema* schema, sbHash type_name )
 {
   return sbStatus_Ok;
+}
+
+void sbPointerMember::Write( sbByteWriter* writer )
+{
+  if( GetCount() == 1 )
+  {
+    writer->Write8( sbMemberType_Pointer );
+    writer->Write32( GetTypeName() );
+  }
+  else
+  {
+    writer->Write8( sbMemberType_PointerArray );
+    writer->Write32( GetTypeName() );
+    writer->Write16( GetCount() );
+  }
 }

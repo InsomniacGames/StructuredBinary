@@ -19,6 +19,20 @@ class sbType;
 class sbAllocator;
 class sbValue;
 class sbSchema;
+class sbByteReader;
+class sbByteWriter;
+
+enum sbMemberType
+{
+  sbMemberType_Instance,
+  sbMemberType_InstanceArray,
+  sbMemberType_Pointer,
+  sbMemberType_PointerArray,
+  sbMemberType_CountedPointer,
+  sbMemberType_CountedPointerArray,
+  sbMemberType_StringPointer,
+  sbMemberType_StringPointerArray,
+};
 
 class sbMember
 {
@@ -37,11 +51,15 @@ public:
   virtual int GetPointerCount( const char* scope_data, int index ) const = 0;
   virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name ) = 0;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const = 0;
+  virtual void Write( sbByteWriter* writer ) = 0;
 
   size_t GetOffset() const { return m_Offset; }
   int GetCount() const { return m_Count; }
   const sbType* GetType() const { return m_Type; }
   const sbAggregateType* GetScope() const { return m_Scope; }
+  sbHash GetTypeName() const { return m_TypeName; }
+
+  static sbMember* Read( const sbAggregateType* scope, sbByteReader* reader );
 
 private:
   sbHash   m_TypeName;

@@ -12,6 +12,9 @@
 // Libraries
 #include <stdint.h>
 
+class sbByteReader;
+class sbByteWriter;
+
 class sbValue
 {
 public:
@@ -32,7 +35,10 @@ public:
   bool IsFloat() const  { return m_Type == kFloat; }
   bool IsInt() const    { return m_Type == kInt; }
   bool IsNull() const   { return m_Type == kNull; }
-  
+
+  void Write( sbByteWriter* writer ) const;
+  static sbValue Read( sbByteReader* reader );
+
 private:
   
   enum Type
@@ -41,7 +47,7 @@ private:
     kInt,
     kFloat,
   };
-  
+
   Type    m_Type;
   
   union

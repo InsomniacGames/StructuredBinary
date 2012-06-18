@@ -10,6 +10,8 @@
 #include "sbValue.h"
 // Libraries
 // Project
+#include "sbByteWriter.h"
+#include "sbByteReader.h"
 
 sbValue::sbValue()
 {
@@ -84,3 +86,61 @@ int64_t sbValue::AsInt() const
     case kNull:     return 0;
   }
 }
+
+void sbValue::Write( sbByteWriter* writer ) const
+{
+  writer->Write8( m_Type );
+  switch( m_Type )
+  {
+    case kFloat:
+    {
+      union
+      {
+        uint32_t  u32;
+        float     f32;
+      } convert;
+      convert.f32 = ( float )m_Value.f64;
+      writer->Write32( convert.u32 );
+      break;
+    }
+    case kInt:
+    {
+      writer->Write32( ( int32_t )m_Value.i64 );
+      break;
+    }
+    case kNull:
+    {
+      break;
+    }
+  }
+}
+
+sbValue sbValue::Read( sbByteReader* reader )
+{
+  Type t = ( Type )reader->Read8();
+  switch( t )
+  {
+    case kFloat:
+    {
+      union
+      {
+        uint32_t  u32;
+        float     f32;
+      } convert;
+      convert.u32 = reader->Read32();
+      return sbValue::Float( convert.f32 );
+    }
+    case kInt:
+    {
+      int32_t i32 = reader->Read32();
+      return sbValue::Int( i32 );
+      break;
+    }
+    case kNull:
+    {
+      return sbValue::Null();
+      break;
+    }
+  }
+}
+
