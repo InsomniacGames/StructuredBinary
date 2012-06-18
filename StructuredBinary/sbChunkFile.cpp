@@ -97,7 +97,7 @@ static sbChunk* GrabChunk( const char** read_ptr, const char* data_end )
     while( *read_ptr < chunk_end )
     {
       sbChunk* child = GrabChunk( read_ptr, chunk_end );
-      chunk->AddField( child );
+      chunk->AddChild( child );
       *read_ptr += ( -( intptr_t )*read_ptr ) & 3;
     }
   }

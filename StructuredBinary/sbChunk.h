@@ -45,7 +45,7 @@ public:
   const sbChunk* GetSibling() const { return m_Sibling; }
   int GetChildCount() const { return m_ChildCount; }
 
-  sbChunk* AddField( sbChunk* chunk );
+  sbChunk* AddChild( sbChunk* chunk );
   
 private:
   

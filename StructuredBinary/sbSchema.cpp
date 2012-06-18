@@ -12,21 +12,21 @@
 #include <assert.h>
 
 #include "sbUtil.h"
-#include "sbAggregate.h"
+#include "sbAggregateType.h"
 #include "sbValue.h"
 #include "sbStatus.h"
 
-#include "sbFloatScalar.h"
-#include "sbIntScalar.h"
+#include "sbFloatType.h"
+#include "sbIntType.h"
 
 #include "sbDictionary.h"
 
-const sbElement* sbSchema::FindElement( sbHash name ) const
+const sbType* sbSchema::FindType( sbHash name ) const
 {
   return m_Dictionary.FindByName( name );
 }
 
-sbElement* sbSchema::FindElement( sbHash name )
+sbType* sbSchema::FindType( sbHash name )
 {
   return m_Dictionary.FindByName( name );
 }
@@ -43,17 +43,17 @@ sbStatus sbSchema::FixUp()
   return status;
 }
 
-sbStatus sbSchema::FixUp( sbHash element_name )
+sbStatus sbSchema::FixUp( sbHash type_name )
 {
   sbStatus status = sbStatus_Ok;
-  sbElement* element = m_Dictionary.FindByName( element_name );
-  if( !element_name )
+  sbType* type_def = m_Dictionary.FindByName( type_name );
+  if( !type_name )
   {
     status = sbStatus_ErrorNodeNotFound;
   }
   else
   {
-    status = element->FixUp( this );
+    status = type_def->FixUp( this );
   }
   return status;
 }
@@ -62,51 +62,51 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
 {
   sbStatus status = sbStatus_Ok;
 
-  const sbElement* src_node = src_schema->FindElement( name );
-  const sbElement* dst_node =             FindElement( name );
+  const sbType* src_type = src_schema->FindType( name );
+  const sbType* dst_type =             FindType( name );
   
-  if( !src_node || !dst_node )
+  if( !src_type || !dst_type )
   {
     status = sbStatus_ErrorNodeNotFound;
   }
   else
   {
-    status = dst_node->Convert( dst_data, src_data, src_node, alloc );
+    status = dst_type->Convert( dst_data, src_data, src_type, alloc );
   }
   return status;
 }
 
-void sbSchema::BeginElement( sbHash element_name )
+void sbSchema::BeginType( sbHash type_name )
 {
   assert( !m_CurrentAggregate );
   
-  m_CurrentName = element_name;
-  m_CurrentAggregate = new sbAggregate();
+  m_CurrentName = type_name;
+  m_CurrentAggregate = new sbAggregateType();
 }
 
-void sbSchema::EndElement()
+void sbSchema::EndType()
 {
   m_Dictionary.Add( m_CurrentName, m_CurrentAggregate );
   m_CurrentName = 0U;
   m_CurrentAggregate = NULL;
 }
 
-void sbSchema::AddInstance( sbHash field_name, int count, sbHash element_name )
+void sbSchema::AddInstance( sbHash member_name, int count, sbHash type_name )
 {
   assert( m_CurrentAggregate );
-  m_CurrentAggregate->AddInstance( field_name, count, element_name );
+  m_CurrentAggregate->AddInstance( member_name, count, type_name );
 }
 
-void sbSchema::AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name )
+void sbSchema::AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
 {
   assert( m_CurrentAggregate );
-  m_CurrentAggregate->AddPointer( field_name, count, element_name, count_name );
+  m_CurrentAggregate->AddPointer( member_name, count, type_name, count_name );
 }
 
-void sbSchema::AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbSchema::AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
 {
   assert( m_CurrentAggregate );
-  m_CurrentAggregate->AddString( field_name, count, element_name, terminator_name, terminator_value );
+  m_CurrentAggregate->AddString( member_name, count, type_name, terminator_name, terminator_value );
 }
 
 void sbSchema::Begin()
@@ -114,16 +114,16 @@ void sbSchema::Begin()
   assert( m_State == kState_New );
   m_State = kState_Building;
 
-  m_Dictionary.Add( "uint8_t",   new sbIntScalar<  uint8_t > );
-  m_Dictionary.Add( "int8_t",    new sbIntScalar<   int8_t > );
-  m_Dictionary.Add( "uint16_t",  new sbIntScalar< uint16_t > );
-  m_Dictionary.Add( "int16_t",   new sbIntScalar<  int16_t > );
-  m_Dictionary.Add( "uint32_t",  new sbIntScalar< uint32_t > );
-  m_Dictionary.Add( "int32_t",   new sbIntScalar<  int32_t > );
-  m_Dictionary.Add( "uint64_t",  new sbIntScalar< uint64_t > );
-  m_Dictionary.Add( "int64_t",   new sbIntScalar<  int64_t > );
-  m_Dictionary.Add( "float",     new sbFloatScalar<  float > );
-  m_Dictionary.Add( "double",    new sbFloatScalar< double > );
+  m_Dictionary.Add( "uint8_t",   new sbIntType<  uint8_t > );
+  m_Dictionary.Add( "int8_t",    new sbIntType<   int8_t > );
+  m_Dictionary.Add( "uint16_t",  new sbIntType< uint16_t > );
+  m_Dictionary.Add( "int16_t",   new sbIntType<  int16_t > );
+  m_Dictionary.Add( "uint32_t",  new sbIntType< uint32_t > );
+  m_Dictionary.Add( "int32_t",   new sbIntType<  int32_t > );
+  m_Dictionary.Add( "uint64_t",  new sbIntType< uint64_t > );
+  m_Dictionary.Add( "int64_t",   new sbIntType<  int64_t > );
+  m_Dictionary.Add( "float",     new sbFloatType<  float > );
+  m_Dictionary.Add( "double",    new sbFloatType< double > );
 }
 
 void sbSchema::End()

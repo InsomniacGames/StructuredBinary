@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "sbSchema.h"
-#include "sbAggregate.h"
+#include "sbAggregateType.h"
 #include "sbAllocator.h"
 
 namespace Src
@@ -45,18 +45,18 @@ UnitTest::Result TestConvertRecursion::RunTest() const
 
   sbSchema src_schema;
   src_schema.Begin();
-  src_schema.BeginElement( "Struct" );
+  src_schema.BeginType( "Struct" );
   src_schema.AddString( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddPointer( "next", 1, "Struct", 0U );
-  src_schema.EndElement();
+  src_schema.EndType();
   src_schema.End();
   
   sbSchema dst_schema;
   dst_schema.Begin();
-  dst_schema.BeginElement( "Struct" );
+  dst_schema.BeginType( "Struct" );
   dst_schema.AddPointer( "next", 1, "Struct", 0U );
   dst_schema.AddString( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.EndElement();
+  dst_schema.EndType();
   dst_schema.End();
 
   sbAllocator alloc( NULL, 0 );

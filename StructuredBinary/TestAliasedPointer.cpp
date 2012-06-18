@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "sbSchema.h"
-#include "sbAggregate.h"
+#include "sbAggregateType.h"
 #include "sbAllocator.h"
 
 namespace Src
@@ -53,28 +53,28 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginElement( "Struct" );
+  dst_schema.BeginType( "Struct" );
   dst_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
   dst_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.EndElement();
+  dst_schema.EndType();
   
   dst_schema.End();
   
   sbSchema src_schema;
   src_schema.Begin();
 
-  src_schema.BeginElement( "StringElem" );
+  src_schema.BeginType( "StringElem" );
   src_schema.AddInstance( "c", 1, "int8_t" );
-  src_schema.EndElement();
+  src_schema.EndType();
   
-  src_schema.BeginElement( "Struct" );
+  src_schema.BeginType( "Struct" );
   src_schema.AddString( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddString( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddString( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
   src_schema.AddString( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.EndElement();
+  src_schema.EndType();
 
   src_schema.End();
   

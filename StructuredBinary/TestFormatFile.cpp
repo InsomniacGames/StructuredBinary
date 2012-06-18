@@ -55,16 +55,16 @@ UnitTest::Result TestFormatFile::RunTest() const
 {
 /*
   sbStruct org_agg;
-  org_agg.AddScalar( sbFnv32( "f64" ), sbElementType_F64 );
-  org_agg.AddScalar( sbFnv32( "i64" ), sbElementType_I64 );
-  org_agg.AddScalar( sbFnv32( "u64" ), sbElementType_U64 );
-  org_agg.AddScalar( sbFnv32( "f32" ), sbElementType_F32 );
-  org_agg.AddScalar( sbFnv32( "i32" ), sbElementType_I32 );
-  org_agg.AddScalar( sbFnv32( "u32" ), sbElementType_U32 );
-  org_agg.AddScalar( sbFnv32( "i16" ), sbElementType_I16 );
-  org_agg.AddScalar( sbFnv32( "u16" ), sbElementType_U16 );
-  org_agg.AddScalar( sbFnv32( "i8"  ), sbElementType_I8  );
-  org_agg.AddScalar( sbFnv32( "u8"  ), sbElementType_U8  );
+  org_agg.AddScalar( sbFnv32( "f64" ), sbTypeType_F64 );
+  org_agg.AddScalar( sbFnv32( "i64" ), sbTypeType_I64 );
+  org_agg.AddScalar( sbFnv32( "u64" ), sbTypeType_U64 );
+  org_agg.AddScalar( sbFnv32( "f32" ), sbTypeType_F32 );
+  org_agg.AddScalar( sbFnv32( "i32" ), sbTypeType_I32 );
+  org_agg.AddScalar( sbFnv32( "u32" ), sbTypeType_U32 );
+  org_agg.AddScalar( sbFnv32( "i16" ), sbTypeType_I16 );
+  org_agg.AddScalar( sbFnv32( "u16" ), sbTypeType_U16 );
+  org_agg.AddScalar( sbFnv32( "i8"  ), sbTypeType_I8  );
+  org_agg.AddScalar( sbFnv32( "u8"  ), sbTypeType_U8  );
 
   char format_buffer[ 1000 ];
   sbByteWriter w( format_buffer, format_buffer + sizeof( format_buffer ) );
@@ -76,16 +76,16 @@ UnitTest::Result TestFormatFile::RunTest() const
   const sbStruct* src_agg = ( const sbStruct* )sbStruct::NewFromSchema( &r );
 
   sbStruct dest_agg;
-  dest_agg.AddScalar( sbFnv32( "u64" ), sbElementType_U64 );
-  dest_agg.AddScalar( sbFnv32( "i64" ), sbElementType_I64 );
-  dest_agg.AddScalar( sbFnv32( "f64" ), sbElementType_F64 );
-  dest_agg.AddScalar( sbFnv32( "u32" ), sbElementType_U32 );
-  dest_agg.AddScalar( sbFnv32( "i32" ), sbElementType_I32 );
-  dest_agg.AddScalar( sbFnv32( "f32" ), sbElementType_F32 );
-  dest_agg.AddScalar( sbFnv32( "u8"  ), sbElementType_U8  );
-  dest_agg.AddScalar( sbFnv32( "i8"  ), sbElementType_I8  );
-  dest_agg.AddScalar( sbFnv32( "u16" ), sbElementType_U16 );
-  dest_agg.AddScalar( sbFnv32( "i16" ), sbElementType_I16 );
+  dest_agg.AddScalar( sbFnv32( "u64" ), sbTypeType_U64 );
+  dest_agg.AddScalar( sbFnv32( "i64" ), sbTypeType_I64 );
+  dest_agg.AddScalar( sbFnv32( "f64" ), sbTypeType_F64 );
+  dest_agg.AddScalar( sbFnv32( "u32" ), sbTypeType_U32 );
+  dest_agg.AddScalar( sbFnv32( "i32" ), sbTypeType_I32 );
+  dest_agg.AddScalar( sbFnv32( "f32" ), sbTypeType_F32 );
+  dest_agg.AddScalar( sbFnv32( "u8"  ), sbTypeType_U8  );
+  dest_agg.AddScalar( sbFnv32( "i8"  ), sbTypeType_I8  );
+  dest_agg.AddScalar( sbFnv32( "u16" ), sbTypeType_U16 );
+  dest_agg.AddScalar( sbFnv32( "i16" ), sbTypeType_I16 );
   
   SourceStruct src;
   src.f64 = 3.14159265358979;

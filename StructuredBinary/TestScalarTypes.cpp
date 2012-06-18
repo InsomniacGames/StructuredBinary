@@ -9,7 +9,7 @@
 #include "TestScalarTypes.h"
 
 #include "sbSchema.h"
-#include "sbAggregate.h"
+#include "sbAggregateType.h"
 
 namespace Src
 {
@@ -40,26 +40,26 @@ UnitTest::Result TestScalarTypes::RunTest() const
   sbSchema src_schema;
   src_schema.Begin();
   
-  src_schema.BeginElement( "Struct" );
+  src_schema.BeginType( "Struct" );
   src_schema.AddInstance( "u8_to_i64" , 1, "uint8_t");
   src_schema.AddInstance( "i8_to_i64" , 1, "int8_t"  );
   src_schema.AddInstance( "u8_to_f64" , 1, "uint8_t");
   src_schema.AddInstance( "i8_to_f64" , 1, "int8_t"  );
   src_schema.AddInstance( "f64_to_i32" , 1, "double"  );
-  src_schema.EndElement();
+  src_schema.EndType();
   
   src_schema.End();
   
   sbSchema dst_schema;
   dst_schema.Begin();
   
-  dst_schema.BeginElement( "Struct" );
+  dst_schema.BeginType( "Struct" );
   dst_schema.AddInstance( "u8_to_i64" , 1, "int64_t" );
   dst_schema.AddInstance( "i8_to_i64" , 1, "int64_t" );
   dst_schema.AddInstance( "u8_to_f64" , 1, "double" );
   dst_schema.AddInstance( "i8_to_f64" , 1, "double" );
   dst_schema.AddInstance( "f64_to_i32" , 1, "int32_t"  );
-  dst_schema.EndElement();
+  dst_schema.EndType();
   
   dst_schema.End();
   

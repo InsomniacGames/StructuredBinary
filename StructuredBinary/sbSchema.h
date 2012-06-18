@@ -12,13 +12,13 @@
 #include <cstring>
 
 #include "sbStatus.h"
-#include "sbScalar.h"
+#include "sbScalarType.h"
 #include "sbHash.h"
 #include "sbDictionary.h"
 
 class sbValue;
 class sbAllocator;
-class sbAggregate;
+class sbAggregateType;
 
 class sbSchema
 {
@@ -27,22 +27,22 @@ public:
   sbSchema();
   ~sbSchema();
 
-  const sbElement* FindElement( sbHash name ) const;
-  sbElement* FindElement( sbHash name );
+  const sbType* FindType( sbHash name ) const;
+  sbType* FindType( sbHash name );
 
   void Begin();
   void End();
 
-  void BeginElement( sbHash element_name );
-  void EndElement();
+  void BeginType( sbHash type_name );
+  void EndType();
 
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
-  void AddInstance( sbHash field_name, int count, sbHash element_name );
-  void AddPointer( sbHash field_name, int count, sbHash element_name, sbHash count_name );
-  void AddString( sbHash field_name, int count, sbHash element_name, sbHash terminator_name, const sbValue& terminator_value );
+  void AddInstance( sbHash member_name, int count, sbHash type_name );
+  void AddPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
+  void AddString( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
 
-  sbStatus FixUp( sbHash element_name );
+  sbStatus FixUp( sbHash type_name );
 
 private:
   
@@ -57,10 +57,10 @@ private:
 
   sbStatus FixUp();
 
-  sbAggregate*  m_CurrentAggregate;
+  sbAggregateType*  m_CurrentAggregate;
   sbHash        m_CurrentName;
 
-  sbDictionary< sbElement* > m_Dictionary;
+  sbDictionary< sbType* > m_Dictionary;
 };
 
 #endif

@@ -22,17 +22,17 @@
 		BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC4715605F2300FFCB91 /* UnitTest.cpp */; };
 		BE57CC511560717400FFCB91 /* sbValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC501560717400FFCB91 /* sbValue.cpp */; };
 		BE57CC53156074B000FFCB91 /* sbHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC52156074B000FFCB91 /* sbHash.cpp */; };
-		BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* sbScalar.cpp */; };
-		BE610465157B1B750089A922 /* sbAggregate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610464157B1B750089A922 /* sbAggregate.cpp */; };
+		BE57CC571560799D00FFCB91 /* sbScalarType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE57CC561560799D00FFCB91 /* sbScalarType.cpp */; };
+		BE610465157B1B750089A922 /* sbAggregateType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610464157B1B750089A922 /* sbAggregateType.cpp */; };
 		BE610468157B38170089A922 /* sbSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610467157B38170089A922 /* sbSchema.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
 		BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */; };
-		BE9B1CD1158E3CA400453617 /* sbElementField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD0158E3CA400453617 /* sbElementField.cpp */; };
-		BE9B1CD4158E3FA600453617 /* sbPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */; };
-		BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */; };
-		BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */; };
-		BE9B1CDC158E428300453617 /* sbField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CDB158E428300453617 /* sbField.cpp */; };
+		BE9B1CD1158E3CA400453617 /* sbInstanceMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD0158E3CA400453617 /* sbInstanceMember.cpp */; };
+		BE9B1CD4158E3FA600453617 /* sbPointerMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD3158E3FA600453617 /* sbPointerMember.cpp */; };
+		BE9B1CD7158E407B00453617 /* sbCountedPointerMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD6158E407B00453617 /* sbCountedPointerMember.cpp */; };
+		BE9B1CDA158E40A600453617 /* sbStringPointerMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CD9158E40A500453617 /* sbStringPointerMember.cpp */; };
+		BE9B1CDC158E428300453617 /* sbMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CDB158E428300453617 /* sbMember.cpp */; };
 		BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */; };
 /* End PBXBuildFile section */
 
@@ -81,10 +81,10 @@
 		BE57CC501560717400FFCB91 /* sbValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbValue.cpp; sourceTree = "<group>"; };
 		BE57CC52156074B000FFCB91 /* sbHash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbHash.cpp; sourceTree = "<group>"; };
 		BE57CC54156074BF00FFCB91 /* sbHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbHash.h; sourceTree = "<group>"; };
-		BE57CC551560799000FFCB91 /* sbScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbScalar.h; sourceTree = "<group>"; };
-		BE57CC561560799D00FFCB91 /* sbScalar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalar.cpp; sourceTree = "<group>"; };
-		BE610463157B14430089A922 /* sbAggregate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = sbAggregate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE610464157B1B750089A922 /* sbAggregate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = sbAggregate.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		BE57CC551560799000FFCB91 /* sbScalarType.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbScalarType.h; sourceTree = "<group>"; };
+		BE57CC561560799D00FFCB91 /* sbScalarType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbScalarType.cpp; sourceTree = "<group>"; };
+		BE610463157B14430089A922 /* sbAggregateType.h */ = {isa = PBXFileReference; fileEncoding = 4; lineEnding = 0; path = sbAggregateType.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BE610464157B1B750089A922 /* sbAggregateType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = sbAggregateType.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		BE610466157B38060089A922 /* sbSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbSchema.h; sourceTree = "<group>"; };
 		BE610467157B38170089A922 /* sbSchema.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbSchema.cpp; sourceTree = "<group>"; };
 		BE7AE983158E6F310026DCEC /* sbDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbDictionary.h; sourceTree = "<group>"; };
@@ -94,19 +94,19 @@
 		BE9275FA156F2164008F1288 /* sbByteWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteWriter.h; sourceTree = "<group>"; };
 		BE9B1CC7158D9EF100453617 /* TestScalarTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScalarTypes.h; sourceTree = "<group>"; };
 		BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScalarTypes.cpp; sourceTree = "<group>"; };
-		BE9B1CCB158E3A4600453617 /* sbElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbElement.h; sourceTree = "<group>"; };
-		BE9B1CCE158E3B0F00453617 /* sbField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbField.h; sourceTree = "<group>"; };
-		BE9B1CCF158E3C2D00453617 /* sbElementField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbElementField.h; sourceTree = "<group>"; };
-		BE9B1CD0158E3CA400453617 /* sbElementField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbElementField.cpp; sourceTree = "<group>"; };
-		BE9B1CD2158E3F9800453617 /* sbPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPointerField.h; sourceTree = "<group>"; };
-		BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerField.cpp; sourceTree = "<group>"; };
-		BE9B1CD5158E407100453617 /* sbCountedPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbCountedPointerField.h; sourceTree = "<group>"; };
-		BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbCountedPointerField.cpp; sourceTree = "<group>"; };
-		BE9B1CD8158E409700453617 /* sbStringPointerField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbStringPointerField.h; sourceTree = "<group>"; };
-		BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbStringPointerField.cpp; sourceTree = "<group>"; };
-		BE9B1CDB158E428300453617 /* sbField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbField.cpp; sourceTree = "<group>"; };
-		BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbFloatScalar.h; sourceTree = "<group>"; };
-		BE9B1CDE158E4A9100453617 /* sbIntScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbIntScalar.h; sourceTree = "<group>"; };
+		BE9B1CCB158E3A4600453617 /* sbType.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbType.h; sourceTree = "<group>"; };
+		BE9B1CCE158E3B0F00453617 /* sbMember.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbMember.h; sourceTree = "<group>"; };
+		BE9B1CCF158E3C2D00453617 /* sbInstanceMember.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbInstanceMember.h; sourceTree = "<group>"; };
+		BE9B1CD0158E3CA400453617 /* sbInstanceMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbInstanceMember.cpp; sourceTree = "<group>"; };
+		BE9B1CD2158E3F9800453617 /* sbPointerMember.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbPointerMember.h; sourceTree = "<group>"; };
+		BE9B1CD3158E3FA600453617 /* sbPointerMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerMember.cpp; sourceTree = "<group>"; };
+		BE9B1CD5158E407100453617 /* sbCountedPointerMember.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbCountedPointerMember.h; sourceTree = "<group>"; };
+		BE9B1CD6158E407B00453617 /* sbCountedPointerMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbCountedPointerMember.cpp; sourceTree = "<group>"; };
+		BE9B1CD8158E409700453617 /* sbStringPointerMember.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbStringPointerMember.h; sourceTree = "<group>"; };
+		BE9B1CD9158E40A500453617 /* sbStringPointerMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbStringPointerMember.cpp; sourceTree = "<group>"; };
+		BE9B1CDB158E428300453617 /* sbMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbMember.cpp; sourceTree = "<group>"; };
+		BE9B1CDD158E4A3900453617 /* sbFloatType.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbFloatType.h; sourceTree = "<group>"; };
+		BE9B1CDE158E4A9100453617 /* sbIntType.h */ = {isa = PBXFileReference; fileEncoding = 4; path = sbIntType.h; sourceTree = "<group>"; };
 		BE9B1CE1158E59F700453617 /* TestConvertRecursion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConvertRecursion.h; sourceTree = "<group>"; };
 		BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertRecursion.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,23 +197,23 @@
 				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 				BE57CC4F1560713D00FFCB91 /* sbValue.h */,
 				BE57CC501560717400FFCB91 /* sbValue.cpp */,
-				BE9B1CCB158E3A4600453617 /* sbElement.h */,
-				BE57CC551560799000FFCB91 /* sbScalar.h */,
-				BE57CC561560799D00FFCB91 /* sbScalar.cpp */,
-				BE9B1CDD158E4A3900453617 /* sbFloatScalar.h */,
-				BE9B1CDE158E4A9100453617 /* sbIntScalar.h */,
-				BE610463157B14430089A922 /* sbAggregate.h */,
-				BE610464157B1B750089A922 /* sbAggregate.cpp */,
-				BE9B1CCE158E3B0F00453617 /* sbField.h */,
-				BE9B1CDB158E428300453617 /* sbField.cpp */,
-				BE9B1CD2158E3F9800453617 /* sbPointerField.h */,
-				BE9B1CD3158E3FA600453617 /* sbPointerField.cpp */,
-				BE9B1CD5158E407100453617 /* sbCountedPointerField.h */,
-				BE9B1CD6158E407B00453617 /* sbCountedPointerField.cpp */,
-				BE9B1CD8158E409700453617 /* sbStringPointerField.h */,
-				BE9B1CD9158E40A500453617 /* sbStringPointerField.cpp */,
-				BE9B1CCF158E3C2D00453617 /* sbElementField.h */,
-				BE9B1CD0158E3CA400453617 /* sbElementField.cpp */,
+				BE9B1CCB158E3A4600453617 /* sbType.h */,
+				BE57CC551560799000FFCB91 /* sbScalarType.h */,
+				BE57CC561560799D00FFCB91 /* sbScalarType.cpp */,
+				BE9B1CDD158E4A3900453617 /* sbFloatType.h */,
+				BE9B1CDE158E4A9100453617 /* sbIntType.h */,
+				BE610463157B14430089A922 /* sbAggregateType.h */,
+				BE610464157B1B750089A922 /* sbAggregateType.cpp */,
+				BE9B1CCE158E3B0F00453617 /* sbMember.h */,
+				BE9B1CDB158E428300453617 /* sbMember.cpp */,
+				BE9B1CD2158E3F9800453617 /* sbPointerMember.h */,
+				BE9B1CD3158E3FA600453617 /* sbPointerMember.cpp */,
+				BE9B1CD5158E407100453617 /* sbCountedPointerMember.h */,
+				BE9B1CD6158E407B00453617 /* sbCountedPointerMember.cpp */,
+				BE9B1CD8158E409700453617 /* sbStringPointerMember.h */,
+				BE9B1CD9158E40A500453617 /* sbStringPointerMember.cpp */,
+				BE9B1CCF158E3C2D00453617 /* sbInstanceMember.h */,
+				BE9B1CD0158E3CA400453617 /* sbInstanceMember.cpp */,
 				BE610466157B38060089A922 /* sbSchema.h */,
 				BE610467157B38170089A922 /* sbSchema.cpp */,
 			);
@@ -274,12 +274,12 @@
 				BE57CC4815605F2300FFCB91 /* UnitTest.cpp in Sources */,
 				BE57CC511560717400FFCB91 /* sbValue.cpp in Sources */,
 				BE57CC53156074B000FFCB91 /* sbHash.cpp in Sources */,
-				BE57CC571560799D00FFCB91 /* sbScalar.cpp in Sources */,
+				BE57CC571560799D00FFCB91 /* sbScalarType.cpp in Sources */,
 				BE147C701564BA8B00C8A199 /* sbChunk.cpp in Sources */,
 				BE147C731564BCBD00C8A199 /* sbChunkFile.cpp in Sources */,
 				BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */,
 				BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */,
-				BE610465157B1B750089A922 /* sbAggregate.cpp in Sources */,
+				BE610465157B1B750089A922 /* sbAggregateType.cpp in Sources */,
 				BE610468157B38170089A922 /* sbSchema.cpp in Sources */,
 				BE3EF922157BC59900A7DFB3 /* UnitTestResult.cpp in Sources */,
 				BE3108CE158429BC003D607C /* TestChunk.cpp in Sources */,
@@ -291,11 +291,11 @@
 				BE3108DC1585A029003D607C /* sbAllocator.cpp in Sources */,
 				BE3108DF15898594003D607C /* TestAliasedPointer.cpp in Sources */,
 				BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */,
-				BE9B1CD1158E3CA400453617 /* sbElementField.cpp in Sources */,
-				BE9B1CD4158E3FA600453617 /* sbPointerField.cpp in Sources */,
-				BE9B1CD7158E407B00453617 /* sbCountedPointerField.cpp in Sources */,
-				BE9B1CDA158E40A600453617 /* sbStringPointerField.cpp in Sources */,
-				BE9B1CDC158E428300453617 /* sbField.cpp in Sources */,
+				BE9B1CD1158E3CA400453617 /* sbInstanceMember.cpp in Sources */,
+				BE9B1CD4158E3FA600453617 /* sbPointerMember.cpp in Sources */,
+				BE9B1CD7158E407B00453617 /* sbCountedPointerMember.cpp in Sources */,
+				BE9B1CDA158E40A600453617 /* sbStringPointerMember.cpp in Sources */,
+				BE9B1CDC158E428300453617 /* sbMember.cpp in Sources */,
 				BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

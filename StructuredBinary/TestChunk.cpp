@@ -40,13 +40,13 @@ UnitTest::Result TestChunk::RunTest() const
   uint32_t umami_size   = ( uint32_t )strlen( umami_data  ) + 1;
   
   sbChunk* root = new sbChunk( top_id );
-  root->AddField( new sbChunk( sweet_id, sweet_data, sweet_size ) );
-  root->AddField( new sbChunk( salt_id, salt_data, salt_size ) );
+  root->AddChild( new sbChunk( sweet_id, sweet_data, sweet_size ) );
+  root->AddChild( new sbChunk( salt_id, salt_data, salt_size ) );
   
-  sbChunk* child = root->AddField( new sbChunk( child_id ) );
-  child->AddField( new sbChunk( sour_id, sour_data, sour_size ) );
-  child->AddField( new sbChunk( bitter_id, bitter_data, bitter_size ) );
-  child->AddField( new sbChunk( umami_id, umami_data, umami_size ) );
+  sbChunk* child = root->AddChild( new sbChunk( child_id ) );
+  child->AddChild( new sbChunk( sour_id, sour_data, sour_size ) );
+  child->AddChild( new sbChunk( bitter_id, bitter_data, bitter_size ) );
+  child->AddChild( new sbChunk( umami_id, umami_data, umami_size ) );
 
   const sbChunk* c = root;
   if( c->GetChildCount() != 3 )         return Error( "Top chunk wrong child count" );
