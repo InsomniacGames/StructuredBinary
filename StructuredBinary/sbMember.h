@@ -17,22 +17,10 @@
 class sbAggregateType;
 class sbType;
 class sbAllocator;
-class sbValue;
+class sbScalarValue;
 class sbSchema;
 class sbByteReader;
 class sbByteWriter;
-
-enum sbMemberType
-{
-  sbMemberType_Instance,
-  sbMemberType_InstanceArray,
-  sbMemberType_Pointer,
-  sbMemberType_PointerArray,
-  sbMemberType_CountedPointer,
-  sbMemberType_CountedPointerArray,
-  sbMemberType_StringPointer,
-  sbMemberType_StringPointerArray,
-};
 
 class sbMember
 {
@@ -42,7 +30,7 @@ public:
   
   char* GetDataPtr( char* scope_data, int index ) const;
   const char* GetDataPtr( const char* scope_data, int index ) const;
-  sbValue ReadValue( const char* scope_data ) const;
+  sbScalarValue ReadValue( const char* scope_data ) const;
   size_t GetTotalSize() const;
   sbStatus FixUp( sbSchema* schema, const sbMember* previous_member );
   
@@ -51,7 +39,9 @@ public:
   virtual int GetPointerCount( const char* scope_data, int index ) const = 0;
   virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name ) = 0;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const = 0;
-  virtual void Write( sbByteWriter* writer ) = 0;
+
+  virtual void Write( sbByteWriter* writer ) const = 0;
+  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
 
   size_t GetOffset() const { return m_Offset; }
   int GetCount() const { return m_Count; }
@@ -59,14 +49,30 @@ public:
   const sbAggregateType* GetScope() const { return m_Scope; }
   sbHash GetTypeName() const { return m_TypeName; }
 
-  static sbMember* Read( const sbAggregateType* scope, sbByteReader* reader );
-
 private:
   sbHash   m_TypeName;
   size_t   m_Offset;     // Offset from the start of the node
   int      m_Count;      // For arrays
   const sbType*  m_Type;
   const sbAggregateType*   m_Scope;
+
+protected:
+
+  enum ByteCode
+  {
+    ByteCode_Instance,
+    ByteCode_CountedPointer,
+    ByteCode_StringPointer,
+    ByteCode_Mask = 0x07,
+  };
+
+  enum ByteCodeFlag
+  {
+    ByteCodeFlag_Array      = 1 << 7,   // Note: this means that the member is repeated in the aggregate
+    ByteCodeFlag_CountName  = 1 << 6,   // Note: this means that the pointer points to more than one object. There will be a scalar member in the same aggregate that says how many
+    ByteCodeFlag_TermName   = 1 << 5,
+    ByteCodeFlag_TermValue  = 1 << 4,
+  };
 };
 
 

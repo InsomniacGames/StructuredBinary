@@ -13,6 +13,7 @@
 #include "sbSchema.h"
 
 #include "sbByteWriter.h"
+#include "sbByteReader.h"
 
 sbInstanceMember::sbInstanceMember( const sbAggregateType* scope, int count, sbHash type_name )
 : sbMember( scope, count, type_name )
@@ -48,17 +49,47 @@ sbStatus sbInstanceMember::PreFixUp( sbSchema* schema, sbHash type_name )
   return schema->FixUp( type_name );
 }
 
-void sbInstanceMember::Write( sbByteWriter* writer )
+void sbInstanceMember::Write( sbByteWriter* writer ) const
 {
-  if( GetCount() == 1 )
+  uint8_t code = ByteCode_Instance;
+  
+  if( GetCount() > 1 )
   {
-    writer->Write8( sbMemberType_Instance );
-    writer->Write32( GetTypeName() );
+    code |= ByteCodeFlag_Array;
   }
-  else
+  
+  writer->Write8( code );
+  writer->Write32( GetTypeName() );
+  if( code & ByteCodeFlag_Array )
   {
-    writer->Write8( sbMemberType_InstanceArray );
-    writer->Write32( GetTypeName() );
     writer->Write16( GetCount() );
   }
 }
+
+sbMember* sbInstanceMember::Read( sbByteReader* reader, const sbAggregateType* scope )
+{
+  size_t roll_back = reader->Tell();
+  sbMember* member = NULL;
+  
+  uint8_t code = reader->Read8();
+  
+  if( ( code & ByteCode_Mask ) == ByteCode_Instance )
+  {
+    int count = 1;
+    
+    sbHash type_name = reader->Read32();
+    if( code & ByteCodeFlag_Array )
+    {
+      count = reader->Read16();
+    }
+    
+    member = new sbInstanceMember( scope, count, type_name );
+  }
+  
+  if( !member )
+  {
+    reader->Seek( roll_back );
+  }
+  return member;
+}
+

@@ -13,13 +13,15 @@
 
 #include "sbUtil.h"
 #include "sbAggregateType.h"
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbStatus.h"
 
-#include "sbFloatType.h"
-#include "sbIntType.h"
+#include "sbFloatScalarType.h"
+#include "sbIntScalarType.h"
 
 #include "sbDictionary.h"
+#include "sbByteWriter.h"
+#include "sbByteReader.h"
 
 const sbType* sbSchema::FindType( sbHash name ) const
 {
@@ -76,7 +78,7 @@ sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema
   return status;
 }
 
-void sbSchema::BeginType( sbHash type_name )
+void sbSchema::BeginAggregate( sbHash type_name )
 {
   assert( !m_CurrentAggregate );
   
@@ -84,9 +86,9 @@ void sbSchema::BeginType( sbHash type_name )
   m_CurrentAggregate = new sbAggregateType();
 }
 
-void sbSchema::EndType()
+void sbSchema::EndAggregate()
 {
-  m_Dictionary.Add( m_CurrentName, m_CurrentAggregate );
+  AddType( m_CurrentName, m_CurrentAggregate );
   m_CurrentName = 0U;
   m_CurrentAggregate = NULL;
 }
@@ -109,10 +111,15 @@ void sbSchema::AddCountedPointer( sbHash member_name, int count, sbHash type_nam
   m_CurrentAggregate->AddCountedPointer( member_name, count, type_name, count_name );
 }
 
-void sbSchema::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbSchema::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 {
   assert( m_CurrentAggregate );
   m_CurrentAggregate->AddStringPointer( member_name, count, type_name, terminator_name, terminator_value );
+}
+
+void sbSchema::AddType( sbHash type_name, sbType* sb_type )
+{
+  m_Dictionary.Add( type_name, sb_type );
 }
 
 void sbSchema::Begin()
@@ -120,16 +127,16 @@ void sbSchema::Begin()
   assert( m_State == kState_New );
   m_State = kState_Building;
 
-  m_Dictionary.Add( "uint8_t",   new sbIntType<  uint8_t > );
-  m_Dictionary.Add( "int8_t",    new sbIntType<   int8_t > );
-  m_Dictionary.Add( "uint16_t",  new sbIntType< uint16_t > );
-  m_Dictionary.Add( "int16_t",   new sbIntType<  int16_t > );
-  m_Dictionary.Add( "uint32_t",  new sbIntType< uint32_t > );
-  m_Dictionary.Add( "int32_t",   new sbIntType<  int32_t > );
-  m_Dictionary.Add( "uint64_t",  new sbIntType< uint64_t > );
-  m_Dictionary.Add( "int64_t",   new sbIntType<  int64_t > );
-  m_Dictionary.Add( "float",     new sbFloatType<  float > );
-  m_Dictionary.Add( "double",    new sbFloatType< double > );
+  AddType( "uint8_t",   new sbIntScalarType<  uint8_t > );
+  AddType( "int8_t",    new sbIntScalarType<   int8_t > );
+  AddType( "uint16_t",  new sbIntScalarType< uint16_t > );
+  AddType( "int16_t",   new sbIntScalarType<  int16_t > );
+  AddType( "uint32_t",  new sbIntScalarType< uint32_t > );
+  AddType( "int32_t",   new sbIntScalarType<  int32_t > );
+  AddType( "uint64_t",  new sbIntScalarType< uint64_t > );
+  AddType( "int64_t",   new sbIntScalarType<  int64_t > );
+  AddType( "float",     new sbFloatScalarType<  float > );
+  AddType( "double",    new sbFloatScalarType< double > );
 }
 
 void sbSchema::End()
@@ -153,4 +160,54 @@ sbSchema::sbSchema()
 , m_Dictionary( 16, NULL )
 {}
 
+void sbSchema::Write( sbByteWriter* writer ) const
+{
+  int count = m_Dictionary.GetCount();
+  writer->Write16( count );
+  
+  for( int i = 0; i < count; ++i )
+  {
+    const sbType* t = m_Dictionary.GetByIndex( i );
+    if( !t->IsBuiltIn() ) // Skip built-in types, such as uint8_t
+    {
+      sbHash name = m_Dictionary.GetNameByIndex( i );
+      writer->Write32( name );
+      t->Write( writer );
+    }
+  }
+}
 
+sbSchema* sbSchema::Read( sbByteReader* reader )
+{
+  size_t roll_back = reader->Tell();
+  sbSchema* schema = new sbSchema();
+
+  int count = reader->Read16();
+  schema->Begin();
+
+  for( int i = 0; i < count; ++i )
+  {
+    sbHash type_name = reader->Read32();
+    sbType* sb_type = sbType::Read( reader );
+    if( sb_type )
+    {
+      schema->AddType( type_name, sb_type );
+    }
+    else
+    {
+      delete schema;
+      schema = NULL;
+      break;
+    }
+  }
+
+  if( !schema )
+  {
+    reader->Seek( roll_back );
+  }
+  else
+  {
+    schema->End();
+  }
+  return schema;
+}

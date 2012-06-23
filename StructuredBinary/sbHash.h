@@ -26,6 +26,7 @@ public:
   sbHash( uint32_t value );
   sbHash();
   operator const uint32_t() const;
+  operator const bool() const;
   bool operator== ( const sbHash& other ) const;
 
 private:

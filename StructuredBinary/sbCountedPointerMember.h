@@ -12,6 +12,7 @@
 #include "sbPointerMember.h"
 
 class sbByteWriter;
+class sbByteReader;
 
 class sbCountedPointerMember : public sbPointerMember
 {
@@ -20,7 +21,9 @@ class sbCountedPointerMember : public sbPointerMember
 public:
   sbCountedPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash count_name );
   virtual int GetPointerCount( const char* scope_data, int index ) const;
-  virtual void Write( sbByteWriter* writer );
+
+  virtual void Write( sbByteWriter* writer ) const;
+  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
 };
 
 #endif

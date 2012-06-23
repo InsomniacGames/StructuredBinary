@@ -19,9 +19,14 @@ sbByteReader::sbByteReader( const char* start, const char* end )
 , m_Pointer( start )
 {}
 
-void sbByteReader::Rewind()
+void sbByteReader::Seek( size_t pos )
 {
-  m_Pointer = m_Start;
+  m_Pointer = m_Start + pos;
+}
+
+size_t sbByteReader::Tell() const
+{
+  return m_Pointer - m_Start;
 }
 
 uint8_t sbByteReader::Read8()

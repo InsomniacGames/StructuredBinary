@@ -53,28 +53,28 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginType( "Struct" );
-  dst_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.EndType();
+  dst_schema.BeginAggregate( "Struct" );
+  dst_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.EndAggregate();
   
   dst_schema.End();
   
   sbSchema src_schema;
   src_schema.Begin();
 
-  src_schema.BeginType( "StringElem" );
+  src_schema.BeginAggregate( "StringElem" );
   src_schema.AddInstance( "c", 1, "int8_t" );
-  src_schema.EndType();
+  src_schema.EndAggregate();
   
-  src_schema.BeginType( "Struct" );
-  src_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  src_schema.EndType();
+  src_schema.BeginAggregate( "Struct" );
+  src_schema.AddStringPointer( "string3", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string4", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string1", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.AddStringPointer( "string2", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  src_schema.EndAggregate();
 
   src_schema.End();
   

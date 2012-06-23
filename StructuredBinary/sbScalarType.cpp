@@ -15,7 +15,7 @@ sbScalarType::~sbScalarType()
 
 sbStatus sbScalarType::Convert( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const
 {
-  sbValue src_value = src_type->ReadValue( src_data );
+  sbScalarValue src_value = src_type->ReadValue( src_data );
   if( dst_data )
   {
     WriteValue( dst_data, src_value );
@@ -23,7 +23,7 @@ sbStatus sbScalarType::Convert( char* dst_data, const char* src_data, const sbTy
   return sbStatus_Ok;
 }
 
-bool sbScalarType::IsTerminal( const char* data, const sbValue& terminator_value, sbHash terminator_name ) const
+bool sbScalarType::IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const
 {
   return ReadValue( data ) == terminator_value;
 }

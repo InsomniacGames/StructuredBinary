@@ -10,11 +10,14 @@
 #define StructuredBinary_sbType_h
 
 #include <stdint.h>
+#include <stddef.h>
 
 #include "sbStatus.h"
 #include "sbHash.h"
 
-class sbValue;
+class sbByteWriter;
+class sbByteReader;
+class sbScalarValue;
 
 class sbType
 {
@@ -25,12 +28,24 @@ public:
   virtual size_t GetSize() const = 0;
   virtual size_t GetAlignment() const = 0;
   
-  virtual bool IsTerminal( const char* data, const sbValue& terminator_value, sbHash terminator_name ) const = 0;
+  virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const = 0;
   
   virtual sbStatus FixUp( class sbSchema* schema ) = 0;
   virtual const class sbMember* FindMember( sbHash name ) const = 0;
   
-  virtual sbValue ReadValue( const char* data ) const = 0;
+  virtual sbScalarValue ReadValue( const char* data ) const = 0;
+
+  virtual bool IsBuiltIn() const = 0;
+  virtual void Write( sbByteWriter* writer ) const = 0;
+  static sbType* Read( sbByteReader* reader );
+
+protected:
+
+  enum ByteCode
+  {
+    ByteCode_Aggregate,
+    ByteCode_Scalar,
+  };
 };
 
 #endif

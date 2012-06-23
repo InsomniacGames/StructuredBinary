@@ -12,7 +12,7 @@
 #include <stddef.h>
 
 #include "sbScalarType.h"
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbStatus.h"
 #include "sbAllocator.h"
 #include "sbHash.h"
@@ -22,7 +22,8 @@
 class sbSchema;
 class sbScalarType;
 class sbAggregateType;
-
+class sbByteReader;
+class sbByteWriter;
 
 class sbAggregateType : public sbType
 {
@@ -46,16 +47,21 @@ public:
   virtual size_t GetSize() const { return m_Size; }
   virtual size_t GetAlignment() const { return m_Alignment; }
 
-  virtual bool IsTerminal( const char* data, const sbValue& terminator_value, sbHash terminator_name ) const;
+  virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( sbSchema* schema );
 
   virtual const sbMember* FindMember( sbHash member_name ) const;
-  virtual sbValue ReadValue( const char* data ) const;
+  virtual sbScalarValue ReadValue( const char* data ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
   void AddPointer( sbHash member_name, int count, sbHash type_name );
   void AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
-  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
+  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value );
+
+  virtual bool IsBuiltIn() const { return false; }
+
+  virtual void Write( sbByteWriter* writer ) const;
+  static sbType* Read( sbByteReader* reader );
 
 private:
   void AddMember( sbHash member_name, sbMember* member );

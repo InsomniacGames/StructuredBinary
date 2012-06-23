@@ -77,36 +77,36 @@ UnitTest::Result TestConvertDeep::RunTest() const
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginType( "PointerElem" );
+  dst_schema.BeginAggregate( "PointerElem" );
   dst_schema.AddInstance( "z", 1, "int32_t" );
   dst_schema.AddInstance( "x", 1, "int32_t" );
   dst_schema.AddInstance( "y", 1, "int32_t" );
-  dst_schema.EndType();
+  dst_schema.EndAggregate();
     
-  dst_schema.BeginType( "Struct" );
+  dst_schema.BeginAggregate( "Struct" );
   dst_schema.AddInstance  ( "f", 2, "float" );
   dst_schema.AddInstance  ( "count", 1, "int32_t" );
-  dst_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
+  dst_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
   dst_schema.AddCountedPointer ( "pointer", 1, "PointerElem", "count" );
-  dst_schema.EndType();
+  dst_schema.EndAggregate();
 
   dst_schema.End();
 
   sbSchema src_schema;
   src_schema.Begin();
   
-  src_schema.BeginType( "PointerElem" );
+  src_schema.BeginAggregate( "PointerElem" );
   src_schema.AddInstance( "x", 1, "int32_t" );
   src_schema.AddInstance( "y", 1, "int32_t" );
   src_schema.AddInstance( "z", 1, "int32_t" );
-  src_schema.EndType();
+  src_schema.EndAggregate();
 
-  src_schema.BeginType( "Struct" );
+  src_schema.BeginAggregate( "Struct" );
   src_schema.AddInstance  ( "count", 1, "int32_t" );
   src_schema.AddCountedPointer ( "pointer", 1, "PointerElem", "count" );
-  src_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.AddStringPointer  ( "string", 3, "int8_t", "value", sbScalarValue::Int( 0 ) );
   src_schema.AddInstance  ( "f", 2, "float" );
-  src_schema.EndType();
+  src_schema.EndAggregate();
   
   src_schema.End();
 

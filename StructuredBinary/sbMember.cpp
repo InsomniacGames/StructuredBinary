@@ -9,7 +9,7 @@
 #include "sbMember.h"
 
 #include "sbType.h"
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbSchema.h"
 #include "sbUtil.h"
 #include "sbByteReader.h"
@@ -41,7 +41,7 @@ const char* sbMember::GetDataPtr( const char* scope_data, int index ) const
   return scope_data ? scope_data + m_Offset + index * GetSize() : NULL;
 }
 
-sbValue sbMember::ReadValue( const char* scope_data ) const
+sbScalarValue sbMember::ReadValue( const char* scope_data ) const
 {
   return m_Type->ReadValue( scope_data + m_Offset );
 }
@@ -74,74 +74,12 @@ sbStatus sbMember::FixUp( sbSchema* schema, const sbMember* previous_member )
   return status;
 }
 
-sbMember* sbMember::Read( const sbAggregateType* scope, sbByteReader* reader )
+sbMember* sbMember::Read( sbByteReader* reader, const sbAggregateType* scope )
 {
-  sbMember* member;
-  sbMemberType member_type = ( sbMemberType )reader->Read8();
-  switch( member_type )
-  {
-    case sbMemberType_Instance:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = 1;
-      member = new sbInstanceMember( scope, count, type_name );
-      break;
-    }
-    case sbMemberType_InstanceArray:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = reader->Read16();
-      member = new sbInstanceMember( scope, count, type_name );
-      break;
-    }
-    case sbMemberType_Pointer:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = 1;
-      member = new sbPointerMember( scope, count, type_name );
-      break;
-    }
-    case sbMemberType_PointerArray:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = reader->Read16();
-      member = new sbPointerMember( scope, count, type_name );
-      break;
-    }
-    case sbMemberType_CountedPointer:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = 1;
-      sbHash count_name       = reader->Read32();
-      member = new sbCountedPointerMember( scope, count, type_name, count_name );
-      break;
-    }
-    case sbMemberType_CountedPointerArray:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = reader->Read16();
-      sbHash count_name       = reader->Read32();
-      member = new sbCountedPointerMember( scope, count, type_name, count_name );
-      break;
-    }
-    case sbMemberType_StringPointer:
-    {
-      sbHash type_name          = reader->Read32();
-      int count                 = 1;
-      sbHash terminator_name    = reader->Read32();
-      sbValue terminator_value  = sbValue::Read( reader );
-      member = new sbStringPointerMember( scope, count, type_name, terminator_name, terminator_value );
-      break;
-    }
-    case sbMemberType_StringPointerArray:
-    {
-      sbHash type_name        = reader->Read32();
-      int count               = reader->Read16();
-      sbHash terminator_name  = reader->Read32();
-      sbValue terminator_value  = sbValue::Read( reader );
-      member = new sbStringPointerMember( scope, count, type_name, terminator_name, terminator_value );
-      break;
-    }
-  }
+  sbMember* member = NULL;
+  if( !member ) member = sbInstanceMember::Read( reader, scope );
+  if( !member ) member = sbPointerMember::Read( reader, scope );
+  if( !member ) member = sbCountedPointerMember::Read( reader, scope );
+  if( !member ) member = sbStringPointerMember::Read( reader, scope );
   return member;
 }

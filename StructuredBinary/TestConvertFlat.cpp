@@ -52,7 +52,7 @@ UnitTest::Result TestConvertFlat::RunTest() const
   sbSchema src_schema;
   src_schema.Begin();
 
-  src_schema.BeginType( "Struct" );
+  src_schema.BeginAggregate( "Struct" );
   src_schema.AddInstance( "u8" , 1, "uint8_t");
   src_schema.AddInstance( "f32", 1, "float" );
   src_schema.AddInstance( "u16", 1, "uint16_t" );
@@ -63,14 +63,14 @@ UnitTest::Result TestConvertFlat::RunTest() const
   src_schema.AddInstance( "i16", 1, "int16_t" );
   src_schema.AddInstance( "i32", 1, "int32_t" );
   src_schema.AddInstance( "i64", 1, "int64_t" );
-  src_schema.EndType();
+  src_schema.EndAggregate();
 
   src_schema.End();
 
   sbSchema dst_schema;
   dst_schema.Begin();
 
-  dst_schema.BeginType( "Struct" );
+  dst_schema.BeginAggregate( "Struct" );
   dst_schema.AddInstance( "i8" , 1, "int8_t" );
   dst_schema.AddInstance( "f64", 1, "double" );
   dst_schema.AddInstance( "i16", 1, "int16_t" );
@@ -81,7 +81,7 @@ UnitTest::Result TestConvertFlat::RunTest() const
   dst_schema.AddInstance( "u16", 1, "uint16_t" );
   dst_schema.AddInstance( "u32", 1, "uint32_t" );
   dst_schema.AddInstance( "u64", 1, "uint64_t" );
-  dst_schema.EndType();
+  dst_schema.EndAggregate();
 
   dst_schema.End();
 

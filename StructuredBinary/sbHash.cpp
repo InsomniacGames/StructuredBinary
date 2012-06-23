@@ -74,6 +74,11 @@ sbHash::operator const uint32_t() const
   return m_Value;
 }
 
+sbHash::operator const bool() const
+{
+  return m_Value != 0;
+}
+
 bool sbHash::operator== ( const sbHash& other ) const
 {
   return other.m_Value == m_Value;

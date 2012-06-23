@@ -11,21 +11,24 @@
 
 #include "sbPointerMember.h"
 
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbHash.h"
 
 class sbAggregateType;
 class sbByteWriter;
+class sbByteReader;
 
 class sbStringPointerMember : public sbPointerMember
 {
-  sbValue m_TerminatorValue;
+  sbScalarValue m_TerminatorValue;
   sbHash   m_TerminatorName;
   
 public:
-  sbStringPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
+  sbStringPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value );
   virtual int GetPointerCount( const char* scope_data, int index ) const;
-  virtual void Write( sbByteWriter* writer );
+
+  virtual void Write( sbByteWriter* writer ) const;
+  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
 };
 
 #endif

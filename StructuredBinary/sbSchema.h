@@ -16,9 +16,11 @@
 #include "sbHash.h"
 #include "sbDictionary.h"
 
-class sbValue;
+class sbScalarValue;
 class sbAllocator;
 class sbAggregateType;
+class sbByteReader;
+class sbByteWriter;
 
 class sbSchema
 {
@@ -33,17 +35,20 @@ public:
   void Begin();
   void End();
 
-  void BeginType( sbHash type_name );
-  void EndType();
+  void BeginAggregate( sbHash type_name );
+  void EndAggregate();
 
   sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
   void AddPointer( sbHash member_name, int count, sbHash type_name );
   void AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name );
-  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value );
+  void AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value );
 
   sbStatus FixUp( sbHash type_name );
+
+  void Write( sbByteWriter* writer ) const;
+  static sbSchema* Read( sbByteReader* reader );
 
 private:
   
@@ -57,6 +62,7 @@ private:
   State m_State;
 
   sbStatus FixUp();
+  void AddType( sbHash type_name, sbType* sb_type );
 
   sbAggregateType*  m_CurrentAggregate;
   sbHash        m_CurrentName;

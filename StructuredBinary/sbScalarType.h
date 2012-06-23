@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 // Project
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbHash.h"
 #include "sbStatus.h"
 #include "sbType.h"
@@ -26,10 +26,10 @@ class sbScalarType : public sbType
 {
 public:
   virtual ~sbScalarType();
-  virtual void WriteValue( char* data, const sbValue& number ) const = 0;
+  virtual void WriteValue( char* data, const sbScalarValue& number ) const = 0;
   virtual sbStatus Convert( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const;
 
-  virtual bool IsTerminal( const char* data, const sbValue& terminator_value, sbHash terminator_name ) const;
+  virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( class sbSchema* schema );
   virtual const sbMember* FindMember( sbHash name ) const;
 };

@@ -16,13 +16,16 @@
 #include "sbUtil.h"
 #include "sbSchema.h"
 #include "sbScalarType.h"
-#include "sbValue.h"
+#include "sbScalarValue.h"
 #include "sbStatus.h"
 
 #include "sbInstanceMember.h"
 #include "sbPointerMember.h"
 #include "sbCountedPointerMember.h"
 #include "sbStringPointerMember.h"
+
+#include "sbByteWriter.h"
+#include "sbByteReader.h"
 
 const sbMember* sbAggregateType::FindMember( sbHash member_name ) const
 {
@@ -42,7 +45,7 @@ sbStatus sbAggregateType::Convert( char* dst_data, const char* src_data, const s
   return status;
 }
 
-bool sbAggregateType::IsTerminal( const char* data, const sbValue& terminator_value, sbHash terminator_name ) const
+bool sbAggregateType::IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const
 {
   const sbMember* member = FindMember( terminator_name );
   assert( member );
@@ -101,7 +104,7 @@ void sbAggregateType::AddInstance( sbHash member_name, int count, sbHash type_na
 
 void sbAggregateType::AddPointer( sbHash member_name, int count, sbHash type_name )
 {
-  AddMember( member_name, new sbPointerMember( this, count, type_name ) );
+  AddCountedPointer( member_name, count, type_name, 0U );
 }
 
 void sbAggregateType::AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
@@ -109,7 +112,7 @@ void sbAggregateType::AddCountedPointer( sbHash member_name, int count, sbHash t
   AddMember( member_name, new sbCountedPointerMember( this, count, type_name, count_name ) );
 }
 
-void sbAggregateType::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbValue& terminator_value )
+void sbAggregateType::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 {
   AddMember( member_name, new sbStringPointerMember( this, count, type_name, terminator_name, terminator_value ) );
 }
@@ -122,7 +125,66 @@ sbAggregateType::~sbAggregateType()
   }
 }
 
-sbValue sbAggregateType::ReadValue( const char* data ) const
+sbScalarValue sbAggregateType::ReadValue( const char* data ) const
 {
   assert( false );  
+}
+
+void sbAggregateType::Write( sbByteWriter* writer ) const
+{
+  writer->Write8( ByteCode_Aggregate );
+
+  int count = m_Dictionary.GetCount();
+  writer->Write16( count );
+  
+  for( int i = 0; i < count; ++i )
+  {
+    const sbMember* member = m_Dictionary.GetByIndex( i );
+    sbHash member_name = m_Dictionary.GetNameByIndex( i );
+    writer->Write32( member_name );
+    member->Write( writer );
+  }
+}
+
+sbType* sbAggregateType::Read( sbByteReader* reader )
+{
+  size_t roll_back = reader->Tell();
+  sbAggregateType* aggregate = NULL;
+  
+  ByteCode code = ( ByteCode )reader->Read8();
+
+  switch( code )
+  {
+    case ByteCode_Aggregate:
+    {
+      aggregate = new sbAggregateType();
+      int count = reader->Read16();
+      
+      for( int i = 0; i < count; ++i )
+      {
+        sbHash member_name = reader->Read32();
+        sbMember* member = sbMember::Read( reader, aggregate );
+        
+        if( member )
+        {
+          aggregate->AddMember( member_name, member );
+        }
+        else
+        {
+          // Could not read member. Bail out.
+          delete aggregate;
+          aggregate = NULL;
+          break;
+        }
+      }
+    }
+    default:
+      break;
+  }
+
+  if( !aggregate )
+  {
+    reader->Seek( roll_back );
+  }
+  return aggregate;
 }

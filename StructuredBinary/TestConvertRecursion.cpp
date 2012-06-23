@@ -35,38 +35,38 @@ namespace Dst
 
 UnitTest::Result TestConvertRecursion::RunTest() const
 {
-  Src::Struct src_struct;
+  Src::Struct src_round;
   Src::Struct src_and;
 
-  src_struct.string = "ROUND";
-  src_struct.next = &src_and;
+  src_round.string = "ROUND";
+  src_round.next = &src_and;
   src_and.string = "AND";
-  src_and.next = &src_struct;
+  src_and.next = &src_round;
 
   sbSchema src_schema;
   src_schema.Begin();
-  src_schema.BeginType( "Struct" );
-  src_schema.AddStringPointer( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
+  src_schema.BeginAggregate( "Struct" );
+  src_schema.AddStringPointer( "string", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
   src_schema.AddPointer( "next", 1, "Struct" );
-  src_schema.EndType();
+  src_schema.EndAggregate();
   src_schema.End();
   
   sbSchema dst_schema;
   dst_schema.Begin();
-  dst_schema.BeginType( "Struct" );
+  dst_schema.BeginAggregate( "Struct" );
   dst_schema.AddPointer( "next", 1, "Struct" );
-  dst_schema.AddStringPointer( "string", 1, "int8_t", "value", sbValue::Int( 0 ) );
-  dst_schema.EndType();
+  dst_schema.AddStringPointer( "string", 1, "int8_t", "value", sbScalarValue::Int( 0 ) );
+  dst_schema.EndAggregate();
   dst_schema.End();
 
   sbAllocator alloc( NULL, 0 );
-  dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  dst_schema.Convert( NULL, ( const char* )&src_round, &src_schema, "Struct", &alloc );
   //  printf( "Memory needed %lu\n", alloc.GetSize() );
   
   Dst::Struct dst_struct;
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_round, &src_schema, "Struct", &alloc );
 
   if( 0 != strcmp( dst_struct.string, "ROUND" ) )             return Error( "1st string wrong" );
   if( 0 != strcmp( dst_struct.next->string, "AND" ) )         return Error( "2nd string wrong" );

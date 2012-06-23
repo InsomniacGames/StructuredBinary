@@ -10,6 +10,7 @@
 #define StructuredBinary_sbByteReader_h
 
 // Libraries
+#include <stddef.h>
 #include <stdint.h>
 
 class sbByteReader
@@ -21,7 +22,9 @@ public:
   uint32_t Read32();
   uint64_t Read64();
   int GetRemain() const;
-  void Rewind();
+
+  void Seek( size_t pos = 0 );
+  size_t Tell() const;
 
 private:
   const char* m_Start;
