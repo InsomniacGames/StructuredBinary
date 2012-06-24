@@ -32,6 +32,8 @@ public:
   virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( class sbSchema* schema );
   virtual const sbMember* FindMember( sbHash name ) const;
+
+  virtual uint64_t GetChecksum( uint64_t basis ) const { return basis; }
 };
 
 #endif

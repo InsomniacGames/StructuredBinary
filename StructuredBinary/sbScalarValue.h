@@ -26,7 +26,7 @@ public:
   static sbScalarValue ReinterpretFloatFromU32( uint32_t i );
   static sbScalarValue Float( double value );
   static sbScalarValue Int( int64_t value );
-  static sbScalarValue Null();
+  static sbScalarValue Zero();
   
   double AsFloat() const;
   int64_t AsInt() const;
@@ -36,16 +36,18 @@ public:
   
   bool IsFloat() const  { return m_Type == kFloat; }
   bool IsInt() const    { return m_Type == kInt; }
-  bool IsNull() const   { return m_Type == kNull; }
+  bool IsZero() const   { return m_Type == kZero; }
 
   void Write( sbByteWriter* writer ) const;
   static sbScalarValue Read( sbByteReader* reader );
 
+  uint64_t GetChecksum( uint64_t basis ) const;
+
 private:
-  
+
   enum Type
   {
-    kNull,
+    kZero,
     kInt,
     kFloat,
   };

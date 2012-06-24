@@ -9,13 +9,15 @@
 // Self
 #include "sbScalarValue.h"
 // Libraries
+#include "stdio.h"
 // Project
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
+#include "sbHash.h"
 
 sbScalarValue::sbScalarValue()
 {
-  m_Type = kNull;
+  m_Type = kZero;
   m_Value.i64 = 0;
 }
 
@@ -37,25 +39,28 @@ sbScalarValue sbScalarValue::ReinterpretFloatFromU32( uint32_t value )
 sbScalarValue sbScalarValue::Float( double value )
 {
   sbScalarValue v;
-  v.m_Type = kFloat;
-  v.m_Value.f64 = value;
+  if( value != 0.0 )
+  {
+    v.m_Type = kFloat;
+    v.m_Value.f64 = value;
+  }
   return v;
 }
 
 sbScalarValue sbScalarValue::Int( int64_t value )
 {
   sbScalarValue v;
-  v.m_Type = kInt;
-  v.m_Value.i64 = value;
+  if( value != 0 )
+  {
+    v.m_Type = kInt;
+    v.m_Value.i64 = value;
+  }
   return v;
 }
 
-sbScalarValue sbScalarValue::Null()
+sbScalarValue sbScalarValue::Zero()
 {
-  sbScalarValue v;
-  v.m_Type = kNull;
-  v.m_Value.i64 = 0;
-  return v;
+  return sbScalarValue();
 }
 
 bool sbScalarValue::operator== ( const sbScalarValue& other ) const
@@ -74,7 +79,7 @@ double sbScalarValue::AsFloat() const
   {
     case kFloat:    return m_Value.f64;
     case kInt:      return ( double )m_Value.i64;
-    case kNull:     return 0;
+    case kZero:     return 0;
   }
 }
 
@@ -84,7 +89,7 @@ int64_t sbScalarValue::AsInt() const
   {
     case kFloat:    return ( int64_t )m_Value.f64;
     case kInt:      return m_Value.i64;
-    case kNull:     return 0;
+    case kZero:     return 0;
   }
 }
 
@@ -93,23 +98,13 @@ void sbScalarValue::Write( sbByteWriter* writer ) const
   writer->Write8( m_Type );
   switch( m_Type )
   {
+    case kInt:
     case kFloat:
     {
-      union
-      {
-        uint32_t  u32;
-        float     f32;
-      } convert;
-      convert.f32 = ( float )m_Value.f64;
-      writer->Write32( convert.u32 );
+      writer->Write64( m_Value.i64 );
       break;
     }
-    case kInt:
-    {
-      writer->Write32( ( int32_t )m_Value.i64 );
-      break;
-    }
-    case kNull:
+    case kZero:
     {
       break;
     }
@@ -118,30 +113,29 @@ void sbScalarValue::Write( sbByteWriter* writer ) const
 
 sbScalarValue sbScalarValue::Read( sbByteReader* reader )
 {
+  sbScalarValue v;
   Type t = ( Type )reader->Read8();
+  
+  v.m_Type = t;
   switch( t )
   {
+    case kInt:
     case kFloat:
     {
-      union
-      {
-        uint32_t  u32;
-        float     f32;
-      } convert;
-      convert.u32 = reader->Read32();
-      return sbScalarValue::Float( convert.f32 );
+      v.m_Value.i64 = reader->Read64();
     }
-    case kInt:
+    case kZero:
     {
-      int32_t i32 = reader->Read32();
-      return sbScalarValue::Int( i32 );
-      break;
-    }
-    case kNull:
-    {
-      return sbScalarValue::Null();
       break;
     }
   }
+  return v;
+}
+
+uint64_t sbScalarValue::GetChecksum( uint64_t basis ) const
+{
+  basis = sbFnv64( basis, m_Type );
+  basis = sbFnv64( basis, m_Value.i64 );
+  return basis;
 }
 

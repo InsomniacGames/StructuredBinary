@@ -37,7 +37,8 @@ public:
 
   virtual bool IsBuiltIn() const = 0;
   virtual void Write( sbByteWriter* writer ) const = 0;
-  static sbType* Read( sbByteReader* reader );
+  static sbType* ReadNew( sbByteReader* reader );
+  virtual uint64_t GetChecksum( uint64_t basis ) const = 0;
 
 protected:
 

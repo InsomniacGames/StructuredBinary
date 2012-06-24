@@ -22,6 +22,7 @@
 #include "sbDictionary.h"
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
+#include "sbHash.h"
 
 const sbType* sbSchema::FindType( sbHash name ) const
 {
@@ -163,8 +164,19 @@ sbSchema::sbSchema()
 void sbSchema::Write( sbByteWriter* writer ) const
 {
   int count = m_Dictionary.GetCount();
-  writer->Write16( count );
+
+  int serialized_count = count;
+  for( int i = 0; i < count; ++i )
+  {
+    const sbType* t = m_Dictionary.GetByIndex( i );
+    if( t->IsBuiltIn() ) // Skip built-in types, such as uint8_t
+    {
+      serialized_count -= 1;
+    }
+  }
   
+  writer->Write16( serialized_count );
+
   for( int i = 0; i < count; ++i )
   {
     const sbType* t = m_Dictionary.GetByIndex( i );
@@ -172,12 +184,12 @@ void sbSchema::Write( sbByteWriter* writer ) const
     {
       sbHash name = m_Dictionary.GetNameByIndex( i );
       writer->Write32( name );
-      t->Write( writer );
+      writer->Write( t );
     }
   }
 }
 
-sbSchema* sbSchema::Read( sbByteReader* reader )
+sbSchema* sbSchema::ReadNew( sbByteReader* reader )
 {
   size_t roll_back = reader->Tell();
   sbSchema* schema = new sbSchema();
@@ -188,7 +200,7 @@ sbSchema* sbSchema::Read( sbByteReader* reader )
   for( int i = 0; i < count; ++i )
   {
     sbHash type_name = reader->Read32();
-    sbType* sb_type = sbType::Read( reader );
+    sbType* sb_type = reader->ReadNew< sbType >();
     if( sb_type )
     {
       schema->AddType( type_name, sb_type );
@@ -210,4 +222,20 @@ sbSchema* sbSchema::Read( sbByteReader* reader )
     schema->End();
   }
   return schema;
+}
+
+uint64_t sbSchema::GetChecksum( uint64_t basis ) const
+{
+  int count = m_Dictionary.GetCount();
+  for( int i = 0; i < count; ++i )
+  {
+    const sbType* t = m_Dictionary.GetByIndex( i );
+    if( !t->IsBuiltIn() ) // Skip built-in types, such as uint8_t
+    {
+      sbHash name = m_Dictionary.GetNameByIndex( i );
+      basis = sbFnv64( basis, ( uint32_t )name );
+      basis = t->GetChecksum( basis );
+    }
+  }
+  return basis;
 }

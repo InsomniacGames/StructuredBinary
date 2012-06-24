@@ -19,9 +19,9 @@
 #include "sbCountedPointerMember.h"
 #include "sbStringPointerMember.h"
 
-sbMember::sbMember( const sbAggregateType* scope, int count, sbHash type_name )
+sbMember::sbMember( int count, sbHash type_name )
 {
-  m_Scope = scope;
+  m_Scope = NULL;
   m_Offset = 0;          // To be determined in second pass
   m_Type   = NULL;
   m_TypeName = type_name;
@@ -30,6 +30,11 @@ sbMember::sbMember( const sbAggregateType* scope, int count, sbHash type_name )
 
 sbMember::~sbMember()
 {}
+
+void sbMember::SetScope( const sbAggregateType* scope )
+{
+  m_Scope = scope;
+}
 
 char* sbMember::GetDataPtr( char* scope_data, int index ) const
 {
@@ -74,12 +79,19 @@ sbStatus sbMember::FixUp( sbSchema* schema, const sbMember* previous_member )
   return status;
 }
 
-sbMember* sbMember::Read( sbByteReader* reader, const sbAggregateType* scope )
+sbMember* sbMember::ReadNew( sbByteReader* reader )
 {
   sbMember* member = NULL;
-  if( !member ) member = sbInstanceMember::Read( reader, scope );
-  if( !member ) member = sbPointerMember::Read( reader, scope );
-  if( !member ) member = sbCountedPointerMember::Read( reader, scope );
-  if( !member ) member = sbStringPointerMember::Read( reader, scope );
+  if( !member ) member = reader->ReadNew< sbInstanceMember >();
+  if( !member ) member = reader->ReadNew< sbCountedPointerMember >();
+  if( !member ) member = reader->ReadNew< sbStringPointerMember >();
   return member;
+}
+
+uint64_t sbMember::GetChecksum( uint64_t basis ) const
+{
+  basis = sbFnv64( basis, m_TypeName );
+  basis = sbFnv64( basis, m_Offset );
+  basis = sbFnv64( basis, m_Count );
+  return basis;
 }

@@ -16,6 +16,14 @@ uint32_t sbFnv32( const char* s, int count );
 uint64_t sbFnv64( const char* s );
 uint64_t sbFnv64( const char* s, int count );
 
+uint64_t sbFnv64( uint64_t basis, const char* s, int count );
+
+template< typename T >
+uint64_t sbFnv64( uint64_t basis, T t )
+{
+  return sbFnv64( basis, ( const char* )&t, ( int )sizeof( t ) );
+}
+
 typedef const char* ( sbHashLookupCallback32 )( uint32_t, char* );
 typedef const char* ( sbHashLookupCallback64 )( uint64_t, char* );
 

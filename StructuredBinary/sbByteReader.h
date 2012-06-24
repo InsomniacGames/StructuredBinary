@@ -16,20 +16,35 @@
 class sbByteReader
 {
 public:
-  sbByteReader( const char* start, const char* end );
+  sbByteReader();
+  sbByteReader( const char* data, size_t size );
+  void SetBuffer( const char* data, size_t size );
+  const char* GetBuffer() const;
   uint8_t Read8();
   uint16_t Read16();
   uint32_t Read32();
   uint64_t Read64();
-  int GetRemain() const;
+  size_t GetRemain() const;
 
   void Seek( size_t pos = 0 );
   size_t Tell() const;
 
+  template< typename T >
+  T* ReadNew()
+  {
+    return T::ReadNew( this );
+  }
+  
+  template< typename T >
+  T Read()
+  {
+    return T::Read( this );
+  }
+  
 private:
-  const char* m_Start;
-  const char* m_End;
-  const char* m_Pointer;
+  const char* m_Data;
+  size_t      m_Size;
+  size_t      m_Offset;
 };
 
 #endif

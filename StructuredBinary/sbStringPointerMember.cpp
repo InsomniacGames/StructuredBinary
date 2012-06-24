@@ -13,8 +13,8 @@
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
-sbStringPointerMember::sbStringPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
-: sbPointerMember( scope, count, type_name )
+sbStringPointerMember::sbStringPointerMember( int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
+: sbPointerMember( count, type_name )
 {
   m_TerminatorValue = terminator_value;
   m_TerminatorName = terminator_name;
@@ -67,14 +67,14 @@ void sbStringPointerMember::Write( sbByteWriter* writer ) const
   }
   if( code & ByteCodeFlag_TermValue )
   {
-    m_TerminatorValue.Write( writer );
+    writer->Write( &m_TerminatorValue );
   }
 }
 
-sbMember* sbStringPointerMember::Read( sbByteReader* reader, const sbAggregateType* scope )
+sbStringPointerMember* sbStringPointerMember::ReadNew( sbByteReader* reader )
 {
   size_t roll_back = reader->Tell();
-  sbMember* member = NULL;
+  sbStringPointerMember* member = NULL;
   
   uint8_t code = reader->Read8();
   
@@ -95,10 +95,10 @@ sbMember* sbStringPointerMember::Read( sbByteReader* reader, const sbAggregateTy
     }
     if( code & ByteCodeFlag_TermValue )
     {
-      terminator_value = sbScalarValue::Read( reader );
+      terminator_value = reader->Read< sbScalarValue >();
     }
-    
-    member = new sbStringPointerMember( scope, count, type_name, terminator_name, terminator_value );
+
+    member = new sbStringPointerMember( count, type_name, terminator_name, terminator_value );
   }
   
   if( !member )
@@ -106,5 +106,13 @@ sbMember* sbStringPointerMember::Read( sbByteReader* reader, const sbAggregateTy
     reader->Seek( roll_back );
   }
   return member;
+}
+
+uint64_t sbStringPointerMember::GetChecksum( uint64_t basis ) const
+{
+  basis = sbMember::GetChecksum( basis );
+  basis = sbFnv64( basis, m_TerminatorName );
+  basis = m_TerminatorValue.GetChecksum( basis );
+  return basis;
 }
 

@@ -26,6 +26,7 @@
 		BE610465157B1B750089A922 /* sbAggregateType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610464157B1B750089A922 /* sbAggregateType.cpp */; };
 		BE610468157B38170089A922 /* sbSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610467157B38170089A922 /* sbSchema.cpp */; };
 		BE71835115964F0400E79C54 /* sbType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE71835015964F0300E79C54 /* sbType.cpp */; };
+		BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
 		BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */; };
@@ -89,6 +90,8 @@
 		BE610466157B38060089A922 /* sbSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbSchema.h; sourceTree = "<group>"; };
 		BE610467157B38170089A922 /* sbSchema.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbSchema.cpp; sourceTree = "<group>"; };
 		BE71835015964F0300E79C54 /* sbType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbType.cpp; sourceTree = "<group>"; };
+		BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSchemaSerialize.cpp; sourceTree = "<group>"; };
+		BE7183541596980300E79C54 /* TestSchemaSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSchemaSerialize.h; sourceTree = "<group>"; };
 		BE7AE983158E6F310026DCEC /* sbDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbDictionary.h; sourceTree = "<group>"; };
 		BE9275F4156F2130008F1288 /* sbByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteReader.h; sourceTree = "<group>"; };
 		BE9275F6156F213E008F1288 /* sbByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteReader.cpp; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 				BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */,
 				BE9B1CE1158E59F700453617 /* TestConvertRecursion.h */,
 				BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */,
+				BE7183541596980300E79C54 /* TestSchemaSerialize.h */,
+				BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 				BE9B1CDC158E428300453617 /* sbMember.cpp in Sources */,
 				BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */,
 				BE71835115964F0400E79C54 /* sbType.cpp in Sources */,
+				BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

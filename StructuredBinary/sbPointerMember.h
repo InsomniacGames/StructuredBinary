@@ -22,7 +22,7 @@ class sbByteReader;
 class sbPointerMember : public sbMember
 {  
 public:
-  sbPointerMember( const sbAggregateType* scope, int count, sbHash type_name );
+  sbPointerMember( int count, sbHash type_name );
   virtual size_t GetSize() const;
   virtual size_t GetAlignment() const;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const;

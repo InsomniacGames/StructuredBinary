@@ -17,8 +17,8 @@
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
-sbPointerMember::sbPointerMember( const sbAggregateType* scope, int count, sbHash type_name )
-: sbMember( scope, count, type_name )
+sbPointerMember::sbPointerMember( int count, sbHash type_name )
+: sbMember( count, type_name )
 {}
 
 size_t sbPointerMember::GetSize() const

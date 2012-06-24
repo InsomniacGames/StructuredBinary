@@ -11,10 +11,10 @@
 #include "sbAggregateType.h"
 #include "sbByteReader.h"
 
-sbType* sbType::Read( sbByteReader* reader )
+sbType* sbType::ReadNew( sbByteReader* reader )
 {
   sbType* sb_type = NULL;
-  if( !sb_type ) sb_type = sbAggregateType::Read( reader );
+  if( !sb_type ) sb_type = reader->ReadNew< sbAggregateType >();
   return sb_type;
 
 }

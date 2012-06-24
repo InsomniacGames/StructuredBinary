@@ -15,8 +15,8 @@
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
-sbInstanceMember::sbInstanceMember( const sbAggregateType* scope, int count, sbHash type_name )
-: sbMember( scope, count, type_name )
+sbInstanceMember::sbInstanceMember( int count, sbHash type_name )
+: sbMember( count, type_name )
 {}
 
 size_t sbInstanceMember::GetSize() const
@@ -66,10 +66,10 @@ void sbInstanceMember::Write( sbByteWriter* writer ) const
   }
 }
 
-sbMember* sbInstanceMember::Read( sbByteReader* reader, const sbAggregateType* scope )
+sbInstanceMember* sbInstanceMember::ReadNew( sbByteReader* reader )
 {
   size_t roll_back = reader->Tell();
-  sbMember* member = NULL;
+  sbInstanceMember* member = NULL;
   
   uint8_t code = reader->Read8();
   
@@ -83,7 +83,7 @@ sbMember* sbInstanceMember::Read( sbByteReader* reader, const sbAggregateType* s
       count = reader->Read16();
     }
     
-    member = new sbInstanceMember( scope, count, type_name );
+    member = new sbInstanceMember( count, type_name );
   }
   
   if( !member )

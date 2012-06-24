@@ -19,11 +19,12 @@ class sbCountedPointerMember : public sbPointerMember
   sbHash   m_CountName;
   
 public:
-  sbCountedPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash count_name );
+  sbCountedPointerMember( int count, sbHash type_name, sbHash count_name );
   virtual int GetPointerCount( const char* scope_data, int index ) const;
+  virtual uint64_t GetChecksum( uint64_t basis ) const;
 
   virtual void Write( sbByteWriter* writer ) const;
-  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
+  static sbCountedPointerMember* ReadNew( sbByteReader* reader );
 };
 
 #endif

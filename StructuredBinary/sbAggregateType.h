@@ -61,11 +61,12 @@ public:
   virtual bool IsBuiltIn() const { return false; }
 
   virtual void Write( sbByteWriter* writer ) const;
-  static sbType* Read( sbByteReader* reader );
+  static sbAggregateType* ReadNew( sbByteReader* reader );
+  virtual uint64_t GetChecksum( uint64_t basis ) const;
 
 private:
   void AddMember( sbHash member_name, sbMember* member );
-  
+
   sbDictionary< sbMember* >  m_Dictionary;
 
   State             m_State;

@@ -20,7 +20,7 @@ class sbByteReader;
 class sbInstanceMember : public sbMember
 {
 public:
-  sbInstanceMember( const sbAggregateType* scope, int count, sbHash type_name );
+  sbInstanceMember( int count, sbHash type_name );
   virtual size_t GetSize() const;
   virtual size_t GetAlignment() const;
   virtual int GetPointerCount( const char* scope_data, int index ) const;
@@ -28,7 +28,7 @@ public:
   virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name );
 
   virtual void Write( sbByteWriter* writer ) const;
-  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
+  static sbInstanceMember* ReadNew( sbByteReader* reader );
 };
 
 

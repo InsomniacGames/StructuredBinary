@@ -10,6 +10,7 @@
 #include "sbHash.h"
 // Libraries
 #include <stdint.h>
+#include <stdio.h>
 // Project
 
 #define kFnvPrimeU32 16777619
@@ -50,6 +51,16 @@ uint64_t sbFnv64( const char* s )
 uint64_t sbFnv64( const char* s, int count )
 {
   uint64_t hash = kFnvBasisU64;
+  for( int i = 0; i < count; ++i )
+  {
+    hash = ( hash ^ s[ i ] ) * kFnvPrimeU64;
+  }
+  return hash;
+}
+
+uint64_t sbFnv64( uint64_t basis, const char* s, int count )
+{
+  uint64_t hash = basis ? basis : kFnvBasisU64;
   for( int i = 0; i < count; ++i )
   {
     hash = ( hash ^ s[ i ] ) * kFnvPrimeU64;

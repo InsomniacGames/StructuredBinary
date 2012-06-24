@@ -22,6 +22,7 @@
 #include "TestAliasedPointer.h"
 #include "TestScalarTypes.h"
 #include "TestConvertRecursion.h"
+#include "TestSchemaSerialize.h"
 
 #include "sbHash.h"
 
@@ -37,8 +38,9 @@ const UnitTest* AllTests[] =
   new TestAliasedPointer(),
   new TestScalarTypes(),
   new TestConvertRecursion(),
+  new TestSchemaSerialize(),
 };
-
+/*
 const char* names[] =
 {
   "uint8_t",
@@ -52,14 +54,16 @@ const char* names[] =
   "float",
   "double",
 };
-
+*/
 int main (int argc, const char * argv[])
 {
+  /*
   for( int i = 0; i < ARRAY_SIZE( names ); ++i )
   {
     const char* p = names[ i ];
     printf( "%8s:%08x\n", p, sbFnv32( p ) );
   }
+*/
 
   int test_count = ARRAY_SIZE( AllTests );
   printf( "test_count = %d\n", test_count );

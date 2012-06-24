@@ -11,9 +11,10 @@
 #include "sbAggregateType.h"
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
+#include "sbHash.h"
 
-sbCountedPointerMember::sbCountedPointerMember( const sbAggregateType* scope, int count, sbHash type_name, sbHash count_name )
-: sbPointerMember( scope, count, type_name )
+sbCountedPointerMember::sbCountedPointerMember( int count, sbHash type_name, sbHash count_name )
+: sbPointerMember( count, type_name )
 {
   m_CountName = count_name;
 }
@@ -56,10 +57,10 @@ void sbCountedPointerMember::Write( sbByteWriter* writer ) const
   }
 }
 
-sbMember* sbCountedPointerMember::Read( sbByteReader* reader, const sbAggregateType* scope )
+sbCountedPointerMember* sbCountedPointerMember::ReadNew( sbByteReader* reader )
 {
   size_t roll_back = reader->Tell();
-  sbMember* member = NULL;
+  sbCountedPointerMember* member = NULL;
   
   uint8_t code = reader->Read8();
 
@@ -78,7 +79,7 @@ sbMember* sbCountedPointerMember::Read( sbByteReader* reader, const sbAggregateT
       count_name = reader->Read32();
     }
     
-    member = new sbCountedPointerMember( scope, count, type_name, count_name );
+    member = new sbCountedPointerMember( count, type_name, count_name );
   }
   
   if( !member )
@@ -86,5 +87,12 @@ sbMember* sbCountedPointerMember::Read( sbByteReader* reader, const sbAggregateT
     reader->Seek( roll_back );
   }
   return member;
+}
+
+uint64_t sbCountedPointerMember::GetChecksum( uint64_t basis ) const
+{
+  basis = sbMember::GetChecksum( basis );
+  basis = sbFnv64( basis, m_CountName );
+  return basis;
 }
 

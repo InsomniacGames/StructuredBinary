@@ -13,26 +13,42 @@
 #include <stdint.h>
 #include <assert.h>
 
-sbByteReader::sbByteReader( const char* start, const char* end )
-: m_Start( start )
-, m_End( end )
-, m_Pointer( start )
-{}
+sbByteReader::sbByteReader( const char* data, size_t size )
+{
+  SetBuffer( data, size );
+}
+
+sbByteReader::sbByteReader()
+{
+  SetBuffer( NULL, 0 );
+}
+
+void sbByteReader::SetBuffer( const char* data, size_t size )
+{
+  m_Data = data;
+  m_Size = size;
+  m_Offset = 0;
+}
+
+const char* sbByteReader::GetBuffer() const
+{
+  return m_Data;
+}
 
 void sbByteReader::Seek( size_t pos )
 {
-  m_Pointer = m_Start + pos;
+  m_Offset = pos;
 }
 
 size_t sbByteReader::Tell() const
 {
-  return m_Pointer - m_Start;
+  return m_Offset;
 }
 
 uint8_t sbByteReader::Read8()
 {
-  assert( m_Pointer < m_End );
-  return *m_Pointer++;
+  assert( m_Offset < m_Size );
+  return m_Data[ m_Offset++ ];
 }
 
 uint16_t sbByteReader::Read16()
@@ -56,7 +72,7 @@ uint64_t sbByteReader::Read64()
   return ( hi << 32 ) | lo;
 }
 
-int sbByteReader::GetRemain() const
+size_t sbByteReader::GetRemain() const
 {
-  return ( int )( m_End - m_Pointer );
+  return m_Size - m_Offset;
 }

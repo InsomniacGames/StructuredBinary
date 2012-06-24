@@ -48,18 +48,19 @@ public:
   sbStatus FixUp( sbHash type_name );
 
   void Write( sbByteWriter* writer ) const;
-  static sbSchema* Read( sbByteReader* reader );
+  static sbSchema* ReadNew( sbByteReader* reader );
+  uint64_t GetChecksum( uint64_t basis = 0 ) const;
 
 private:
-  
+
   enum State
   {
     kState_New,
     kState_Building,
     kState_Ready,
   };
-  
-  State m_State;
+
+  State     m_State;
 
   sbStatus FixUp();
   void AddType( sbHash type_name, sbType* sb_type );

@@ -25,7 +25,7 @@ class sbByteWriter;
 class sbMember
 {
 public:
-  sbMember( const sbAggregateType* scope, int count, sbHash type_name );
+  sbMember( int count, sbHash type_name );
   virtual ~sbMember();
   
   char* GetDataPtr( char* scope_data, int index ) const;
@@ -39,10 +39,12 @@ public:
   virtual int GetPointerCount( const char* scope_data, int index ) const = 0;
   virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name ) = 0;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const = 0;
+  virtual uint64_t GetChecksum( uint64_t basis ) const;
 
   virtual void Write( sbByteWriter* writer ) const = 0;
-  static sbMember* Read( sbByteReader* reader, const sbAggregateType* scope );
+  static sbMember* ReadNew( sbByteReader* reader );
 
+  void SetScope( const sbAggregateType* scope );
   size_t GetOffset() const { return m_Offset; }
   int GetCount() const { return m_Count; }
   const sbType* GetType() const { return m_Type; }
@@ -53,7 +55,7 @@ private:
   sbHash   m_TypeName;
   size_t   m_Offset;     // Offset from the start of the node
   int      m_Count;      // For arrays
-  const sbType*  m_Type;
+  const sbType*            m_Type;
   const sbAggregateType*   m_Scope;
 
 protected:

@@ -94,12 +94,13 @@ sbStatus sbAggregateType::FixUp( sbSchema* schema )
 
 void sbAggregateType::AddMember( sbHash member_name, sbMember* member )
 {
+  member->SetScope( this );
   m_Dictionary.Add( member_name, member );
 }
 
 void sbAggregateType::AddInstance( sbHash member_name, int count, sbHash type_name )
 {
-  AddMember( member_name, new sbInstanceMember( this, count, type_name ) );
+  AddMember( member_name, new sbInstanceMember( count, type_name ) );
 }
 
 void sbAggregateType::AddPointer( sbHash member_name, int count, sbHash type_name )
@@ -109,12 +110,12 @@ void sbAggregateType::AddPointer( sbHash member_name, int count, sbHash type_nam
 
 void sbAggregateType::AddCountedPointer( sbHash member_name, int count, sbHash type_name, sbHash count_name )
 {
-  AddMember( member_name, new sbCountedPointerMember( this, count, type_name, count_name ) );
+  AddMember( member_name, new sbCountedPointerMember( count, type_name, count_name ) );
 }
 
 void sbAggregateType::AddStringPointer( sbHash member_name, int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 {
-  AddMember( member_name, new sbStringPointerMember( this, count, type_name, terminator_name, terminator_value ) );
+  AddMember( member_name, new sbStringPointerMember( count, type_name, terminator_name, terminator_value ) );
 }
 
 sbAggregateType::~sbAggregateType()
@@ -142,11 +143,11 @@ void sbAggregateType::Write( sbByteWriter* writer ) const
     const sbMember* member = m_Dictionary.GetByIndex( i );
     sbHash member_name = m_Dictionary.GetNameByIndex( i );
     writer->Write32( member_name );
-    member->Write( writer );
+    writer->Write( member );
   }
 }
 
-sbType* sbAggregateType::Read( sbByteReader* reader )
+sbAggregateType* sbAggregateType::ReadNew( sbByteReader* reader )
 {
   size_t roll_back = reader->Tell();
   sbAggregateType* aggregate = NULL;
@@ -163,7 +164,7 @@ sbType* sbAggregateType::Read( sbByteReader* reader )
       for( int i = 0; i < count; ++i )
       {
         sbHash member_name = reader->Read32();
-        sbMember* member = sbMember::Read( reader, aggregate );
+        sbMember* member = reader->ReadNew< sbMember >();
         
         if( member )
         {
@@ -188,3 +189,17 @@ sbType* sbAggregateType::Read( sbByteReader* reader )
   }
   return aggregate;
 }
+
+uint64_t sbAggregateType::GetChecksum( uint64_t basis ) const
+{
+  int count = m_Dictionary.GetCount();
+  for( int i = 0; i < count; ++i )
+  {
+    const sbMember* member = m_Dictionary.GetByIndex( i );
+    sbHash name = m_Dictionary.GetNameByIndex( i );
+    basis = sbFnv64( basis, ( uint32_t )name );
+    basis = member->GetChecksum( basis );
+  }
+  return basis;
+}
+
