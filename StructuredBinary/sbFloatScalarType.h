@@ -33,8 +33,7 @@ public:
   }
 
   virtual bool IsBuiltIn() const { return true; }
-  virtual void Write( sbByteWriter* writer ) const
-  {} // All float scalar types are built-in
+  virtual void Write( sbByteWriter* writer ) const {} // All float scalar types are built-in
 };
 
 #endif

@@ -41,7 +41,7 @@ namespace Dst
     int32_t x;
     int32_t y;
   };
-  
+
   struct Struct
   {
     float f[2];
@@ -112,7 +112,8 @@ UnitTest::Result TestConvertDeep::RunTest() const
 
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
-//  printf( "Memory needed %lu\n", alloc.GetSize() );
+  printf( "Memory needed %lu\n", alloc.GetSize() );
+  printf( "Pointers found: %d\n", alloc.GetPointerLocationCount() );
 
   Dst::Struct dst_struct;
   char buffer[ 1000 ];

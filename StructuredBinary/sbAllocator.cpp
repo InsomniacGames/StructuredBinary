@@ -8,12 +8,23 @@
 
 #include "sbAllocator.h"
 
-sbAllocator::sbAllocator( char* base, size_t size )
+sbAllocator::sbAllocator( char* data, size_t size )
 {
-  m_Base = base;
+  SetBuffer( data, size );
+}
+
+sbAllocator::sbAllocator()
+{
+  SetBuffer( NULL, 0 );
+}
+
+void sbAllocator::SetBuffer( char* data, size_t size )
+{
+  m_Data = data;
   m_Size = size;
   m_Offset = 0;
   m_EntryCount = 0;
+  m_PointerCount = 0;
 }
 
 sbAllocator::Result sbAllocator::Alloc( size_t element_size, size_t element_count, size_t alignment, const char* src_data )
@@ -28,15 +39,30 @@ sbAllocator::Result sbAllocator::Alloc( size_t element_size, size_t element_coun
     entry = AddEntry( element_size, element_count, alignment, src_data );
   }
 
-  if( m_Base && m_Offset <= m_Size )
+  if( m_Data && m_Offset <= m_Size )
   {
-    p = m_Base + entry->m_Offset;
+    p = m_Data + entry->m_Offset;
   }
 
   Result result;
   result.m_Data = p;
   result.m_Done = done;
   return result;
+}
+
+void sbAllocator::StorePointerLocation( const char* data )
+{
+  m_Pointers[ m_PointerCount++ ] = data;
+}
+
+int sbAllocator::GetPointerLocationCount() const
+{
+  return m_PointerCount;
+}
+
+const char* sbAllocator::GetPointerLocation( int index ) const
+{
+  return m_Pointers[ index ];
 }
 
 sbAllocator::Entry* sbAllocator::AddEntry( size_t element_size, size_t element_count, size_t alignment, const char* src_data )

@@ -43,13 +43,14 @@ void sbPointerMember::Convert( char* dst_scope_data, const char* src_scope_data,
     size_t src_size = src_member->GetType()->GetSize();
     
     const char* src_p = *( const char** )( src_member_data );
+    alloc->StorePointerLocation( src_member_data );
     sbAllocator::Result r = alloc->Alloc( dst_size, element_count, GetType()->GetAlignment(), src_p );
     char* dst_p = r.m_Data;
     if( dst_member_data )
     {
       *( char** )( dst_member_data ) = dst_p;
     }
-    
+
     if( !r.m_Done )
     {
       for( int j = 0; j < element_count; ++j )
