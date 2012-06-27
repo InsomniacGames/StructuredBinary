@@ -14,12 +14,11 @@
 #include "sbByteReader.h"
 
 sbStringPointerMember::sbStringPointerMember( int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
-: sbPointerMember( count, "*", type_name )
+: sbPointerMember( count, type_name )
 {
   m_TerminatorValue = terminator_value;
   m_TerminatorName = terminator_name;
 }
-
 
 int sbStringPointerMember::GetPointerCount( const char* scope_data, int index ) const
 {
@@ -31,8 +30,8 @@ int sbStringPointerMember::GetPointerCount( const char* scope_data, int index ) 
   while( !terminated )
   {
     string_count += 1;
-    terminated = GetIndirectType()->IsTerminal( p, m_TerminatorValue, m_TerminatorName );
-    p += GetIndirectType()->GetSize();
+    terminated = GetType()->GetIndirectType()->IsTerminal( p, m_TerminatorValue, m_TerminatorName );
+    p += GetType()->GetIndirectType()->GetSize();
   }
   return string_count;
 }
@@ -55,7 +54,7 @@ void sbStringPointerMember::Write( sbByteWriter* writer ) const
   }
   
   writer->Write8( code );
-  writer->Write32( GetIndirectTypeName() );
+  writer->Write32( GetTypeName() );
 
   if( code & ByteCodeFlag_Array )
   {

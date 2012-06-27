@@ -19,14 +19,12 @@
 #include "sbCountedPointerMember.h"
 #include "sbStringPointerMember.h"
 
-sbMember::sbMember( int count, sbHash inline_type_name, sbHash indirect_type_name )
+sbMember::sbMember( int count, sbHash type_name )
 {
   m_Scope = NULL;
   m_Offset = 0;          // To be determined in second pass
-  m_InlineType   = NULL;
-  m_IndirectType  = NULL;
-  m_InlineTypeName = inline_type_name;
-  m_IndirectTypeName = indirect_type_name;
+  m_Type   = NULL;
+  m_TypeName = type_name;
   m_Count  = count;
 }
 
@@ -50,7 +48,7 @@ const char* sbMember::GetDataPtr( const char* scope_data, int index ) const
 
 sbScalarValue sbMember::ReadScalarValue( const char* scope_data ) const
 {
-  return m_InlineType->ReadScalarValue( scope_data + m_Offset );
+  return m_Type->ReadScalarValue( scope_data + m_Offset );
 }
 
 size_t sbMember::GetTotalSize() const
@@ -60,37 +58,13 @@ size_t sbMember::GetTotalSize() const
 
 sbStatus sbMember::FixUp( sbSchema* schema, const sbMember* previous_member )
 {
-  sbStatus status = PreFixUp( schema, m_InlineTypeName );
+  m_Type = PreFixUp( schema, m_TypeName );
   
-  if( status == sbStatus_Ok )
-  {
-    m_InlineType = schema->FindType( m_InlineTypeName );
-    if( !m_InlineType )
-    {
-      status = sbStatus_ErrorNodeNotFound;
-    }
-  }
+  size_t offset = previous_member ? previous_member->m_Offset + previous_member->GetTotalSize() : 0;
+  offset = FIX_ALIGNMENT( offset, GetAlignment() );
+  m_Offset = offset;
   
-  if( status == sbStatus_Ok )
-  {
-    if( m_IndirectTypeName )
-    {
-      m_IndirectType = schema->FindType( m_IndirectTypeName );
-      if( !m_IndirectType )
-      {
-        status = sbStatus_ErrorNodeNotFound;
-      }
-    }
-  }
-  
-  if( status == sbStatus_Ok )
-  {
-    size_t offset = previous_member ? previous_member->m_Offset + previous_member->GetTotalSize() : 0;
-    offset = FIX_ALIGNMENT( offset, GetAlignment() );
-    m_Offset = offset;
-  }
-  
-  return status;
+  return sbStatus_Ok;
 }
 
 sbMember* sbMember::ReadNew( sbByteReader* reader )
@@ -104,7 +78,7 @@ sbMember* sbMember::ReadNew( sbByteReader* reader )
 
 uint64_t sbMember::GetChecksum( uint64_t basis ) const
 {
-  basis = sbFnv64( basis, m_InlineTypeName );
+  basis = sbFnv64( basis, m_TypeName );
   basis = sbFnv64( basis, m_Offset );
   basis = sbFnv64( basis, m_Count );
   return basis;

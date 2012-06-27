@@ -13,6 +13,7 @@
 
 #include "sbMember.h"
 #include "sbHash.h"
+#include "sbPointerType.h"
 
 class sbAggregateType;
 class sbAllocator;
@@ -22,11 +23,15 @@ class sbByteReader;
 class sbPointerMember : public sbMember
 {  
 public:
-  sbPointerMember( int count, sbHash type_name, sbHash indirect_type_name );
+  sbPointerMember( int count, sbHash type_name );
+  virtual ~sbPointerMember();
   virtual size_t GetSize() const;
   virtual size_t GetAlignment() const;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const;
-  virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name );
+  virtual const sbType* PreFixUp( sbSchema* schema, sbHash type_name );
+
+private:
+  const sbType* m_Type;
 };
 
 #endif

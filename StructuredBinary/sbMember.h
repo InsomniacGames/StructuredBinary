@@ -25,7 +25,7 @@ class sbByteWriter;
 class sbMember
 {
 public:
-  sbMember( int count, sbHash inline_type_name, sbHash indirect_type_name = 0U );
+  sbMember( int count, sbHash type_name );
   virtual ~sbMember();
   
   char* GetDataPtr( char* scope_data, int index ) const;
@@ -37,7 +37,7 @@ public:
   virtual size_t GetSize() const = 0;
   virtual size_t GetAlignment() const = 0;
   virtual int GetPointerCount( const char* scope_data, int index ) const = 0;
-  virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name ) = 0;
+  virtual const sbType* PreFixUp( sbSchema* schema, sbHash type_name ) = 0;
   virtual void Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const = 0;
   virtual uint64_t GetChecksum( uint64_t basis ) const;
 
@@ -47,19 +47,15 @@ public:
   void SetScope( const sbAggregateType* scope );
   size_t GetOffset() const { return m_Offset; }
   int GetCount() const { return m_Count; }
-  const sbType* GetInlineType() const { return m_InlineType; }
-  const sbType* GetIndirectType() const { return m_IndirectType; }
+  const sbType* GetType() const { return m_Type; }
   const sbAggregateType* GetScope() const { return m_Scope; }
-  sbHash GetInlineTypeName() const { return m_InlineTypeName; }
-  sbHash GetIndirectTypeName() const { return m_IndirectTypeName; }
+  sbHash GetTypeName() const { return m_TypeName; }
 
 private:
-  sbHash    m_InlineTypeName;
-  sbHash    m_IndirectTypeName;
+  sbHash    m_TypeName;
   size_t    m_Offset;     // Offset from the start of the node
   int       m_Count;      // For arrays
-  const sbType*           m_InlineType;
-  const sbType*           m_IndirectType;
+  const sbType*           m_Type;
   const sbAggregateType*  m_Scope;
 
 protected:

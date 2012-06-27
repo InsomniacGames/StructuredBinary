@@ -43,7 +43,7 @@ public:
   
   virtual ~sbAggregateType();
 
-  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc ) const;
+  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc, int array_count ) const;
   virtual size_t GetSize() const { return m_Size; }
   virtual size_t GetAlignment() const { return m_Alignment; }
 

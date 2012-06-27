@@ -25,7 +25,7 @@ public:
   virtual size_t GetAlignment() const;
   virtual int GetPointerCount( const char* scope_data, int index ) const;
   virtual void Convert( char* dst_data, const char* src_data, const sbMember* src_member, sbAllocator* alloc ) const;
-  virtual sbStatus PreFixUp( sbSchema* schema, sbHash type_name );
+  virtual const sbType* PreFixUp( sbSchema* schema, sbHash type_name );
 
   virtual void Write( sbByteWriter* writer ) const;
   static sbInstanceMember* ReadNew( sbByteReader* reader );

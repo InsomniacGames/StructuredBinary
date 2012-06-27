@@ -9,17 +9,28 @@
 #include "sbPointerType.h"
 
 #include <assert.h>
+#include <stdio.h>
 
 #include "sbStatus.h"
 #include "sbPointerValue.h"
+#include "sbSchema.h"
 
-sbStatus sbPointerType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const
+sbPointerType::sbPointerType( const sbType* indirect_type )
+: m_IndirectType( indirect_type )
+{}
+
+sbStatus sbPointerType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const
 {
-  sbPointerValue src_value = src_type->ReadPointerValue( src_data );
+  const char* src_p = *( const char** )( src_data );
+  alloc->StorePointerLocation( src_data );
+  
+  char* dst_p = alloc->Alloc( GetIndirectType(), src_type->GetIndirectType(), src_p, array_count );
+  
   if( dst_data )
   {
-    WriteValue( dst_data, src_value );
+    *( char** )( dst_data ) = dst_p;
   }
+
   return sbStatus_Ok;
 }
 
@@ -40,11 +51,6 @@ bool sbPointerType::IsTerminal( const char* data, const sbScalarValue& terminato
   return p == NULL;
 }
 
-sbStatus sbPointerType::FixUp( class sbSchema* schema )
-{
-  return sbStatus_Ok;
-}
-
 sbPointerValue sbPointerType::ReadPointerValue( const char* data ) const
 {
   return sbPointerValue::Pointer( *( const char** )( data ) );
@@ -53,4 +59,9 @@ sbPointerValue sbPointerType::ReadPointerValue( const char* data ) const
 void sbPointerType::WriteValue( char* data, const sbPointerValue& value ) const
 {
   *( const char** )( data ) = value.AsConstCharStar();
+}
+
+sbStatus sbPointerType::FixUp( class sbSchema* schema )
+{
+  return sbStatus_Ok;
 }

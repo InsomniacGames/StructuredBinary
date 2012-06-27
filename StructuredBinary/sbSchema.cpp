@@ -122,7 +122,6 @@ void sbSchema::Begin()
   AddType( "int64_t",   new sbIntScalarType<  int64_t > );
   AddType( "float",     new sbFloatScalarType<  float > );
   AddType( "double",    new sbFloatScalarType< double > );
-  AddType( "*",         new sbPointerType               );
 }
 
 void sbSchema::End()
@@ -229,20 +228,10 @@ void sbSchema::ConvertAll( sbAllocator* alloc ) const
 {
   for( int i = 0; i < alloc->GetCount(); ++i )
   {
-    printf( "convert block %d\n", i );
-    sbBlock block = alloc->GetBlock( i );
+//    printf( "convert block %d\n", i );
+    const sbBlock* block = alloc->GetBlock( i );
 
-    char* dst_data = alloc->GetDstPtr( i );
-
-    int count = block.m_Count;
-    const sbType* dst_type = block.m_DstType;
-    sbDestArray   dst_array( dst_type, dst_data, count );
-    
-    const char* src_data = block.m_SrcData;
-    const sbType* src_type = block.m_SrcType;
-    sbSourceArray src_array( src_type, src_data, count );
-
-    sbType::ConvertMany( dst_array, src_array, alloc );
+    sbType::ConvertMany( block, alloc );
   }
 }
 

@@ -21,12 +21,12 @@ sbInstanceMember::sbInstanceMember( int count, sbHash type_name )
 
 size_t sbInstanceMember::GetSize() const
 {
-  return GetInlineType()->GetSize();
+  return GetType()->GetSize();
 }
 
 size_t sbInstanceMember::GetAlignment() const
 {
-  return GetInlineType()->GetAlignment();
+  return GetType()->GetAlignment();
 }
 
 int sbInstanceMember::GetPointerCount( const char* scope_data, int index ) const
@@ -40,13 +40,14 @@ void sbInstanceMember::Convert( char* dst_scope_data, const char* src_scope_data
   {
     char* dst_member_data = GetDataPtr( dst_scope_data, index );
     const char* src_member_data = src_member->GetDataPtr( src_scope_data, index );
-    GetInlineType()->ConvertOne( dst_member_data, src_member_data, src_member->GetInlineType(), alloc );
+    GetType()->ConvertOne( dst_member_data, src_member_data, src_member->GetType(), alloc, 1 );
   }
 }
 
-sbStatus sbInstanceMember::PreFixUp( sbSchema* schema, sbHash type_name )
+const sbType* sbInstanceMember::PreFixUp( sbSchema* schema, sbHash type_name )
 {
-  return schema->FixUp( type_name );
+  schema->FixUp( type_name );
+  return schema->FindType( type_name );
 }
 
 void sbInstanceMember::Write( sbByteWriter* writer ) const
@@ -57,9 +58,9 @@ void sbInstanceMember::Write( sbByteWriter* writer ) const
   {
     code |= ByteCodeFlag_Array;
   }
-  
+
   writer->Write8( code );
-  writer->Write32( GetInlineTypeName() );
+  writer->Write32( GetTypeName() );
   if( code & ByteCodeFlag_Array )
   {
     writer->Write16( GetCount() );

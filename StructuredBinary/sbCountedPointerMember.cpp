@@ -14,7 +14,7 @@
 #include "sbHash.h"
 
 sbCountedPointerMember::sbCountedPointerMember( int count, sbHash type_name, sbHash count_name )
-: sbPointerMember( count, "*", type_name )
+: sbPointerMember( count, type_name )
 {
   m_CountName = count_name;
 }
@@ -25,8 +25,7 @@ int sbCountedPointerMember::GetPointerCount( const char* scope_data, int index )
   const sbMember* count_member = GetScope()->FindMember( m_CountName );
   if( count_member )
   {
-    const char* count_member_data = count_member->GetDataPtr( scope_data, 0 );
-    pointer_count = ( int )count_member->GetInlineType()->ReadScalarValue( count_member_data ).AsInt();
+    pointer_count = ( int )count_member->ReadScalarValue( scope_data ).AsInt();
   }
   return pointer_count;
 }
@@ -46,7 +45,7 @@ void sbCountedPointerMember::Write( sbByteWriter* writer ) const
   }
 
   writer->Write8( code );
-  writer->Write32( GetIndirectTypeName() );
+  writer->Write32( GetTypeName() );
   if( code & ByteCodeFlag_Array )
   {
     writer->Write16( GetCount() );

@@ -7,6 +7,7 @@
 //
 
 #include "sbAllocator.h"
+#include "sbBlock.h"
 #include "sbType.h"
 
 sbAllocator::sbAllocator( char* data, size_t size )
@@ -24,25 +25,23 @@ void sbAllocator::SetBuffer( char* data, size_t size )
   m_Data = data;
   m_Size = size;
   m_Offset = 0;
-  m_EntryCount = 0;
+  m_BlockCount = 0;
   m_PointerCount = 0;
 }
 
 char* sbAllocator::Alloc( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
 {
-  sbBlock block( dst_type, src_type, src_data, count );
-
   char* p = NULL;
 
-  Entry* entry = FindEntry( block );
-  if( !entry )
+  sbBlock* block = FindBlock( dst_type, src_type, src_data, count );
+  if( !block )
   {
-    entry = AddEntry( block );
+    block = AddBlock( dst_type, src_type, src_data, count );
   }
 
   if( m_Data && m_Offset <= m_Size )
   {
-    p = m_Data + entry->m_Offset;
+    p = m_Data + block->m_Offset;
   }
 
   return p;
@@ -63,27 +62,36 @@ const char* sbAllocator::GetPointerLocation( int index ) const
   return m_Pointers[ index ];
 }
 
-sbAllocator::Entry* sbAllocator::AddEntry( const sbBlock& block )
+sbBlock* sbAllocator::AddBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
 {
-  Entry* entry = m_Entries + m_EntryCount++;
+  sbBlock* block = m_Blocks + m_BlockCount++;
 
-  entry->m_Block        = block;
+  block->m_Allocator = this;
+  block->m_DstType = dst_type;
+  block->m_SrcType = src_type;
+  block->m_SrcData = src_data;
+  block->m_Count = count;
 
-  m_Offset += -( m_Offset ) & ( block.m_DstType->GetAlignment() - 1 );
-  entry->m_Offset = m_Offset;
-  m_Offset += block.m_DstType->GetSize() * block.m_Count;
+  m_Offset += -( m_Offset ) & ( dst_type->GetAlignment() - 1 );
+  block->m_Offset = m_Offset;
+  m_Offset += dst_type->GetSize() * count;
 
-  return entry;
+  return block;
 }
 
-sbAllocator::Entry* sbAllocator::FindEntry( const sbBlock& block )
+sbBlock* sbAllocator::FindBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
 {
-  for( int i = 0; i < m_EntryCount; ++i )
+  for( int i = 0; i < m_BlockCount; ++i )
   {
-    Entry* entry = m_Entries + i;
-    if( entry->m_Block == block )
+    sbBlock* block = m_Blocks + i;
+    if(
+       block->m_DstType == dst_type &&
+       block->m_SrcType == src_type &&
+       block->m_SrcData == src_data &&
+       block->m_Count == count
+      )
     {
-      return entry;
+      return block;
     }
   }
   return NULL;

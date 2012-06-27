@@ -13,23 +13,37 @@
 #include "sbAllocator.h"
 
 #include "sbStatus.h"
+#include "sbSchema.h"
 
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
-sbPointerMember::sbPointerMember( int count, sbHash type_name, sbHash indirect_type_name )
-: sbMember( count, type_name, indirect_type_name )
+sbPointerMember::sbPointerMember( int count, sbHash type_name )
+: sbMember( count, type_name )
+, m_Type( NULL )
 {}
+
+sbPointerMember::~sbPointerMember()
+{
+  delete m_Type;
+}
 
 size_t sbPointerMember::GetSize() const
 {
-  return GetInlineType()->GetSize();
+  return GetType()->GetSize();
 }
 
 size_t sbPointerMember::GetAlignment() const
 {
-  return GetInlineType()->GetAlignment();
+  return GetType()->GetAlignment();
 }
+
+/*
+ Note to self:
+ It should be possible to implement a ReadPointerValue here.
+ At this point we have access to the scope, and can therefore read the count.
+ The sbPointerValue needs to be changed to contain an sbBlock
+ */
 
 void sbPointerMember::Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const
 {
@@ -40,7 +54,13 @@ void sbPointerMember::Convert( char* dst_scope_data, const char* src_scope_data,
   {
     char* dst_member_data = GetDataPtr( dst_scope_data, index );
     const char* src_member_data = src_member->GetDataPtr( src_scope_data, index );
-    int src_count = src_member->GetPointerCount( src_scope_data, index );
+    int count = src_member->GetPointerCount( src_scope_data, index );
+    GetType()->ConvertOne( dst_member_data, src_member_data, src_member->GetType(), alloc, count );
+/*
+    char* dst_member_data = GetDataPtr( dst_scope_data, index );
+    const char* src_member_data = src_member->GetDataPtr( src_scope_data, index );
+    int count = src_member->GetPointerCount( src_scope_data, index );
+
 
     const char* src_p = *( const char** )( src_member_data );
     alloc->StorePointerLocation( src_member_data );
@@ -51,10 +71,13 @@ void sbPointerMember::Convert( char* dst_scope_data, const char* src_scope_data,
     {
       *( char** )( dst_member_data ) = dst_p;
     }
+*/
   }
 }
 
-sbStatus sbPointerMember::PreFixUp( sbSchema* schema, sbHash type_name )
+const sbType* sbPointerMember::PreFixUp( sbSchema* schema, sbHash type_name )
 {
-  return sbStatus_Ok;
+  const sbType* indirect_type = schema->FindType( type_name );
+  m_Type = new sbPointerType( indirect_type );
+  return m_Type;
 }

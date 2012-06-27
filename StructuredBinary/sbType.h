@@ -19,42 +19,16 @@ class sbByteWriter;
 class sbByteReader;
 class sbScalarValue;
 class sbPointerValue;
-
-struct sbDestArray
-{
-  sbDestArray( const class sbType* t, char* data, int count )
-  : m_Type( t )
-  , m_Data( data )
-  , m_Count( count )
-  {}
-
-  const class sbType* m_Type;
-  char*               m_Data;
-  int                 m_Count;
-};
-
-struct sbSourceArray
-{
-  sbSourceArray( const class sbType* t, const char* data, int count )
-  : m_Type( t )
-  , m_Data( data )
-  , m_Count( count )
-  {}
-
-  const class sbType* m_Type;
-  const char*         m_Data;
-  int                 m_Count;
-};
-
+class sbBlock;
 
 class sbType
 {
 public:
-  static sbStatus ConvertMany( const sbDestArray& dst_array, const sbSourceArray& src_array, class sbAllocator* alloc );
+  static sbStatus ConvertMany( const sbBlock* block, class sbAllocator* alloc );
 
   virtual ~sbType() {}
   
-  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const = 0;
+  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const = 0;
   virtual size_t GetSize() const = 0;
   virtual size_t GetAlignment() const = 0;
   
@@ -71,6 +45,9 @@ public:
   virtual void Write( sbByteWriter* writer ) const = 0;
   static sbType* ReadNew( sbByteReader* reader );
   virtual uint64_t GetChecksum( uint64_t basis ) const = 0;
+
+  // HACK HACK HACK
+  virtual const sbType* GetIndirectType() const { return NULL; }
 
 protected:
 
