@@ -70,15 +70,16 @@ UnitTest::Result TestScalarTypes::RunTest() const
   src_struct.i8_to_f64   = -100;
   src_struct.f64_to_i32  = -1234567890.0;
 
-  Dst::Struct dst_struct;
+  char buffer[ 1000 ];
+  sbAllocator alloc = sbAllocator( buffer, sizeof( buffer ) );
+
+  Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
   
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", NULL );
-  
-  if( dst_struct.u8_to_i64 !=  200 )                  return Error( "u8_to_i64 wrong value" );
-  if( dst_struct.i8_to_i64 != -100 )                  return Error( "i8_to_i64 wrong value" );
-  if( dst_struct.u8_to_f64 !=  200.0 )                return Error( "u8_to_f64 wrong value" );
-  if( dst_struct.i8_to_f64 != -100.0 )                return Error( "i8_to_f64 wrong value" );
-  if( dst_struct.f64_to_i32 != -1234567890 )          return Error( "f64_to_i32 wrong value" );
-  
+  if( dst_struct->u8_to_i64 !=  200 )                  return Error( "u8_to_i64 wrong value" );
+  if( dst_struct->i8_to_i64 != -100 )                  return Error( "i8_to_i64 wrong value" );
+  if( dst_struct->u8_to_f64 !=  200.0 )                return Error( "u8_to_f64 wrong value" );
+  if( dst_struct->i8_to_f64 != -100.0 )                return Error( "i8_to_f64 wrong value" );
+  if( dst_struct->f64_to_i32 != -1234567890 )          return Error( "f64_to_i32 wrong value" );
+
   return Ok();
 }

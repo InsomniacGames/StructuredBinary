@@ -7,6 +7,7 @@
 //
 
 #include "sbAllocator.h"
+#include "sbType.h"
 
 sbAllocator::sbAllocator( char* data, size_t size )
 {
@@ -27,16 +28,16 @@ void sbAllocator::SetBuffer( char* data, size_t size )
   m_PointerCount = 0;
 }
 
-sbAllocator::Result sbAllocator::Alloc( size_t element_size, size_t element_count, size_t alignment, const char* src_data )
-{  
-  char* p = NULL;
-  bool done = true;
+char* sbAllocator::Alloc( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
+{
+  sbBlock block( dst_type, src_type, src_data, count );
 
-  Entry* entry = FindEntry( element_size, element_count, alignment, src_data );
+  char* p = NULL;
+
+  Entry* entry = FindEntry( block );
   if( !entry )
   {
-    done = false;
-    entry = AddEntry( element_size, element_count, alignment, src_data );
+    entry = AddEntry( block );
   }
 
   if( m_Data && m_Offset <= m_Size )
@@ -44,10 +45,7 @@ sbAllocator::Result sbAllocator::Alloc( size_t element_size, size_t element_coun
     p = m_Data + entry->m_Offset;
   }
 
-  Result result;
-  result.m_Data = p;
-  result.m_Done = done;
-  return result;
+  return p;
 }
 
 void sbAllocator::StorePointerLocation( const char* data )
@@ -65,32 +63,28 @@ const char* sbAllocator::GetPointerLocation( int index ) const
   return m_Pointers[ index ];
 }
 
-sbAllocator::Entry* sbAllocator::AddEntry( size_t element_size, size_t element_count, size_t alignment, const char* src_data )
+sbAllocator::Entry* sbAllocator::AddEntry( const sbBlock& block )
 {
   Entry* entry = m_Entries + m_EntryCount++;
 
-  entry->m_SrcData      = src_data;
-  entry->m_ElementSize  = element_size;
-  entry->m_ElementCount = element_count;
-  entry->m_Alignment    = alignment;
+  entry->m_Block        = block;
 
-  m_Offset += -( m_Offset ) & ( alignment - 1 );
-  entry->m_Offset       = m_Offset;
-  m_Offset += element_size * element_count;
+  m_Offset += -( m_Offset ) & ( block.m_DstType->GetAlignment() - 1 );
+  entry->m_Offset = m_Offset;
+  m_Offset += block.m_DstType->GetSize() * block.m_Count;
 
   return entry;
 }
 
-sbAllocator::Entry* sbAllocator::FindEntry( size_t element_size, size_t element_count, size_t alignment, const char* src_data )
+sbAllocator::Entry* sbAllocator::FindEntry( const sbBlock& block )
 {
   for( int i = 0; i < m_EntryCount; ++i )
   {
     Entry* entry = m_Entries + i;
-    if( entry->m_SrcData == src_data && entry->m_ElementSize == element_size && entry->m_ElementCount == element_count && entry->m_Alignment == alignment )
+    if( entry->m_Block == block )
     {
       return entry;
     }
   }
   return NULL;
 }
-

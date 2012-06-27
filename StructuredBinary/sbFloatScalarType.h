@@ -15,13 +15,13 @@ template< typename T >
 class sbFloatScalarType : public sbScalarType
 {
 public:
-  virtual sbScalarValue ReadValue( const char* data ) const
+  virtual sbScalarValue ReadScalarValue( const char* data ) const
   {
     return sbScalarValue::Float( *( T* )data );
   }
-  virtual void WriteValue( char* data, const sbScalarValue& number ) const
+  virtual void WriteValue( char* data, const sbScalarValue& value ) const
   {
-    *( T* )data = ( T )number.AsFloat();
+    *( T* )data = ( T )value.AsFloat();
   }
   virtual size_t GetSize() const
   {

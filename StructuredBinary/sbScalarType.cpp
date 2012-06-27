@@ -8,14 +8,16 @@
 
 #include "sbScalarType.h"
 
+#include <assert.h>
+
 #include "sbStatus.h"
 
 sbScalarType::~sbScalarType()
 {}
 
-sbStatus sbScalarType::Convert( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const
+sbStatus sbScalarType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const
 {
-  sbScalarValue src_value = src_type->ReadValue( src_data );
+  sbScalarValue src_value = src_type->ReadScalarValue( src_data );
   if( dst_data )
   {
     WriteValue( dst_data, src_value );
@@ -25,15 +27,10 @@ sbStatus sbScalarType::Convert( char* dst_data, const char* src_data, const sbTy
 
 bool sbScalarType::IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const
 {
-  return ReadValue( data ) == terminator_value;
+  return ReadScalarValue( data ) == terminator_value;
 }
 
 sbStatus sbScalarType::FixUp( class sbSchema* schema )
 {
   return sbStatus_Ok;
-}
-
-const sbMember* sbScalarType::FindMember( sbHash name ) const
-{
-  return NULL;
 }

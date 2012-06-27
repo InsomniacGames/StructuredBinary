@@ -10,9 +10,6 @@
 #define StructuredBinary_sbScalarType_h
 
 // Libraries
-#include <cstring>
-#include <stdint.h>
-#include <stdio.h>
 
 // Project
 #include "sbScalarValue.h"
@@ -26,12 +23,11 @@ class sbScalarType : public sbType
 {
 public:
   virtual ~sbScalarType();
-  virtual void WriteValue( char* data, const sbScalarValue& number ) const = 0;
-  virtual sbStatus Convert( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const;
+  virtual void WriteValue( char* data, const sbScalarValue& value ) const = 0;
+  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc ) const;
 
   virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( class sbSchema* schema );
-  virtual const sbMember* FindMember( sbHash name ) const;
 
   virtual uint64_t GetChecksum( uint64_t basis ) const { return basis; }
 };

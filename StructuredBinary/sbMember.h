@@ -25,12 +25,12 @@ class sbByteWriter;
 class sbMember
 {
 public:
-  sbMember( int count, sbHash type_name );
+  sbMember( int count, sbHash inline_type_name, sbHash indirect_type_name = 0U );
   virtual ~sbMember();
   
   char* GetDataPtr( char* scope_data, int index ) const;
   const char* GetDataPtr( const char* scope_data, int index ) const;
-  sbScalarValue ReadValue( const char* scope_data ) const;
+  sbScalarValue ReadScalarValue( const char* scope_data ) const;
   size_t GetTotalSize() const;
   sbStatus FixUp( sbSchema* schema, const sbMember* previous_member );
   
@@ -47,16 +47,20 @@ public:
   void SetScope( const sbAggregateType* scope );
   size_t GetOffset() const { return m_Offset; }
   int GetCount() const { return m_Count; }
-  const sbType* GetType() const { return m_Type; }
+  const sbType* GetInlineType() const { return m_InlineType; }
+  const sbType* GetIndirectType() const { return m_IndirectType; }
   const sbAggregateType* GetScope() const { return m_Scope; }
-  sbHash GetTypeName() const { return m_TypeName; }
+  sbHash GetInlineTypeName() const { return m_InlineTypeName; }
+  sbHash GetIndirectTypeName() const { return m_IndirectTypeName; }
 
 private:
-  sbHash   m_TypeName;
-  size_t   m_Offset;     // Offset from the start of the node
-  int      m_Count;      // For arrays
-  const sbType*            m_Type;
-  const sbAggregateType*   m_Scope;
+  sbHash    m_InlineTypeName;
+  sbHash    m_IndirectTypeName;
+  size_t    m_Offset;     // Offset from the start of the node
+  int       m_Count;      // For arrays
+  const sbType*           m_InlineType;
+  const sbType*           m_IndirectType;
+  const sbAggregateType*  m_Scope;
 
 protected:
 
@@ -76,6 +80,5 @@ protected:
     ByteCodeFlag_TermValue  = 1 << 4,
   };
 };
-
 
 #endif

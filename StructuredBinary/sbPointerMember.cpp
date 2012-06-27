@@ -17,48 +17,39 @@
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
 
-sbPointerMember::sbPointerMember( int count, sbHash type_name )
-: sbMember( count, type_name )
+sbPointerMember::sbPointerMember( int count, sbHash type_name, sbHash indirect_type_name )
+: sbMember( count, type_name, indirect_type_name )
 {}
 
 size_t sbPointerMember::GetSize() const
 {
-  return sizeof( void* );
+  return GetInlineType()->GetSize();
 }
 
 size_t sbPointerMember::GetAlignment() const
 {
-  return __alignof( void* );
+  return GetInlineType()->GetAlignment();
 }
 
 void sbPointerMember::Convert( char* dst_scope_data, const char* src_scope_data, const sbMember* src_member, sbAllocator* alloc ) const
 {
+  // TO DO: replace this with one ConvertMany of InlineType. The ConvertOne for the pointer type will involve memory allocation.
+  // Then iterate over all allocated pointers, and call ConvertMany on each of them.
+
   for( int index = 0; index < GetCount(); ++index )
   {
     char* dst_member_data = GetDataPtr( dst_scope_data, index );
     const char* src_member_data = src_member->GetDataPtr( src_scope_data, index );
-    int element_count = src_member->GetPointerCount( src_scope_data, index );
-    
-    size_t dst_size = GetType()->GetSize();
-    size_t src_size = src_member->GetType()->GetSize();
-    
+    int src_count = src_member->GetPointerCount( src_scope_data, index );
+
     const char* src_p = *( const char** )( src_member_data );
     alloc->StorePointerLocation( src_member_data );
-    sbAllocator::Result r = alloc->Alloc( dst_size, element_count, GetType()->GetAlignment(), src_p );
-    char* dst_p = r.m_Data;
+
+    char* dst_p = alloc->Alloc( GetIndirectType(), src_member->GetIndirectType(), src_p, src_count );
+
     if( dst_member_data )
     {
       *( char** )( dst_member_data ) = dst_p;
-    }
-
-    if( !r.m_Done )
-    {
-      for( int j = 0; j < element_count; ++j )
-      {
-        GetType()->Convert( dst_p, src_p, src_member->GetType(), alloc );
-        src_p += src_size;
-        dst_p += dst_p ? dst_size : 0;
-      }
     }
   }
 }

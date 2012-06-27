@@ -15,13 +15,13 @@ template< typename T >
 class sbIntScalarType : public sbScalarType
 {
 public:
-  virtual sbScalarValue ReadValue( const char* data ) const
+  virtual sbScalarValue ReadScalarValue( const char* data ) const
   {
     return sbScalarValue::Int( *( T* )data );
   }
-  virtual void WriteValue( char* data, const sbScalarValue& number ) const
+  virtual void WriteValue( char* data, const sbScalarValue& value ) const
   {
-    *( T* )data = ( T )number.AsInt();
+    *( T* )data = ( T )value.AsInt();
   }
   virtual size_t GetSize() const
   {

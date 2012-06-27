@@ -43,7 +43,7 @@ public:
   
   virtual ~sbAggregateType();
 
-  virtual sbStatus Convert( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc ) const;
+  virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc ) const;
   virtual size_t GetSize() const { return m_Size; }
   virtual size_t GetAlignment() const { return m_Alignment; }
 
@@ -51,7 +51,6 @@ public:
   virtual sbStatus FixUp( sbSchema* schema );
 
   virtual const sbMember* FindMember( sbHash member_name ) const;
-  virtual sbScalarValue ReadValue( const char* data ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
   void AddPointer( sbHash member_name, int count, sbHash type_name );

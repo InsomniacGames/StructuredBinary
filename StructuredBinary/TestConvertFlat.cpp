@@ -97,20 +97,21 @@ UnitTest::Result TestConvertFlat::RunTest() const
   src_struct.i32  = 0x23eda091;
   src_struct.i64  = 0x193d59739a0ca2c1LL;
 
-  Dst::Struct dst_struct;
+  char buffer[ 1000 ];
+  sbAllocator alloc = sbAllocator( buffer, sizeof( buffer ) );
 
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", NULL );
+  Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 
-  if( dst_struct.u8   != 200 )                  return Error( "u8 wrong value" );
-  if( dst_struct.f32  != 3.141f )               return Error( "f32 wrong value" );
-  if( dst_struct.u16  != 60000 )                return Error( "u16 wrong value" );
-  if( dst_struct.u32  != 12345 )                return Error( "u32 wrong value" );
-  if( dst_struct.u64  != 0xde53a0914a8420efLL ) return Error( "u64 wrong value" );
-  if( dst_struct.i8   != -100 )                 return Error( "i8 wrong value" );
-  if( dst_struct.f64  != 1.23456789 )           return Error( "f64 wrong value" );
-  if( dst_struct.i16  != -30 )                  return Error( "i16 wrong value" );
-  if( dst_struct.i32  != 0x23eda091 )           return Error( "i32 wrong value" );
-  if( dst_struct.i64  != 0x193d59739a0ca2c1LL ) return Error( "164 wrong value" );
+  if( dst_struct->u8   != 200 )                  return Error( "u8 wrong value" );
+  if( dst_struct->f32  != 3.141f )               return Error( "f32 wrong value" );
+  if( dst_struct->u16  != 60000 )                return Error( "u16 wrong value" );
+  if( dst_struct->u32  != 12345 )                return Error( "u32 wrong value" );
+  if( dst_struct->u64  != 0xde53a0914a8420efLL ) return Error( "u64 wrong value" );
+  if( dst_struct->i8   != -100 )                 return Error( "i8 wrong value" );
+  if( dst_struct->f64  != 1.23456789 )           return Error( "f64 wrong value" );
+  if( dst_struct->i16  != -30 )                  return Error( "i16 wrong value" );
+  if( dst_struct->i32  != 0x23eda091 )           return Error( "i32 wrong value" );
+  if( dst_struct->i64  != 0x193d59739a0ca2c1LL ) return Error( "164 wrong value" );
 
   return Ok();
 }

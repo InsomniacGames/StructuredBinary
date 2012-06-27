@@ -60,17 +60,16 @@ UnitTest::Result TestConvertRecursion::RunTest() const
   dst_schema.End();
 
   sbAllocator alloc( NULL, 0 );
-  dst_schema.Convert( NULL, ( const char* )&src_round, &src_schema, "Struct", &alloc );
+  dst_schema.Convert( ( const char* )&src_round, &src_schema, "Struct", &alloc );
   //  printf( "Memory needed %lu\n", alloc.GetSize() );
   
-  Dst::Struct dst_struct;
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_round, &src_schema, "Struct", &alloc );
+  Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_round, &src_schema, "Struct", &alloc );
 
-  if( 0 != strcmp( dst_struct.string, "ROUND" ) )             return Error( "1st string wrong" );
-  if( 0 != strcmp( dst_struct.next->string, "AND" ) )         return Error( "2nd string wrong" );
-  if( 0 != strcmp( dst_struct.next->next->string, "ROUND" ) ) return Error( "3nd string wrong" );
+  if( 0 != strcmp( dst_struct->string, "ROUND" ) )             return Error( "1st string wrong" );
+  if( 0 != strcmp( dst_struct->next->string, "AND" ) )         return Error( "2nd string wrong" );
+  if( 0 != strcmp( dst_struct->next->next->string, "ROUND" ) ) return Error( "3nd string wrong" );
 
   return Ok();
 }

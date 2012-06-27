@@ -38,7 +38,7 @@ public:
   void BeginAggregate( sbHash type_name );
   void EndAggregate();
 
-  sbStatus Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
+  char* Convert( const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
   void AddPointer( sbHash member_name, int count, sbHash type_name );
@@ -69,6 +69,8 @@ private:
   sbHash        m_CurrentName;
 
   sbDictionary< sbType* > m_Dictionary;
+
+  void ConvertAll( sbAllocator* alloc ) const;
 };
 
 #endif

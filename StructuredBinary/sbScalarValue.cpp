@@ -21,21 +21,6 @@ sbScalarValue::sbScalarValue()
   m_Value.i64 = 0;
 }
 
-sbScalarValue sbScalarValue::ReinterpretFloatFromU32( uint32_t value )
-{
-  union
-  {
-    uint32_t  u32;
-    float     f32;
-  } convert;
-  convert.u32 = value;
-  
-  sbScalarValue v;
-  v.m_Type = kFloat;
-  v.m_Value.f64 = convert.f32;
-  return v;
-}
-
 sbScalarValue sbScalarValue::Float( double value )
 {
   sbScalarValue v;

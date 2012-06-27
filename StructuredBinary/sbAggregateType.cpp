@@ -32,7 +32,7 @@ const sbMember* sbAggregateType::FindMember( sbHash member_name ) const
   return m_Dictionary.FindByName( member_name );
 }
 
-sbStatus sbAggregateType::Convert( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc ) const
+sbStatus sbAggregateType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc ) const
 {
   sbStatus status = sbStatus_Ok;
   for( int i = 0; i < m_Dictionary.GetCount(); ++i )
@@ -49,7 +49,7 @@ bool sbAggregateType::IsTerminal( const char* data, const sbScalarValue& termina
 {
   const sbMember* member = FindMember( terminator_name );
   assert( member );
-  return member->ReadValue( data ) == terminator_value;
+  return member->ReadScalarValue( data ) == terminator_value;
 }
 
 sbStatus sbAggregateType::FixUp( sbSchema* schema )
@@ -124,11 +124,6 @@ sbAggregateType::~sbAggregateType()
   {
     delete m_Dictionary.GetByIndex( i );
   }
-}
-
-sbScalarValue sbAggregateType::ReadValue( const char* data ) const
-{
-  assert( false );  
 }
 
 void sbAggregateType::Write( sbByteWriter* writer ) const

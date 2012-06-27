@@ -111,28 +111,27 @@ UnitTest::Result TestConvertDeep::RunTest() const
   src_schema.End();
 
   sbAllocator alloc( NULL, 0 );
-  dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
   printf( "Memory needed %lu\n", alloc.GetSize() );
   printf( "Pointers found: %d\n", alloc.GetPointerLocationCount() );
 
-  Dst::Struct dst_struct;
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 
-  if( dst_struct.count   != 2 )           return Error( "count wrong value" );
-  if( dst_struct.pointer == NULL )        return Error( "pointer is NULL" );
-  if( dst_struct.pointer[ 0 ].x  != 10 )  return Error( "pointer[ 0 ].x wrong value" );
-  if( dst_struct.pointer[ 0 ].y  != 20 )  return Error( "pointer[ 0 ].y wrong value" );
-  if( dst_struct.pointer[ 0 ].z  != 30 )  return Error( "pointer[ 0 ].z wrong value" );
-  if( dst_struct.pointer[ 1 ].x  != 40 )  return Error( "pointer[ 1 ].x wrong value" );
-  if( dst_struct.pointer[ 1 ].y  != 50 )  return Error( "pointer[ 1 ].y wrong value" );
-  if( dst_struct.pointer[ 1 ].z  != 60 )  return Error( "pointer[ 1 ].z wrong value" );
-  if( 0 != strcmp( ( const char* )dst_struct.string[0], "zero" ) ) return Error( "string[0] wrong value: %s", ( const char* )dst_struct.string[0] );
-  if( 0 != strcmp( ( const char* )dst_struct.string[1], "one" ) ) return Error( "string[1] wrong value: %s", ( const char* )dst_struct.string[1] );
-  if( 0 != strcmp( ( const char* )dst_struct.string[2], "two" ) ) return Error( "string[2] wrong value: %s", ( const char* )dst_struct.string[2] );
-  if( dst_struct.f[ 0 ] != 100.0f )       return Error( "f[0] wrong value" );
-  if( dst_struct.f[ 1 ] != 200.0f )       return Error( "f[1] wrong value" );
+  if( dst_struct->count   != 2 )           return Error( "count wrong value" );
+  if( dst_struct->pointer == NULL )        return Error( "pointer is NULL" );
+  if( dst_struct->pointer[ 0 ].x  != 10 )  return Error( "pointer[ 0 ].x wrong value" );
+  if( dst_struct->pointer[ 0 ].y  != 20 )  return Error( "pointer[ 0 ].y wrong value" );
+  if( dst_struct->pointer[ 0 ].z  != 30 )  return Error( "pointer[ 0 ].z wrong value" );
+  if( dst_struct->pointer[ 1 ].x  != 40 )  return Error( "pointer[ 1 ].x wrong value" );
+  if( dst_struct->pointer[ 1 ].y  != 50 )  return Error( "pointer[ 1 ].y wrong value" );
+  if( dst_struct->pointer[ 1 ].z  != 60 )  return Error( "pointer[ 1 ].z wrong value" );
+  if( 0 != strcmp( ( const char* )dst_struct->string[0], "zero" ) ) return Error( "string[0] wrong value: %s", ( const char* )dst_struct->string[0] );
+  if( 0 != strcmp( ( const char* )dst_struct->string[1], "one" ) ) return Error( "string[1] wrong value: %s", ( const char* )dst_struct->string[1] );
+  if( 0 != strcmp( ( const char* )dst_struct->string[2], "two" ) ) return Error( "string[2] wrong value: %s", ( const char* )dst_struct->string[2] );
+  if( dst_struct->f[ 0 ] != 100.0f )       return Error( "f[0] wrong value" );
+  if( dst_struct->f[ 1 ] != 200.0f )       return Error( "f[1] wrong value" );
 
 //  printf( "%s %s %s\n", dst_struct.string[ 0 ], dst_struct.string[ 1 ], dst_struct.string[ 2 ] );
 

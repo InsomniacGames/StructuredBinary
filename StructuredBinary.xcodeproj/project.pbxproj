@@ -27,6 +27,8 @@
 		BE610468157B38170089A922 /* sbSchema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE610467157B38170089A922 /* sbSchema.cpp */; };
 		BE71835115964F0400E79C54 /* sbType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE71835015964F0300E79C54 /* sbType.cpp */; };
 		BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */; };
+		BE718357159752E000E79C54 /* sbPointerType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE718356159752DF00E79C54 /* sbPointerType.cpp */; };
+		BE7183591597612600E79C54 /* sbPointerValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7183581597612500E79C54 /* sbPointerValue.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
 		BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */; };
@@ -92,6 +94,10 @@
 		BE71835015964F0300E79C54 /* sbType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbType.cpp; sourceTree = "<group>"; };
 		BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSchemaSerialize.cpp; sourceTree = "<group>"; };
 		BE7183541596980300E79C54 /* TestSchemaSerialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSchemaSerialize.h; sourceTree = "<group>"; };
+		BE718355159752D200E79C54 /* sbPointerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPointerType.h; sourceTree = "<group>"; };
+		BE718356159752DF00E79C54 /* sbPointerType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerType.cpp; sourceTree = "<group>"; };
+		BE7183581597612500E79C54 /* sbPointerValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerValue.cpp; sourceTree = "<group>"; };
+		BE71835A1597613200E79C54 /* sbPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPointerValue.h; sourceTree = "<group>"; };
 		BE7AE983158E6F310026DCEC /* sbDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbDictionary.h; sourceTree = "<group>"; };
 		BE9275F4156F2130008F1288 /* sbByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteReader.h; sourceTree = "<group>"; };
 		BE9275F6156F213E008F1288 /* sbByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteReader.cpp; sourceTree = "<group>"; };
@@ -204,8 +210,12 @@
 				BE3108DB1585A029003D607C /* sbAllocator.cpp */,
 				BE57CC4F1560713D00FFCB91 /* sbScalarValue.h */,
 				BE57CC501560717400FFCB91 /* sbScalarValue.cpp */,
+				BE71835A1597613200E79C54 /* sbPointerValue.h */,
+				BE7183581597612500E79C54 /* sbPointerValue.cpp */,
 				BE9B1CCB158E3A4600453617 /* sbType.h */,
 				BE71835015964F0300E79C54 /* sbType.cpp */,
+				BE718355159752D200E79C54 /* sbPointerType.h */,
+				BE718356159752DF00E79C54 /* sbPointerType.cpp */,
 				BE57CC551560799000FFCB91 /* sbScalarType.h */,
 				BE57CC561560799D00FFCB91 /* sbScalarType.cpp */,
 				BE9B1CDD158E4A3900453617 /* sbFloatScalarType.h */,
@@ -307,6 +317,8 @@
 				BE9B1CE3158E5A0900453617 /* TestConvertRecursion.cpp in Sources */,
 				BE71835115964F0400E79C54 /* sbType.cpp in Sources */,
 				BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */,
+				BE718357159752E000E79C54 /* sbPointerType.cpp in Sources */,
+				BE7183591597612600E79C54 /* sbPointerValue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

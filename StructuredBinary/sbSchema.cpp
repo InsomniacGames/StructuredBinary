@@ -10,6 +10,7 @@
 
 #include <cstring>
 #include <assert.h>
+#include <stdio.h>
 
 #include "sbUtil.h"
 #include "sbAggregateType.h"
@@ -18,6 +19,7 @@
 
 #include "sbFloatScalarType.h"
 #include "sbIntScalarType.h"
+#include "sbPointerType.h"
 
 #include "sbDictionary.h"
 #include "sbByteWriter.h"
@@ -57,24 +59,6 @@ sbStatus sbSchema::FixUp( sbHash type_name )
   else
   {
     status = type_def->FixUp( this );
-  }
-  return status;
-}
-
-sbStatus sbSchema::Convert( char* dst_data, const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const
-{
-  sbStatus status = sbStatus_Ok;
-
-  const sbType* src_type = src_schema->FindType( name );
-  const sbType* dst_type =             FindType( name );
-  
-  if( !src_type || !dst_type )
-  {
-    status = sbStatus_ErrorNodeNotFound;
-  }
-  else
-  {
-    status = dst_type->Convert( dst_data, src_data, src_type, alloc );
   }
   return status;
 }
@@ -138,6 +122,7 @@ void sbSchema::Begin()
   AddType( "int64_t",   new sbIntScalarType<  int64_t > );
   AddType( "float",     new sbFloatScalarType<  float > );
   AddType( "double",    new sbFloatScalarType< double > );
+  AddType( "*",         new sbPointerType               );
 }
 
 void sbSchema::End()
@@ -239,3 +224,35 @@ uint64_t sbSchema::GetChecksum( uint64_t basis ) const
   }
   return basis;
 }
+
+void sbSchema::ConvertAll( sbAllocator* alloc ) const
+{
+  for( int i = 0; i < alloc->GetCount(); ++i )
+  {
+    printf( "convert block %d\n", i );
+    sbBlock block = alloc->GetBlock( i );
+
+    char* dst_data = alloc->GetDstPtr( i );
+
+    int count = block.m_Count;
+    const sbType* dst_type = block.m_DstType;
+    sbDestArray   dst_array( dst_type, dst_data, count );
+    
+    const char* src_data = block.m_SrcData;
+    const sbType* src_type = block.m_SrcType;
+    sbSourceArray src_array( src_type, src_data, count );
+
+    sbType::ConvertMany( dst_array, src_array, alloc );
+  }
+}
+
+char* sbSchema::Convert( const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const
+{
+  const sbType* src_type = src_schema->FindType( name );
+  const sbType* dst_type =             FindType( name );
+  
+  char* dst_p = alloc->Alloc( dst_type, src_type, src_data, 1 );
+  ConvertAll( alloc );
+  return dst_p;
+}
+

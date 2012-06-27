@@ -22,8 +22,7 @@ class sbScalarValue
 public:
   
   sbScalarValue();
-  
-  static sbScalarValue ReinterpretFloatFromU32( uint32_t i );
+
   static sbScalarValue Float( double value );
   static sbScalarValue Int( int64_t value );
   static sbScalarValue Zero();
@@ -34,8 +33,6 @@ public:
   bool operator== ( const sbScalarValue& other ) const;
   bool operator!= ( const sbScalarValue& other ) const;
   
-  bool IsFloat() const  { return m_Type == kFloat; }
-  bool IsInt() const    { return m_Type == kInt; }
   bool IsZero() const   { return m_Type == kZero; }
 
   void Write( sbByteWriter* writer ) const;

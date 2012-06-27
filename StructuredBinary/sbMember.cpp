@@ -19,12 +19,14 @@
 #include "sbCountedPointerMember.h"
 #include "sbStringPointerMember.h"
 
-sbMember::sbMember( int count, sbHash type_name )
+sbMember::sbMember( int count, sbHash inline_type_name, sbHash indirect_type_name )
 {
   m_Scope = NULL;
   m_Offset = 0;          // To be determined in second pass
-  m_Type   = NULL;
-  m_TypeName = type_name;
+  m_InlineType   = NULL;
+  m_IndirectType  = NULL;
+  m_InlineTypeName = inline_type_name;
+  m_IndirectTypeName = indirect_type_name;
   m_Count  = count;
 }
 
@@ -46,9 +48,9 @@ const char* sbMember::GetDataPtr( const char* scope_data, int index ) const
   return scope_data ? scope_data + m_Offset + index * GetSize() : NULL;
 }
 
-sbScalarValue sbMember::ReadValue( const char* scope_data ) const
+sbScalarValue sbMember::ReadScalarValue( const char* scope_data ) const
 {
-  return m_Type->ReadValue( scope_data + m_Offset );
+  return m_InlineType->ReadScalarValue( scope_data + m_Offset );
 }
 
 size_t sbMember::GetTotalSize() const
@@ -58,14 +60,26 @@ size_t sbMember::GetTotalSize() const
 
 sbStatus sbMember::FixUp( sbSchema* schema, const sbMember* previous_member )
 {
-  sbStatus status = PreFixUp( schema, m_TypeName );
+  sbStatus status = PreFixUp( schema, m_InlineTypeName );
   
   if( status == sbStatus_Ok )
   {
-    m_Type = schema->FindType( m_TypeName );
-    if( !m_Type )
+    m_InlineType = schema->FindType( m_InlineTypeName );
+    if( !m_InlineType )
     {
       status = sbStatus_ErrorNodeNotFound;
+    }
+  }
+  
+  if( status == sbStatus_Ok )
+  {
+    if( m_IndirectTypeName )
+    {
+      m_IndirectType = schema->FindType( m_IndirectTypeName );
+      if( !m_IndirectType )
+      {
+        status = sbStatus_ErrorNodeNotFound;
+      }
     }
   }
   
@@ -90,7 +104,7 @@ sbMember* sbMember::ReadNew( sbByteReader* reader )
 
 uint64_t sbMember::GetChecksum( uint64_t basis ) const
 {
-  basis = sbFnv64( basis, m_TypeName );
+  basis = sbFnv64( basis, m_InlineTypeName );
   basis = sbFnv64( basis, m_Offset );
   basis = sbFnv64( basis, m_Count );
   return basis;

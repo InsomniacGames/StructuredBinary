@@ -104,6 +104,8 @@ UnitTest::Result TestSchemaSerialize::RunTest() const
   if( original_checksum == 0 )                    return Error( "calculated checksum was zero" );
   if( original_checksum != duplicated_checksum )  return Error( "original and duplicated checksums do not match: %016llx vs  %016llx", original_checksum, duplicated_checksum );
 
+  printf( "Schema serialized into %lu bytes\n", calculated_size );
+
   delete dup_src_schema;
   delete buffer;
 

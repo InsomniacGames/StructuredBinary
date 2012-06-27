@@ -79,19 +79,18 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   src_schema.End();
   
   sbAllocator alloc( NULL, 0 );
-  dst_schema.Convert( NULL, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 //  printf( "Memory needed %lu\n", alloc.GetSize() );
   
-  Dst::Struct dst_struct;
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
-  dst_schema.Convert( ( char* )&dst_struct, ( const char* )&src_struct, &src_schema, "Struct", &alloc );
+  Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
   
-  if( 0 != strcmp( dst_struct.string1, "ABC" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string1 );
-  if( 0 != strcmp( dst_struct.string3, "XYZ" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct.string3 );
+  if( 0 != strcmp( dst_struct->string1, "ABC" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct->string1 );
+  if( 0 != strcmp( dst_struct->string3, "XYZ" ) ) return Error( "string wrong value: %s", ( const char* )dst_struct->string3 );
 
-  if( dst_struct.string1 != dst_struct.string2 ) return Error( "Source aliased pointer is no longer aliased after conversion" );
-  if( dst_struct.string3 != dst_struct.string4 ) return Error( "Source aliased pointer is no longer aliased after conversion" );
+  if( dst_struct->string1 != dst_struct->string2 ) return Error( "Source aliased pointer is no longer aliased after conversion" );
+  if( dst_struct->string3 != dst_struct->string4 ) return Error( "Source aliased pointer is no longer aliased after conversion" );
 
   return Ok();
 }
