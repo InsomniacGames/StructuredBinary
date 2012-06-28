@@ -224,24 +224,13 @@ uint64_t sbSchema::GetChecksum( uint64_t basis ) const
   return basis;
 }
 
-void sbSchema::ConvertAll( sbAllocator* alloc ) const
-{
-  for( int i = 0; i < alloc->GetCount(); ++i )
-  {
-//    printf( "convert block %d\n", i );
-    const sbBlock* block = alloc->GetBlock( i );
-
-    sbType::ConvertMany( block, alloc );
-  }
-}
-
 char* sbSchema::Convert( const char* src_data, const sbSchema* src_schema, sbHash name, sbAllocator* alloc ) const
 {
   const sbType* src_type = src_schema->FindType( name );
   const sbType* dst_type =             FindType( name );
   
   char* dst_p = alloc->Alloc( dst_type, src_type, src_data, 1 );
-  ConvertAll( alloc );
+  alloc->ConvertAll();
   return dst_p;
 }
 

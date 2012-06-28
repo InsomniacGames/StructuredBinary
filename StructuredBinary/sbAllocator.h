@@ -11,7 +11,9 @@
 
 #include <stddef.h>
 
-#include "sbBlock.h"
+#include "sbStatus.h"
+
+class sbType;
 
 class sbAllocator
 {
@@ -30,15 +32,21 @@ public:
   
   int GetCount() const { return m_BlockCount; }
 
-  const sbBlock* GetBlock( int index ) const
-  {
-    return m_Blocks + index;
-  }
+  void ConvertAll();
 
-//private:
+private:
   static const int  kMaxEntries = 100;
 
-  sbBlock m_Blocks[ kMaxEntries ];
+  struct Block
+  {
+    const sbType*       m_DstType;
+    const sbType*       m_SrcType;
+    const char*         m_SrcData;
+    int                 m_Count;
+    size_t              m_Offset;
+  };
+
+  Block m_Blocks[ kMaxEntries ];
   int     m_BlockCount;
   
   const char* m_Pointers[ kMaxEntries ];
@@ -48,8 +56,17 @@ public:
   size_t  m_Offset;
   size_t  m_Size;
 
-  sbBlock* FindBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count );
-  sbBlock* AddBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count );
+  Block* FindBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count );
+  Block* AddBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count );
+
+  const Block* GetBlock( int index ) const
+  {
+    return m_Blocks + index;
+  }
+  
+  sbStatus ConvertMany( const Block* block );
+
+  char* GetDstPtr( const Block* block ) const;
 };
 
 #endif

@@ -19,12 +19,10 @@ class sbByteWriter;
 class sbByteReader;
 class sbScalarValue;
 class sbPointerValue;
-class sbBlock;
 
 class sbType
 {
 public:
-  static sbStatus ConvertMany( const sbBlock* block, class sbAllocator* alloc );
 
   virtual ~sbType() {}
   

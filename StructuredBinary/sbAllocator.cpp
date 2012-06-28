@@ -7,7 +7,9 @@
 //
 
 #include "sbAllocator.h"
-#include "sbBlock.h"
+
+#include <assert.h>
+
 #include "sbType.h"
 
 sbAllocator::sbAllocator( char* data, size_t size )
@@ -33,7 +35,7 @@ char* sbAllocator::Alloc( const sbType* dst_type, const sbType* src_type, const 
 {
   char* p = NULL;
 
-  sbBlock* block = FindBlock( dst_type, src_type, src_data, count );
+  Block* block = FindBlock( dst_type, src_type, src_data, count );
   if( !block )
   {
     block = AddBlock( dst_type, src_type, src_data, count );
@@ -62,11 +64,10 @@ const char* sbAllocator::GetPointerLocation( int index ) const
   return m_Pointers[ index ];
 }
 
-sbBlock* sbAllocator::AddBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
+sbAllocator::Block* sbAllocator::AddBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
 {
-  sbBlock* block = m_Blocks + m_BlockCount++;
+  Block* block = m_Blocks + m_BlockCount++;
 
-  block->m_Allocator = this;
   block->m_DstType = dst_type;
   block->m_SrcType = src_type;
   block->m_SrcData = src_data;
@@ -79,11 +80,11 @@ sbBlock* sbAllocator::AddBlock( const sbType* dst_type, const sbType* src_type, 
   return block;
 }
 
-sbBlock* sbAllocator::FindBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
+sbAllocator::Block* sbAllocator::FindBlock( const sbType* dst_type, const sbType* src_type, const char* src_data, int count )
 {
   for( int i = 0; i < m_BlockCount; ++i )
   {
-    sbBlock* block = m_Blocks + i;
+    Block* block = m_Blocks + i;
     if(
        block->m_DstType == dst_type &&
        block->m_SrcType == src_type &&
@@ -96,3 +97,44 @@ sbBlock* sbAllocator::FindBlock( const sbType* dst_type, const sbType* src_type,
   }
   return NULL;
 }
+
+void sbAllocator::ConvertAll()
+{
+  for( int i = 0; i < GetCount(); ++i )
+  {
+    //    printf( "convert block %d\n", i );
+    const Block* block = GetBlock( i );
+    
+    ConvertMany( block );
+  }
+}
+
+sbStatus sbAllocator::ConvertMany( const Block* block )
+{
+  char* dst_data = GetDstPtr( block );
+  const char* src_data = block->m_SrcData;
+  
+  assert( src_data );
+  
+  size_t dst_stride = dst_data ? block->m_DstType->GetSize() : 0;
+  size_t src_stride = block->m_SrcType->GetSize();
+  
+  for( int i = 0; i < block->m_Count; ++i )
+  {
+    block->m_DstType->ConvertOne( dst_data, src_data, block->m_SrcType, this, 1 );
+    dst_data += dst_stride;
+    src_data += src_stride;
+  }
+  
+  return sbStatus_Ok;
+}
+
+char* sbAllocator::GetDstPtr( const Block* block ) const
+{
+  if( !m_Data ) return NULL;
+  if( m_Offset > m_Size ) return NULL;
+  return m_Data + block->m_Offset;
+}
+
+
+

@@ -69,8 +69,6 @@ private:
   sbHash        m_CurrentName;
 
   sbDictionary< sbType* > m_Dictionary;
-
-  void ConvertAll( sbAllocator* alloc ) const;
 };
 
 #endif
