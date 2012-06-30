@@ -48,7 +48,8 @@ const char* sbMember::GetDataPtr( const char* scope_data, int index ) const
 
 sbScalarValue sbMember::ReadScalarValue( const char* scope_data ) const
 {
-  return m_Type->ReadScalarValue( scope_data + m_Offset );
+  const sbScalarType* scalar_type = m_Type->AsScalarType();     // TO DO: this seems in the wrong location. Compare similar downconversions
+  return scalar_type->ReadScalarValue( scope_data + m_Offset );
 }
 
 size_t sbMember::GetTotalSize() const

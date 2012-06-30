@@ -27,7 +27,7 @@ public:
   , m_ChildCount( 0 )
   {}
   
-  sbChunk( uint32_t id, const void* data, uint32_t data_size )
+  sbChunk( uint32_t id, const char* data, uint32_t data_size )
   : m_Id( id )
   , m_DataSize( data_size )
   , m_Data( data )
@@ -38,20 +38,22 @@ public:
 
   ~sbChunk();
   
-  const void* GetData() const { return m_Data; }
+  const char* GetData() const { return m_Data; }
   const uint32_t GetDataSize() const { return m_DataSize; }
   const uint32_t GetId() const { return m_Id; }
   const sbChunk* GetChild() const { return m_Child; }
   const sbChunk* GetSibling() const { return m_Sibling; }
   int GetChildCount() const { return m_ChildCount; }
+  
+  const sbChunk* FindChild( uint32_t id ) const;
 
   sbChunk* AddChild( sbChunk* chunk );
-  
+
 private:
   
   uint32_t    m_Id;
   uint32_t    m_DataSize;
-  const void* m_Data;
+  const char* m_Data;
   sbChunk*    m_Sibling;
   sbChunk*    m_Child;
   int         m_ChildCount;

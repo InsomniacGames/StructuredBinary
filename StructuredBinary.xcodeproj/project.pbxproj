@@ -29,6 +29,7 @@
 		BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */; };
 		BE718357159752E000E79C54 /* sbPointerType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE718356159752DF00E79C54 /* sbPointerType.cpp */; };
 		BE7183591597612600E79C54 /* sbPointerValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7183581597612500E79C54 /* sbPointerValue.cpp */; };
+		BE88DBB0159F89C200B0060A /* TestConvertFileFlat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE88DBAF159F89C200B0060A /* TestConvertFileFlat.cpp */; };
 		BE9275F7156F213E008F1288 /* sbByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F6156F213E008F1288 /* sbByteReader.cpp */; };
 		BE9275F9156F215A008F1288 /* sbByteWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9275F8156F215A008F1288 /* sbByteWriter.cpp */; };
 		BE9B1CCA158D9EFF00453617 /* TestScalarTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE9B1CC9158D9EFF00453617 /* TestScalarTypes.cpp */; };
@@ -99,6 +100,8 @@
 		BE7183581597612500E79C54 /* sbPointerValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbPointerValue.cpp; sourceTree = "<group>"; };
 		BE71835A1597613200E79C54 /* sbPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbPointerValue.h; sourceTree = "<group>"; };
 		BE7AE983158E6F310026DCEC /* sbDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbDictionary.h; sourceTree = "<group>"; };
+		BE88DBAE159F89B300B0060A /* TestConvertFileFlat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestConvertFileFlat.h; sourceTree = "<group>"; };
+		BE88DBAF159F89C200B0060A /* TestConvertFileFlat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestConvertFileFlat.cpp; sourceTree = "<group>"; };
 		BE9275F4156F2130008F1288 /* sbByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sbByteReader.h; sourceTree = "<group>"; };
 		BE9275F6156F213E008F1288 /* sbByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteReader.cpp; sourceTree = "<group>"; };
 		BE9275F8156F215A008F1288 /* sbByteWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sbByteWriter.cpp; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				BE9B1CE2158E5A0800453617 /* TestConvertRecursion.cpp */,
 				BE7183541596980300E79C54 /* TestSchemaSerialize.h */,
 				BE718352159697F700E79C54 /* TestSchemaSerialize.cpp */,
+				BE88DBAE159F89B300B0060A /* TestConvertFileFlat.h */,
+				BE88DBAF159F89C200B0060A /* TestConvertFileFlat.cpp */,
 			);
 			name = UnitTest;
 			sourceTree = "<group>";
@@ -319,6 +324,7 @@
 				BE718353159697F700E79C54 /* TestSchemaSerialize.cpp in Sources */,
 				BE718357159752E000E79C54 /* sbPointerType.cpp in Sources */,
 				BE7183591597612600E79C54 /* sbPointerValue.cpp in Sources */,
+				BE88DBB0159F89C200B0060A /* TestConvertFileFlat.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

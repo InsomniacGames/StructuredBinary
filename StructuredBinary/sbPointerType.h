@@ -37,9 +37,9 @@ public:
 
   virtual void WriteValue( char* data, const sbPointerValue& value ) const;
 
-
-  // HACK HACK HACK
   virtual const sbType* GetIndirectType() const { return m_IndirectType; }
+
+  virtual const sbPointerType* AsPointerType() const { return this; }
 
 private:
   const sbType* m_IndirectType;

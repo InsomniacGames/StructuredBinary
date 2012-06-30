@@ -21,14 +21,21 @@ sbPointerType::sbPointerType( const sbType* indirect_type )
 
 sbStatus sbPointerType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const
 {
-  const char* src_p = *( const char** )( src_data );
+  const sbPointerType* src_pointer_type = src_type->AsPointerType();
+
+  sbPointerValue pointer_value = src_pointer_type->ReadPointerValue( src_data );
+  const char* src_p = pointer_value.AsConstCharStar();
   alloc->StorePointerLocation( src_data );
-  
-  char* dst_p = alloc->Alloc( GetIndirectType(), src_type->GetIndirectType(), src_p, array_count );
+
+  // TO DO: I think the Alloc belongs in the PointerMember. Then I don't have to pass the array_count around, which has ambiguous meaning at the sbType level anyway
+  // That means ReadPointerValue needs to go into sbPointerMember. I think that makes sense.
+  // Also, both ReadPointerValue and ReadScalarValue in sbMember should take an index, because members can be arrays
+  char* dst_p = alloc->Alloc( GetIndirectType(), src_pointer_type->GetIndirectType(), src_p, array_count );
   
   if( dst_data )
   {
-    *( char** )( dst_data ) = dst_p;
+    sbPointerValue dst_pointer_value = sbPointerValue::Pointer( dst_p );
+    WriteValue( dst_data, dst_pointer_value );
   }
 
   return sbStatus_Ok;
@@ -47,7 +54,8 @@ size_t sbPointerType::GetAlignment() const
 bool sbPointerType::IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const
 {
   // terminator_value is ignored. The only terminating value for pointers is NULL
-  const char* p = *( const char** )( data );
+  sbPointerValue pointer_value = ReadPointerValue( data );
+  const char* p = pointer_value.AsConstCharStar();
   return p == NULL;
 }
 

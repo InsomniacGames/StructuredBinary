@@ -24,12 +24,16 @@ class sbScalarType : public sbType
 public:
   virtual ~sbScalarType();
   virtual void WriteValue( char* data, const sbScalarValue& value ) const = 0;
+  virtual sbScalarValue ReadScalarValue( const char* data ) const = 0;
+
   virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const;
 
   virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( class sbSchema* schema );
 
   virtual uint64_t GetChecksum( uint64_t basis ) const { return basis; }
+
+  virtual const sbScalarType* AsScalarType() const { return this; }
 };
 
 #endif

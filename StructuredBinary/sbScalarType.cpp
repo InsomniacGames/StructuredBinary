@@ -17,7 +17,8 @@ sbScalarType::~sbScalarType()
 
 sbStatus sbScalarType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const
 {
-  sbScalarValue src_value = src_type->ReadScalarValue( src_data );
+  const sbScalarType* src_scalar_type = src_type->AsScalarType();
+  sbScalarValue src_value = src_scalar_type->ReadScalarValue( src_data );
   if( dst_data )
   {
     WriteValue( dst_data, src_value );

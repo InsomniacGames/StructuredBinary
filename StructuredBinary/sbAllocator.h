@@ -64,7 +64,7 @@ private:
     return m_Blocks + index;
   }
   
-  sbStatus ConvertMany( const Block* block );
+  sbStatus ConvertBlock( const Block* block );
 
   char* GetDstPtr( const Block* block ) const;
 };

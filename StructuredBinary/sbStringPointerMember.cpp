@@ -12,6 +12,7 @@
 #include "sbScalarValue.h"
 #include "sbByteWriter.h"
 #include "sbByteReader.h"
+#include "sbPointerValue.h"
 
 sbStringPointerMember::sbStringPointerMember( int count, sbHash type_name, sbHash terminator_name, const sbScalarValue& terminator_value )
 : sbPointerMember( count, type_name )
@@ -24,14 +25,17 @@ int sbStringPointerMember::GetPointerCount( const char* scope_data, int index ) 
 {
   const char* member_data = GetDataPtr( scope_data, index );
   
+  const sbPointerType* pointer_type = GetType()->AsPointerType();
+  sbPointerValue value = pointer_type->ReadPointerValue( member_data );
+
   int string_count = 0;
-  const char* p = *( const char** )( member_data );
+  const char* p = value.AsConstCharStar();
   bool terminated = false;
   while( !terminated )
   {
     string_count += 1;
-    terminated = GetType()->GetIndirectType()->IsTerminal( p, m_TerminatorValue, m_TerminatorName );
-    p += GetType()->GetIndirectType()->GetSize();
+    terminated = pointer_type->GetIndirectType()->IsTerminal( p, m_TerminatorValue, m_TerminatorName );
+    p += pointer_type->GetIndirectType()->GetSize();
   }
   return string_count;
 }

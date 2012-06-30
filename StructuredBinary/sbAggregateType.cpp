@@ -34,12 +34,13 @@ const sbMember* sbAggregateType::FindMember( sbHash member_name ) const
 
 sbStatus sbAggregateType::ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, sbAllocator* alloc, int array_count ) const
 {
+  const sbAggregateType* src_aggregate_type = src_type->AsAggregateType();
   sbStatus status = sbStatus_Ok;
   for( int i = 0; i < m_Dictionary.GetCount(); ++i )
   {
     const sbMember* dst_member = m_Dictionary.GetByIndex( i );
     sbHash dst_member_name = m_Dictionary.GetNameByIndex( i );
-    const sbMember* src_member = src_type->FindMember( dst_member_name );
+    const sbMember* src_member = src_aggregate_type->FindMember( dst_member_name );
     dst_member->Convert( dst_data, src_data, src_member, alloc );
   }
   return status;
@@ -49,7 +50,7 @@ bool sbAggregateType::IsTerminal( const char* data, const sbScalarValue& termina
 {
   const sbMember* member = FindMember( terminator_name );
   assert( member );
-  return member->ReadScalarValue( data ) == terminator_value;
+  return member->ReadScalarValue( data ) == terminator_value; // TO DO: need a proper sbScalarMember with a downconvert and so forth
 }
 
 sbStatus sbAggregateType::FixUp( sbSchema* schema )

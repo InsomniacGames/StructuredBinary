@@ -38,3 +38,15 @@ sbChunk* sbChunk::AddChild( sbChunk* chunk )
   m_ChildCount += 1;
   return chunk;
 }
+
+const sbChunk* sbChunk::FindChild( uint32_t id ) const
+{
+  sbChunk* child = m_Child;
+  while( child )
+  {
+    if( child->m_Id == id )
+      return child;
+    child = child->m_Sibling;
+  }
+  return NULL;
+}

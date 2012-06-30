@@ -50,7 +50,9 @@ public:
   virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
   virtual sbStatus FixUp( sbSchema* schema );
 
-  virtual const sbMember* FindMember( sbHash member_name ) const;
+  virtual const sbAggregateType* AsAggregateType() const { return this; }
+
+  const sbMember* FindMember( sbHash member_name ) const;
 
   void AddInstance( sbHash member_name, int count, sbHash type_name );
   void AddPointer( sbHash member_name, int count, sbHash type_name );

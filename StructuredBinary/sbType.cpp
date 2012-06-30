@@ -22,21 +22,3 @@ sbType* sbType::ReadNew( sbByteReader* reader )
   return sb_type;
 }
 
-sbScalarValue sbType::ReadScalarValue( const char* data ) const
-{
-  // TO DO: probably should report error and bail out
-  assert( false );
-}
-
-sbPointerValue sbType::ReadPointerValue( const char* data ) const
-{
-  // TO DO: probably should report error and bail out
-  assert( false );
-}
-
-const class sbMember* sbType::FindMember( sbHash name ) const
-{
-  // TO DO: probably should report error and bail out
-  assert( false );
-}
-

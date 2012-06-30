@@ -23,6 +23,7 @@
 #include "TestScalarTypes.h"
 #include "TestConvertRecursion.h"
 #include "TestSchemaSerialize.h"
+#include "TestConvertFileFlat.h"
 
 #include "sbHash.h"
 
@@ -39,6 +40,7 @@ const UnitTest* AllTests[] =
   new TestScalarTypes(),
   new TestConvertRecursion(),
   new TestSchemaSerialize(),
+  new TestConvertFileFlat(),
 };
 /*
 const char* names[] =

@@ -105,11 +105,11 @@ void sbAllocator::ConvertAll()
     //    printf( "convert block %d\n", i );
     const Block* block = GetBlock( i );
     
-    ConvertMany( block );
+    ConvertBlock( block );
   }
 }
 
-sbStatus sbAllocator::ConvertMany( const Block* block )
+sbStatus sbAllocator::ConvertBlock( const Block* block )
 {
   char* dst_data = GetDstPtr( block );
   const char* src_data = block->m_SrcData;

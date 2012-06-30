@@ -17,7 +17,7 @@ public:
 
   class Result;
 
-  virtual const char*    GetName() const = 0;
+  virtual const char* GetName() const = 0;
   virtual Result RunTest() const = 0;
   Result Run() const;
 
