@@ -56,7 +56,7 @@ void sbStringPointerMember::Write( sbByteWriter* writer ) const
   {
     code |= ByteCodeFlag_TermValue;
   }
-  
+
   writer->Write8( code );
   writer->Write32( GetTypeName() );
 

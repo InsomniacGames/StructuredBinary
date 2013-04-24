@@ -21,7 +21,7 @@ sbStatus sbScalarType::ConvertOne( char* dst_data, const char* src_data, const s
   sbScalarValue src_value = src_scalar_type->ReadScalarValue( src_data );
   if( dst_data )
   {
-    WriteValue( dst_data, src_value );
+    WriteScalarValue( dst_data, src_value );
   }
   return sbStatus_Ok;
 }

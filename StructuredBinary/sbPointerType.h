@@ -27,15 +27,14 @@ public:
 
   virtual bool IsTerminal( const char* data, const sbScalarValue& terminator_value, sbHash terminator_name ) const;
 
-  virtual sbPointerValue ReadPointerValue( const char* data ) const;
-
   virtual bool IsBuiltIn() const { return true; }
   virtual void Write( sbByteWriter* writer ) const {} // All pointer types are built-in
   virtual uint64_t GetChecksum( uint64_t basis ) const { return basis; }
 
   virtual sbStatus FixUp( class sbSchema* schema );
 
-  virtual void WriteValue( char* data, const sbPointerValue& value ) const;
+  virtual sbPointerValue ReadPointerValue( const char* data ) const;
+  virtual void WritePointerValue( char* data, const sbPointerValue& value ) const;
 
   virtual const sbType* GetIndirectType() const { return m_IndirectType; }
 

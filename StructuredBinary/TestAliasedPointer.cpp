@@ -81,7 +81,7 @@ UnitTest::Result TestAliasedPointer::RunTest() const
   sbAllocator alloc( NULL, 0 );
   dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );
 //  printf( "Memory needed %lu\n", alloc.GetSize() );
-  
+
   char buffer[ 1000 ];
   alloc = sbAllocator( buffer, sizeof( buffer ) );
   Dst::Struct* dst_struct = ( Dst::Struct* )dst_schema.Convert( ( const char* )&src_struct, &src_schema, "Struct", &alloc );

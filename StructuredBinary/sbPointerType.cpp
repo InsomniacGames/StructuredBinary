@@ -35,7 +35,7 @@ sbStatus sbPointerType::ConvertOne( char* dst_data, const char* src_data, const 
   if( dst_data )
   {
     sbPointerValue dst_pointer_value = sbPointerValue::Pointer( dst_p );
-    WriteValue( dst_data, dst_pointer_value );
+    WritePointerValue( dst_data, dst_pointer_value );
   }
 
   return sbStatus_Ok;
@@ -64,7 +64,7 @@ sbPointerValue sbPointerType::ReadPointerValue( const char* data ) const
   return sbPointerValue::Pointer( *( const char** )( data ) );
 }
 
-void sbPointerType::WriteValue( char* data, const sbPointerValue& value ) const
+void sbPointerType::WritePointerValue( char* data, const sbPointerValue& value ) const
 {
   *( const char** )( data ) = value.AsConstCharStar();
 }

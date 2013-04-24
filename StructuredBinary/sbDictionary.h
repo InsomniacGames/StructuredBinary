@@ -44,7 +44,7 @@ public:
     }
     return m_NotFoundValue;
   }
-  
+
   const T& GetByIndex( int index ) const
   {
     if( index < m_Count )
@@ -53,7 +53,7 @@ public:
     }
     return m_NotFoundValue;
   }
-  
+
   sbHash GetNameByIndex( int index ) const
   {
     if( index < m_Count )
@@ -62,7 +62,7 @@ public:
     }
     return 0u;
   }
-  
+
   void Add( sbHash name, T payload )
   {
     if( m_Count == m_Capacity )

@@ -157,7 +157,7 @@ UnitTest::Result TestConvertFileFlat::TestRead() const
 //  sbByteReader reader( schema_chunk->GetData(), ( uint32_t )schema_chunk->GetDataSize() );
 
   const char* src_data = pay_chunk->GetData();
-  uint32_t src_data_size = ( uint32_t )pay_chunk->GetDataSize();
+  //uint32_t src_data_size = ( uint32_t )pay_chunk->GetDataSize();
 
   const char* schema_data = schema_chunk->GetData();
   uint32_t schema_data_size = ( uint32_t )schema_chunk->GetDataSize();

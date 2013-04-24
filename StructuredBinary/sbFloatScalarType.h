@@ -19,7 +19,7 @@ public:
   {
     return sbScalarValue::Float( *( T* )data );
   }
-  virtual void WriteValue( char* data, const sbScalarValue& value ) const
+  virtual void WriteScalarValue( char* data, const sbScalarValue& value ) const
   {
     *( T* )data = ( T )value.AsFloat();
   }

@@ -23,7 +23,7 @@ class sbScalarType : public sbType
 {
 public:
   virtual ~sbScalarType();
-  virtual void WriteValue( char* data, const sbScalarValue& value ) const = 0;
+  virtual void WriteScalarValue( char* data, const sbScalarValue& value ) const = 0;
   virtual sbScalarValue ReadScalarValue( const char* data ) const = 0;
 
   virtual sbStatus ConvertOne( char* dst_data, const char* src_data, const sbType* src_type, class sbAllocator* alloc, int array_count ) const;
